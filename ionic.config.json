@@ -1,0 +1,7 @@
+{
+  "name": "autolite",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
