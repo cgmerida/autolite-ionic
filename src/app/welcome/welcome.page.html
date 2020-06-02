@@ -1,0 +1,50 @@
+<ion-content>
+  <ion-button color="light" fill="clear" class="left">Saltar Intro</ion-button>
+
+  <ion-slides pager="true" (ionSlideDidChange)="onSlideChanged()">
+    <ion-slide>
+      <div class="slide">
+        <ion-img src="assets/img/logo/logo.svg"></ion-img>
+        <h2>Bienvenido a Autolite</h2>
+        <p>
+          La información de tu vehículo al alcance de tu telefono.
+        </p>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-img src="assets/img/bienvenido/info.svg"></ion-img>
+      <h2>Información</h2>
+      <p>
+        Obten el registro completo de los servicios recibidos por el taller
+        mecánico.
+      </p>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-img src="assets/img/bienvenido/chat.svg"></ion-img>
+      <h2>Comunicación</h2>
+      <p>
+        Comunicación directa con el taller y seguimiento del estado de tu
+        vehiculo
+      </p>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-img src="assets/img/logo/logo.svg"></ion-img>
+      <h3>¿Listo para comenzar?</h3>
+      <ion-button fill="clear">
+        Comenzar
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-slide>
+  </ion-slides>
+
+  <div class="btn-container">
+    <ion-button color="light" expand="full">
+      Crear Cuenta
+    </ion-button>
+    
+    <ion-button color="primary" expand="full">Comenzar</ion-button>
+  </div>
+</ion-content>
