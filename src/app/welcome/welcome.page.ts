@@ -29,14 +29,21 @@ export class WelcomePage implements OnInit {
       .catch(err => console.log(err));
   }
 
+  lastSlide() {
+    this.slides.length()
+      .then(n => {
+        this.slides.slideTo(n);
+      });
+  }
+
   bgBlack() {
     document.querySelector('ion-content').classList.remove('light');
-    document.querySelector('ion-button.left').classList.add('ion-color-light');
+    document.querySelector('ion-button.right').classList.add('ion-color-light');
   }
 
   bgLight() {
     document.querySelector('ion-content').classList.add('light');
-    document.querySelector('ion-button.left').classList.remove('ion-color-light');
+    document.querySelector('ion-button.right').classList.remove('ion-color-light');
   }
 
 }

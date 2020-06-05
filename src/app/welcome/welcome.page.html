@@ -1,11 +1,5 @@
 <ion-content>
-  <ion-button
-    color="light"
-    fill="clear"
-    class="right"
-    routerLink="/login"
-    routerDirection="forward"
-  >
+  <ion-button color="light" fill="clear" class="right" (click)="lastSlide()">
     Saltar Intro
   </ion-button>
 
@@ -41,7 +35,7 @@
     <ion-slide>
       <ion-img src="assets/img/logo/logo.svg"></ion-img>
       <h3>¿Listo para comenzar?</h3>
-      <ion-button fill="clear">
+      <ion-button fill="clear" routerLink="/login" routerDirection="forward">
         Comenzar
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
@@ -49,10 +43,22 @@
   </ion-slides>
 
   <div class="btn-container">
-    <ion-button color="light" expand="full">
+    <ion-button
+      color="light"
+      expand="full"
+      routerLink="/signin"
+      routerDirection="forward"
+    >
       Crear Cuenta
     </ion-button>
 
-    <ion-button color="primary" expand="full">Comenzar</ion-button>
+    <ion-button
+      color="primary"
+      expand="full"
+      routerLink="/login"
+      routerDirection="forward"
+    >
+      Comenzar
+    </ion-button>
   </div>
 </ion-content>

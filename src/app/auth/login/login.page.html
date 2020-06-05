@@ -4,17 +4,26 @@
 
     <h1 class="title">Login</h1>
 
-    <ion-item color="secondary">
-      <ion-label position="stacked">Correo</ion-label>
-      <ion-input required="true" type="text"></ion-input>
-    </ion-item>
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item color="secondary">
+        <ion-label position="stacked">Correo <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required="true" type="email"></ion-input>
+      </ion-item>
 
-    <ion-item color="secondary">
-      <ion-label position="stacked">Contraseña</ion-label>
-      <ion-input required="true" type="password"></ion-input>
-    </ion-item>
+      <ion-item color="secondary">
+        <ion-label position="stacked">Contraseña <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required="true" type="password"></ion-input>
+      </ion-item>
+    </ion-list>
 
-    <ion-button class="right" color="light" fill="clear" size="small">
+    <ion-button
+      class="right"
+      color="light"
+      fill="clear"
+      size="small"
+      routerLink="login/forgot"
+      routerDirection="forward"
+    >
       ¿Olvidaste tu contraseña?
     </ion-button>
 
@@ -36,21 +45,24 @@
           <ion-img src="assets/img/redes/tw.svg" alt="Twitter"></ion-img>
         </ion-col>
 
-        <ion-col size="2">
+        <ion-col size="2" class="hide-md">
           <ion-img src="assets/img/redes/apple.png" alt="Apple"></ion-img>
         </ion-col>
 
-        <ion-col size="2">
+        <ion-col size="2" class="hide-ios">
           <ion-img src="assets/img/redes/google-c.svg" alt="Google"></ion-img>
         </ion-col>
       </ion-row>
     </ion-grid>
 
     <div class="btn-container">
-      <ion-button color="light" fill="clear" size="small">
-        ¿No tienes cuenta? Registrate
-      </ion-button>
-  
+      <div class="ion-text-center">
+        ¿No tienes cuenta?
+        <a routerLink="/signin" routerDirection="forward">
+          Registrate
+        </a>
+      </div>
+
       <ion-button color="light" fill="clear" size="small">
         Terminos y Condiciones
       </ion-button>

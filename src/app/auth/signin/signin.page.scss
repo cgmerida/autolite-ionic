@@ -1,13 +1,9 @@
-ion-content {
-  --background: var(--ion-color-secondary);
-}
-
 h1.title {
   text-transform: uppercase;
 }
 
 div.contenido {
-  padding: 3vh 8.4vw 0 8.4vw;
+  padding: 6vh 8.4vw 0 8.4vw;
   max-height: 98vh;
   color: white;
   img {
@@ -27,19 +23,14 @@ div.contenido {
     --highlight-color-focused: none;
 
     ion-label {
-      color: white;
+      color: white !important;
       text-transform: uppercase;
     }
   }
 }
 
-ion-button.right {
-  position: absolute;
-  right: 5vw;
-}
-
 ion-button.main {
-  margin-top: 7vh;
+  margin-top: 3vh;
   margin-left: auto;
   margin-right: auto;
   text-transform: uppercase;
@@ -48,18 +39,7 @@ ion-button.main {
   --border-radius: 0;
 }
 
-ion-img {
-  width: 40px;
-}
-
-.btn-container {
-  display: block;
-
-  ion-button {
-    width: 100%;
-  }
-}
-
 a {
+  color: var(--ion-color-secondary);
   text-decoration: none;
 }
