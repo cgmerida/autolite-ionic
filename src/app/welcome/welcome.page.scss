@@ -1,4 +1,4 @@
-.left {
+.right {
   position: fixed;
   right: 2%;
   top: 2%;
@@ -10,7 +10,7 @@ ion-content {
 
 ion-content.light {
   --background: white;
-  ion-button.left {
+  ion-button.right {
     color: black;
   }
   p {

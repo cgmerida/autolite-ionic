@@ -1,5 +1,13 @@
 <ion-content>
-  <ion-button color="light" fill="clear" class="left">Saltar Intro</ion-button>
+  <ion-button
+    color="light"
+    fill="clear"
+    class="right"
+    routerLink="/login"
+    routerDirection="forward"
+  >
+    Saltar Intro
+  </ion-button>
 
   <ion-slides pager="true" (ionSlideDidChange)="onSlideChanged()">
     <ion-slide>
@@ -44,7 +52,7 @@
     <ion-button color="light" expand="full">
       Crear Cuenta
     </ion-button>
-    
+
     <ion-button color="primary" expand="full">Comenzar</ion-button>
   </div>
 </ion-content>
