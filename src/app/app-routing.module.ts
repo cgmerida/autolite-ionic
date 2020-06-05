@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'signin',
     loadChildren: () => import('./auth/signin/signin.module').then( m => m.SigninPageModule)
+  },
+  {
+    path: 'login/forgot',
+    loadChildren: () => import('./auth/forgot/forgot.module').then( m => m.ForgotPageModule)
   }
 ];
 @NgModule({
