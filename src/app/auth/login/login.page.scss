@@ -47,9 +47,13 @@ ion-button.main {
   height: 55px;
   --border-radius: 0;
 }
-
-ion-img {
-  width: 40px;
+ion-col {
+  display: flex;
+  ion-img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
 }
 
 .btn-container {

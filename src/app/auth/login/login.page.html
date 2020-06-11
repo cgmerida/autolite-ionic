@@ -9,14 +9,14 @@
         <ion-label position="stacked"
           >Correo <ion-text color="danger">*</ion-text></ion-label
         >
-        <ion-input required="true" type="email"></ion-input>
+        <ion-input required #email type="email"></ion-input>
       </ion-item>
 
       <ion-item color="secondary">
         <ion-label position="stacked"
           >Contraseña <ion-text color="danger">*</ion-text></ion-label
         >
-        <ion-input required="true" type="password"></ion-input>
+        <ion-input required #password type="password"></ion-input>
       </ion-item>
     </ion-list>
 
@@ -34,12 +34,12 @@
     <ion-grid>
       <ion-row>
         <ion-button
+          type="submit"
+          (click)="logIn(email.value, password.value)"
           class="main"
           color="light"
           fill="outline"
           size="large"
-          routerLink="/app/inicio"
-          routerDirection="forward"
         >
           Login
         </ion-button>
@@ -48,20 +48,24 @@
 
     <ion-grid>
       <ion-row class="ion-justify-content-center">
-        <ion-col size="2">
+        <ion-col size="2" class="ion-justify-content-center">
           <ion-img src="assets/img/redes/fb.svg" alt="Facebook"></ion-img>
         </ion-col>
 
-        <ion-col size="2">
+        <ion-col size="2" class="ion-justify-content-center">
           <ion-img src="assets/img/redes/tw.svg" alt="Twitter"></ion-img>
         </ion-col>
 
-        <ion-col size="2" class="hide-md">
+        <ion-col size="2" class="hide-md ion-justify-content-center">
           <ion-img src="assets/img/redes/apple.png" alt="Apple"></ion-img>
         </ion-col>
 
-        <ion-col size="2" class="hide-ios">
-          <ion-img src="assets/img/redes/google-c.svg" alt="Google"></ion-img>
+        <ion-col size="2" class="hide-ios ion-justify-content-center">
+          <ion-img
+            src="assets/img/redes/google-c.svg"
+            alt="Google"
+            (click)="authService.GoogleAuth()"
+          ></ion-img>
         </ion-col>
       </ion-row>
     </ion-grid>

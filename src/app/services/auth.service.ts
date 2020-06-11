@@ -4,21 +4,23 @@ import { Router } from "@angular/router";
 
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { User } from "../models/users";
+import { User, AuthUser } from "../models/users";
 import { auth } from 'firebase/app';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  userData: any;
+  userData: AuthUser;
 
   constructor(
     public fireStore: AngularFirestore,
     public fireAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone
+    public ngZone: NgZone,
+    private alertCtl: AlertController
   ) {
     this.fireAuth.authState.subscribe(user => {
       if (user) {
@@ -51,7 +53,8 @@ export class AuthService {
       this.router.navigate(['verify-email']);
     }).catch((err) => {
       console.error(err);
-    }); 
+      this.presentAlert('Error', 'Problema enviando correo', err);
+    });
 
   }
 
@@ -59,9 +62,9 @@ export class AuthService {
   PasswordRecover(passwordResetEmail) {
     return this.fireAuth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email has been sent, please check your inbox.');
-      }).catch((error) => {
-        window.alert(error)
+        this.presentAlert('¡Bien!', null, 'El correo para reiniciar tu contraseña ya fue enviado, revisa tu correo');
+      }).catch((err) => {
+        this.presentAlert('Error', 'Problema enviando correo', err);
       })
   }
 
@@ -87,28 +90,28 @@ export class AuthService {
     return this.fireAuth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/app/inicio']);
         })
         this.SetUserData(result.user);
-      }).catch((error) => {
-        window.alert(error)
+      }).catch((err) => {
+        this.presentAlert('Error', 'Problema iniciando sesión', err);
       })
   }
 
   // Store user in localStorage
   SetUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.fireStore.doc(`users/${user.uid}`);
-    const userData: User = {
+    const userData = {
       uid: user.uid,
-      firstname: user.firstname,
-      lastname: user.lastname,
+      // firstname: user.firstname,
+      // lastname: user.lastname,
       email: user.email,
-      tel: user.tel,
+      // tel: user.tel,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      // createdAt: new Date(),
+      // updatedAt: new Date(),
     }
     return userRef.set(userData, {
       merge: true
@@ -122,5 +125,20 @@ export class AuthService {
       this.router.navigate(['login']);
     })
   }
+
+
+
+  async presentAlert(hdr, shdr, msg) {
+    const alert = await this.alertCtl.create({
+      // cssClass: 'my-custom-class',
+      header: hdr,
+      subHeader: shdr,
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
 
 }
