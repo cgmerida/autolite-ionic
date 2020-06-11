@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "autolite-7901a": {
+      "hosting": {
+        "app": [
+          "autolite-7901a"
+        ]
+      }
+    }
+  }
+}
