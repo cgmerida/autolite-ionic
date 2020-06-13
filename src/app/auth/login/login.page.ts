@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private alertCtl: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private errors: ErrorService,
   ) { }
 
   ngOnInit() {
@@ -36,7 +38,8 @@ export class LoginPage implements OnInit {
             }
           })
           .catch((error) => {
-            this.presentAlert(error.message)
+            this.presentAlert(this.errors.printErrorByCode(error.code));
+            console.log(error);
           })
           .finally(() => {
             loading.dismiss();

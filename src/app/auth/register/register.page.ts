@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/users';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-register',
@@ -15,13 +16,15 @@ export class RegisterPage implements OnInit {
 
   registerForm: FormGroup;
   isSubmitted = false;
+  confirm = true;
 
   constructor(
     public authService: AuthService,
     public router: Router,
     private formBuilder: FormBuilder,
     public alertController: AlertController,
-    private userService: UserService
+    private userService: UserService,
+    private errors: ErrorService,
   ) {
 
     this.registerForm = this.formBuilder.group({
@@ -31,19 +34,10 @@ export class RegisterPage implements OnInit {
       tel: [null, Validators.pattern('[0-9]{8}')],
       password: [null, [Validators.required, Validators.minLength(8)]],
       confirmpassword: [null, [Validators.required, Validators.minLength(8)]]
-    }, {
-      validators: this.password.bind(this)
     });
   }
 
-  password(formGroup: FormGroup) {
-    const { value: password } = formGroup.get('password');
-    const { value: confirmPassword } = formGroup.get('confirmpassword');
-    return password === confirmPassword ? null : { passwordNotMatch: true };
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   get errorControl() {
     return this.registerForm.controls;
@@ -52,7 +46,9 @@ export class RegisterPage implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
 
-    if (!this.registerForm.valid) {
+    this.confirm = (this.registerForm.get('password').value === this.registerForm.get('confirmpassword').value) ? true : false;
+
+    if (!this.registerForm.valid && !this.confirm) {
       console.log('No ingreso los datos necesarios!');
       this.registerForm.get('password').patchValue(null);
       this.registerForm.get('confirmpassword').patchValue(null);
@@ -86,7 +82,8 @@ export class RegisterPage implements OnInit {
         this.router.navigate(['verify-email']);
       })
       .catch((error) => {
-        this.presentAlert(error.message);
+        console.log(error);
+        this.presentAlert(this.errors.printErrorByCode(error.code));
       })
   }
 
