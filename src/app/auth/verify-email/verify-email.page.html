@@ -22,16 +22,17 @@
       </ion-row>
       <ion-row>
         <ion-text color="light" class="ion-text-center ion-margin-top">
-          Si no recibe el correo de validación, por favor click en Reenviar Correo.
+          Si no recibe el correo de validación, por favor click en Reenviar
+          Correo.
         </ion-text>
       </ion-row>
     </ion-grid>
 
-    <div class="ion-text-center">
-      ¿Ya validaste tu correo?
-      <a routerLink="/app/inicio" routerDirection="root">
-        Ve al Inicio
-      </a>
+    <div class="ion-text-center ion-margin-top">
+      ¿Ya validaste tu correo? <br>
+      <ion-button color="secondary" (click)="enviarInicio();"
+        >Ve al inicio</ion-button
+      >
     </div>
   </div>
 </ion-content>

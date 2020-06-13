@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/users';
 import { ErrorService } from 'src/app/services/error.service';
@@ -25,6 +25,7 @@ export class RegisterPage implements OnInit {
     public alertController: AlertController,
     private userService: UserService,
     private errors: ErrorService,
+    private loadingController: LoadingController,
   ) {
 
     this.registerForm = this.formBuilder.group({
@@ -60,30 +61,36 @@ export class RegisterPage implements OnInit {
   }
 
   register(email, password) {
-    this.authService.RegisterUser(email, password)
-      .then((res) => {
-        console.log(res);
-        let user: User = {
-          uid: res.user.uid,
-          ...this.registerForm.value,
-          displayName: res.user.displayName,
-          photoURL: res.user.photoURL,
-          emailVerified: res.user.emailVerified,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        };
+    this.loadingController.create()
+      .then(loading => {
+        loading.present();
+        this.authService.RegisterUser(email, password)
+          .then((res) => {
+            let user: User = {
+              uid: res.user.uid,
+              ...this.registerForm.value,
+              displayName: res.user.displayName,
+              photoURL: res.user.photoURL,
+              emailVerified: res.user.emailVerified,
+              createdAt: new Date(),
+              updatedAt: new Date()
+            };
 
-        return this.userService.addUser(user);
-      })
-      .then(() => {
-        return this.authService.SendVerificationMail();
-      })
-      .then(() => {
-        this.router.navigate(['verify-email']);
-      })
-      .catch((error) => {
-        console.log(error);
-        this.presentAlert(this.errors.printErrorByCode(error.code));
+            return this.userService.addUser(user);
+          })
+          .then(() => {
+            return this.authService.SendVerificationMail();
+          })
+          .then(() => {
+            this.router.navigate(['verify-email']);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.presentAlert(this.errors.printErrorByCode(error.code));
+          })
+          .finally(() => {
+            loading.dismiss();
+          });
       })
   }
 
