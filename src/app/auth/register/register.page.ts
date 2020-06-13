@@ -49,15 +49,13 @@ export class RegisterPage implements OnInit {
 
     this.confirm = (this.registerForm.get('password').value === this.registerForm.get('confirmpassword').value) ? true : false;
 
-    if (!this.registerForm.valid && !this.confirm) {
-      console.log('No ingreso los datos necesarios!');
+    if (!this.registerForm.valid && this.confirm) {
       this.registerForm.get('password').patchValue(null);
       this.registerForm.get('confirmpassword').patchValue(null);
       return false;
     }
 
     this.register(this.registerForm.get('email').value, this.registerForm.get('password').value);
-
   }
 
   register(email, password) {
