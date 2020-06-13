@@ -34,12 +34,11 @@
     <ion-grid>
       <ion-row>
         <ion-button
-          type="submit"
-          (click)="logIn(email.value, password.value)"
           class="main"
           color="light"
           fill="outline"
           size="large"
+          (click)="logIn(email.value, password.value)"
         >
           Login
         </ion-button>
@@ -73,7 +72,7 @@
     <div class="btn-container">
       <div class="ion-text-center">
         ¿No tienes cuenta?
-        <a routerLink="/signin" routerDirection="forward">
+        <a routerLink="/register" routerDirection="forward">
           Registrate
         </a>
       </div>

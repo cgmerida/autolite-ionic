@@ -1,41 +1,48 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from "@angular/router";
+import { Storage } from '@ionic/storage';
 
 
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { User, AuthUser } from "../models/users";
+import { User } from "../models/users";
 import { auth } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  userData: AuthUser;
+  private userData: User;
 
   constructor(
+    private storage: Storage,
     public fireStore: AngularFirestore,
     public fireAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
-    private alertCtl: AlertController
+    private alertCtl: AlertController,
+    private userService: UserService,
   ) {
-    this.fireAuth.authState.subscribe(user => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
+    // this.fireAuth.onAuthStateChanged
+    this.fireAuth.authState.subscribe(authUser => {
+      if (authUser) {
+        this.userService.getUser(authUser.uid)
+          .subscribe((userBd: User) => {
+            this.userData = userBd;
+            this.storage.set('user', this.userData);
+            this.router.navigate(['/app/inicio']);
+          });
       } else {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
+        this.storage.remove('user');
       }
     })
   }
 
   // Login in with email/password
-  SignIn(email: string, password: string) {
+  LogIn(email: string, password: string) {
     return this.fireAuth.signInWithEmailAndPassword(email, password)
   }
 
@@ -46,16 +53,14 @@ export class AuthService {
 
   // Email verification when new user register
   SendVerificationMail() {
-    // this.fireAuth.currentUser.sendEmailVerification() 
-    return this.fireAuth.currentUser.then(user => {
-      user.sendEmailVerification();
-    }).then(() => {
-      this.router.navigate(['verify-email']);
-    }).catch((err) => {
-      console.error(err);
-      this.presentAlert('Error', 'Problema enviando correo', err);
-    });
-
+    return this.fireAuth.currentUser
+      .then(user => {
+        return user.sendEmailVerification();
+      })
+      .catch((err) => {
+        console.error(err);
+        this.presentAlert('Error', 'Problema enviando correo', err);
+      });
   }
 
   // Recover password
@@ -69,15 +74,17 @@ export class AuthService {
   }
 
   // Returns true when user is looged in
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
+  get isLoggedIn(): Promise<boolean> {
+    return this.storage.get('user').then((user) => {
+      return (user !== null && user.emailVerified !== false) ? true : false;
+    });
   }
 
   // Returns true when user's email is verified
-  get isEmailVerified(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user.emailVerified !== false) ? true : false;
+  get isEmailVerified(): Promise<boolean> {
+    return this.storage.get('user').then((user) => {
+      return (user.emailVerified !== false) ? true : false;
+    });
   }
 
   // Sign in with Gmail
@@ -98,9 +105,10 @@ export class AuthService {
       })
   }
 
-  // Store user in localStorage
+  // Store user in this.storage
   SetUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.fireStore.doc(`users/${user.uid}`);
+
     const userData = {
       uid: user.uid,
       // firstname: user.firstname,
@@ -121,7 +129,6 @@ export class AuthService {
   // Sign-out 
   SignOut() {
     return this.fireAuth.signOut().then(() => {
-      localStorage.removeItem('user');
       this.router.navigate(['login']);
     })
   }

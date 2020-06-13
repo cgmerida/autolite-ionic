@@ -1,32 +1,45 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { FirstGuard } from './guards/first.guard';
+import { canActivate, redirectLoggedInTo, AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+const redirectLoggedInToInicio = () => redirectLoggedInTo(['app/inicio']);
+
+const redirectOrVerifyEmail = () =>
+  map((user: any) => {
+    return user ? (user.emailVerified ? true : ['/verify-email']) : ['/login'];
+  });
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule),
-    canActivate: [FirstGuard]
+    loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule),
+    canActivate: [FirstGuard],
   },
   {
     path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule),
+    ...canActivate(redirectLoggedInToInicio)
   },
   {
     path: 'login/forgot',
-    loadChildren: () => import('./auth/forgot/forgot.module').then( m => m.ForgotPageModule)
+    loadChildren: () => import('./auth/forgot/forgot.module').then(m => m.ForgotPageModule)
   },
   {
-    path: 'signin',
-    loadChildren: () => import('./auth/signin/signin.module').then( m => m.SigninPageModule)
+    path: 'register',
+    loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule)
   },
   {
     path: 'verify-email',
-    loadChildren: () => import('./auth/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
+    loadChildren: () => import('./auth/verify-email/verify-email.module').then(m => m.VerifyEmailPageModule)
   },
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectOrVerifyEmail },
   },
 ];
 @NgModule({
@@ -35,4 +48,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

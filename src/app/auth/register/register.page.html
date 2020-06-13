@@ -4,11 +4,12 @@
 
     <h1 class="title">Regístrate</h1>
 
-    <form [formGroup]="signinForm" (submit)="onSubmit();">
+    <form [formGroup]="registerForm" (submit)="onSubmit();">
       <ion-list lines="full" class="ion-no-margin ion-no-padding">
         <ion-item color="primary">
           <ion-label position="stacked">
-            Nombre <ion-text color="danger">*</ion-text></ion-label>
+            Nombre <ion-text color="danger">*</ion-text></ion-label
+          >
           <ion-input
             required
             formControlName="firstname"
@@ -77,13 +78,30 @@
             type="password"
           ></ion-input>
         </ion-item>
-
-
         <span
           class="error"
           *ngIf="isSubmitted && (errorControl.password.errors?.required || errorControl.password.errors?.minLength)"
         >
           La contraseña no es válida, debe ser de al menos 8 caracteres.
+        </span>
+
+        <ion-item color="primary">
+          <ion-label position="stacked"
+            >Confirmar Contraseña
+            <ion-text color="danger">*</ion-text></ion-label
+          >
+          <ion-input
+            required
+            formControlName="confirmpassword"
+            type="password"
+          ></ion-input>
+        </ion-item>
+
+        <span
+          class="error"
+          *ngIf="registerForm.hasError('passwordNotMatch')"
+        >
+          La contraseña debe coincidir en ambos campos.
         </span>
       </ion-list>
 

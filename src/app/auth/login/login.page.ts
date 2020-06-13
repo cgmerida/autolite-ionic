@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -13,27 +14,35 @@ export class LoginPage implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private alertCtl: AlertController
-    ) { }
+    private alertCtl: AlertController,
+    private loadingController: LoadingController
+  ) { }
 
   ngOnInit() {
   }
 
-
   logIn(email, password) {
-    this.authService.SignIn(email, password)
-      .then((res) => {
-        if(this.authService.isEmailVerified) {
-          this.router.navigate(['/app/inicio']);
-        } else {
-          this.presentAlert('Correo no verificado.');
-          return false;
-        }
-      }).catch((error) => {
-        this.presentAlert(error.message)
-      })
+    this.loadingController.create()
+      .then(loading => {
+        loading.present();
+        this.authService.LogIn(email, password)
+          .then((res) => {
+            console.log(res);
+            if (res.user.emailVerified) {
+              this.router.navigate(['/app/inicio']);
+            } else {
+              this.presentAlert('Correo no verificado.');
+              return false;
+            }
+          })
+          .catch((error) => {
+            this.presentAlert(error.message)
+          })
+          .finally(() => {
+            loading.dismiss();
+          });
+      });
   }
-
 
 
   async presentAlert(msg) {

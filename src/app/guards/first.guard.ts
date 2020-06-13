@@ -16,7 +16,6 @@ export class FirstGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.storage.get('first_time').then(res => {
-      console.log(res);
       if (res === false) {
         console.log('app isnt for the first time started');
         this.router.navigate(["login"]);
