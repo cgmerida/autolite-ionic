@@ -41,6 +41,15 @@ const routes: Routes = [
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectOrVerifyEmail },
   },
+  {
+    path: '404',
+    loadChildren: () => import('./notfound/notfound.module').then(m => m.NotfoundPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/404',
+    pathMatch: 'full'
+  }
 ];
 @NgModule({
   imports: [

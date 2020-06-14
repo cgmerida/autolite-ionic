@@ -46,7 +46,7 @@
     </ion-grid>
 
     <ion-grid>
-      <ion-row class="ion-justify-content-center">
+      <ion-row class="ion-justify-content-center ion-margin-bottom">
         <ion-col size="2" class="ion-justify-content-center">
           <ion-img src="assets/img/redes/fb.svg" alt="Facebook"></ion-img>
         </ion-col>
@@ -69,17 +69,21 @@
       </ion-row>
     </ion-grid>
 
-    <div class="btn-container">
-      <div class="ion-text-center">
-        ¿No tienes cuenta?
-        <a routerLink="/register" routerDirection="forward">
-          Registrate
-        </a>
-      </div>
+    <ion-grid class="ion-margin-top">
+      <ion-row class="ion-justify-content-center ion-margin-bottom">
+        <div class="ion-text-center">
+          ¿No tienes cuenta?
+          <a routerLink="/register" routerDirection="forward">
+            Registrate
+          </a>
+        </div>
+      </ion-row>
 
-      <ion-button color="light" fill="clear" size="small">
-        Terminos y Condiciones
-      </ion-button>
-    </div>
+      <ion-row class="ion-justify-content-center">
+        <ion-button color="light" fill="clear" size="small">
+          Terminos y Condiciones
+        </ion-button>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
