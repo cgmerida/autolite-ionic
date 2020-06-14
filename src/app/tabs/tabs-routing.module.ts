@@ -24,9 +24,10 @@ const routes: Routes = [
         path: 'configuracion',
         loadChildren: () => import('../pages/inicio/inicio.module').then(m => m.InicioPageModule)
       },
+
       {
-        path: 'inicio2',
-        loadChildren: '../pages/inicio/inicio.module#InicioPageModule'
+        path: 'cars',
+        loadChildren: () => import('../pages/cars/cars.module').then(m => m.CarsPageModule)
       },
       {
         path: '',

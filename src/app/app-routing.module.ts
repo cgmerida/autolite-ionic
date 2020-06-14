@@ -49,7 +49,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/404',
     pathMatch: 'full'
-  }
+  },
+  {
+    path: 'admin/cars',
+    loadChildren: () => import('./admin/cars/cars.module').then(m => m.CarsPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -4,7 +4,7 @@ import { AuthService } from "../../services/auth.service";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
-import { User } from '../../models/users';
+import { User } from '../../models/user';
 import { ErrorService } from 'src/app/services/error.service';
 
 @Component({

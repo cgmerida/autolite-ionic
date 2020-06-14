@@ -1,23 +1,32 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="inicio">
-      <ion-icon name="home"></ion-icon>
-      <ion-label>Inicio</ion-label>
+      <ion-icon name="home-outline"></ion-icon>
     </ion-tab-button>
 
     <ion-tab-button tab="historial">
-      <ion-icon name="book"></ion-icon>
-      <ion-label>Historial</ion-label>
+      <ion-icon name="book-outline"></ion-icon>
     </ion-tab-button>
 
+    <ion-tab-button></ion-tab-button>
+
     <ion-tab-button tab="notificaciones">
-      <ion-icon name="notifications"></ion-icon>
-      <ion-label>Notificaciones</ion-label>
+      <ion-icon name="notifications-outline"></ion-icon>
     </ion-tab-button>
 
     <ion-tab-button tab="configuracion">
-      <ion-icon name="settings"></ion-icon>
-      <ion-label>Configuración</ion-label>
+      <ion-icon name="settings-outline"></ion-icon>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
+
+<ion-fab horizontal="center" vertical="bottom" slot="fixed">
+  <ion-fab-button color="primary">
+    <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button color="dark" routerDirection="forward" href="/app/cars">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>

@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { User } from "../models/users";
+import { User } from "../models/user";
 import { auth } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { UserService } from './user.service';

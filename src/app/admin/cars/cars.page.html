@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>cars</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-button>
+    Crear Carro
+  </ion-button>
+  <ion-list>
+    <ion-list-header>
+      Carros
+    </ion-list-header>
+    <ion-item *ngFor="let car of cars | async">
+      <h1>{{ car.model }}</h1>
+      <p></p>
+      <p></p>
+    </ion-item>
+  </ion-list>
+</ion-content>
