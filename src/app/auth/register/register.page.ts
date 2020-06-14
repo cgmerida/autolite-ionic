@@ -47,9 +47,9 @@ export class RegisterPage implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
 
-    this.confirm = (this.registerForm.get('password').value === this.registerForm.get('confirmpassword').value) ? true : false;
+    this.confirm = this.registerForm.get('password').value === this.registerForm.get('confirmpassword').value;
 
-    if (!this.registerForm.valid && this.confirm) {
+    if (!this.registerForm.valid || !this.confirm) {
       this.registerForm.get('password').patchValue(null);
       this.registerForm.get('confirmpassword').patchValue(null);
       return false;
