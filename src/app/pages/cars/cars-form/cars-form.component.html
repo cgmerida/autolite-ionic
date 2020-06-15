@@ -1,0 +1,111 @@
+<ion-header translucent>
+  <ion-toolbar color="primary">
+    <ion-title>Registrar Carro</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  <form [formGroup]="carsForm">
+    <ion-list inset>
+      <ion-item>
+        <ion-label position="floating">Marca</ion-label>
+        <ion-input type="text" formControlName="brand"></ion-input>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.brand.errors?.required"
+      >
+        Especifica la marca del carro.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Modelo</ion-label>
+        <ion-input type="text" formControlName="model"></ion-input>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.model.errors?.required"
+      >
+        Especifica el modelo del carro.
+      </ion-text>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.model.errors?.pattern"
+      >
+        El modelo no es válido.
+      </ion-text>
+
+      <ion-item>
+        <ion-label>Tipo de Transmisión</ion-label>
+        <ion-select (ionChange)="changeValue(s.value)" #s>
+          <ion-select-option value="Automatica">Automática</ion-select-option>
+          <ion-select-option value="Mecanica">Mecánica</ion-select-option>
+        </ion-select>
+
+        <ion-input type="hidden" formControlName="transmition"></ion-input>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.transmition.errors?.required"
+      >
+        Especifica un tipo de Transmisión.
+      </ion-text>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.transmition.errors?.pattern"
+      >
+        Transmisión inválida.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Color</ion-label>
+        <ion-input type="text" formControlName="color"></ion-input>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.color.errors?.required"
+      >
+        Especifica el color del carro.
+      </ion-text>
+
+      <ion-item lines="inset">
+        <ion-label position="floating">Placas</ion-label>
+        <ion-input type="text" formControlName="license"></ion-input>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.license.errors?.required"
+      >
+        Registra las placas del vehículo.
+      </ion-text>
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.license.errors?.pattern"
+      >
+        Placas inválidas.
+      </ion-text>
+    </ion-list>
+
+    <ion-button
+      type="button"
+      class="ion-margin-top"
+      expand="full"
+      (click)="onSubmit()"
+    >
+      Crear
+    </ion-button>
+  </form>
+</ion-content>

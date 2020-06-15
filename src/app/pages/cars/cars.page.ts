@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { FormComponent } from './form/form.component';
+import { CarsFormComponent } from './cars-form/cars-form.component';
+import { CarService } from 'src/app/services/app/car.service';
+import { Car } from 'src/app/models/app/car';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-cars',
@@ -10,47 +13,30 @@ import { FormComponent } from './form/form.component';
 })
 export class CarsPage implements OnInit {
 
-  carsForm: FormGroup;
-
-  // currentModal = null;
+  private cars: Car[];
 
   constructor(
-    private formBuilder: FormBuilder,
     private modalController: ModalController,
-  ) {
-
-    this.carsForm = this.formBuilder.group({
-      brand: [null, Validators.required],
-      model: [null, Validators.required],
-      engine: [null, Validators.required],
-      transmition: [null, Validators.pattern('[0-9]{8}')],
-      color: [null, Validators.required],
-      license: [null, Validators.required]
-    });
-  }
+    private carService: CarService,
+    private storage: Storage,
+  ) { }
 
   ngOnInit() {
+    this.storage.get('user')
+      .then(user => {
+        this.carService.getCarsByUser(user.uid).subscribe(cars => {
+          this.cars = cars;
+        })
+      })
   }
 
 
   async presentModal() {
     const modal = await this.modalController.create({
-      component: FormComponent,
+      component: CarsFormComponent,
       cssClass: 'my-custom-class'
     });
     await modal.present();
-
-    // this.currentModal = modal;
-
-    // const { data } = await modal.onWillDismiss();
-    // console.log(data);
   }
-
-
-  // dismiss() {
-  //   if (this.currentModal) {
-  //     this.currentModal.dismiss().then(() => { this.currentModal = null; });
-  //   }
-  // }
 
 }

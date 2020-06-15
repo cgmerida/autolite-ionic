@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-email',
@@ -13,6 +14,7 @@ export class VerifyEmailPage implements OnInit {
     private authService: AuthService,
     private alertController: AlertController,
     private loadingController: LoadingController,
+    private router: Router,
   ) {
   }
 
@@ -25,17 +27,17 @@ export class VerifyEmailPage implements OnInit {
       .then(loading => {
         loading.present();
 
-        this.authService.fireAuth.currentUser
+        this.authService.getAuthUser()
           .then((user) => {
             user.reload();
           });
 
         setTimeout(() => {
-          this.authService.fireAuth.currentUser
+          this.authService.getAuthUser()
             .then((user) => {
               loading.dismiss();
               if (user && user.emailVerified) {
-                this.authService.router.navigate(['/app/inicio']);
+                this.router.navigate(['/app/inicio']);
               } else {
                 this.presentAlert('No has verificado tu correo');
               }

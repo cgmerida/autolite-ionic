@@ -6,6 +6,20 @@
 
 <ion-content class="ion-padding">
   <ion-button (click)="presentModal();">
-    Abrir Modal
+    Registrar Carro
   </ion-button>
+  
+  <ion-card *ngFor="let car of cars">
+    <ion-card-header>
+      <ion-card-subtitle>{{ car.brand }}</ion-card-subtitle>
+      <ion-card-title>Card Title</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile,
+      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      created at: {{car.createdAt}}
+    </ion-card-content>
+  </ion-card>
+  
 </ion-content>

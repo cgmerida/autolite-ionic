@@ -1,9 +1,9 @@
 import { User } from '../user';
 
-enum TransmitonTypes { Debit, Credit, Virtual };
+enum TransmitonTypes { Automatica = 'Automatica', Mecanica = "Mecanica" };
 
 export class Car {
-  uid: string;
+  uid?: string;
   brand: string;
   model: number;
   engine: number;

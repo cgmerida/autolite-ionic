@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CarsPageRoutingModule } from './cars-routing.module';
 
 import { CarsPage } from './cars.page';
+import { CarsFormComponent } from './cars-form/cars-form.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { CarsPage } from './cars.page';
     ReactiveFormsModule,
     CarsPageRoutingModule
   ],
-  declarations: [CarsPage]
+  declarations: [CarsPage, CarsFormComponent],
+  entryComponents: [CarsFormComponent]
 })
 export class CarsPageModule {}

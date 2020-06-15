@@ -19,10 +19,10 @@ export class AuthService {
 
   constructor(
     private storage: Storage,
-    public fireStore: AngularFirestore,
-    public fireAuth: AngularFireAuth,
-    public router: Router,
-    public ngZone: NgZone,
+    private fireStore: AngularFirestore,
+    private fireAuth: AngularFireAuth,
+    private router: Router,
+    private ngZone: NgZone,
     private alertCtl: AlertController,
     private userService: UserService,
   ) {
@@ -38,6 +38,20 @@ export class AuthService {
       } else {
         this.storage.remove('user');
       }
+    })
+  }
+
+  getAuthUserUid(){
+    return this.fireAuth.currentUser
+    .then(user => {
+      return user.uid;
+    })
+  }
+
+  getAuthUser(){
+    return this.fireAuth.currentUser
+    .then(user => {
+      return user;
     })
   }
 
