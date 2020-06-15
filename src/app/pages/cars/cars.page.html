@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Mis Carros</ion-title>
+    <ion-title
+      >Mis Carros <ion-icon slot="start" name="car-sport-outline"></ion-icon
+    ></ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,18 +10,49 @@
   <ion-button (click)="presentModal();">
     Registrar Carro
   </ion-button>
-  
+
   <ion-card *ngFor="let car of cars">
     <ion-card-header>
-      <ion-card-subtitle>{{ car.brand }}</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
+      <ion-card-title>{{car.brand}} {{ car.line }}</ion-card-title>
+      <ion-card-subtitle>{{ car.model }}</ion-card-subtitle>
     </ion-card-header>
-  
+
     <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile,
-      and climb a mountain or spend a week in the woods. Wash your spirit clean.
-      created at: {{car.createdAt}}
+      <ion-button color="tertiary" (click)="car.addKm = true" [disabled]="car.addKm">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Agregar Kilometraje
+      </ion-button>
+      <ion-button color="secondary" (click)="editar(car)">
+        <ion-icon slot="start" name="create"></ion-icon>
+        Editar
+      </ion-button>
+      <ion-button color="danger" (click)="eliminar(car.uid)">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Eliminar
+      </ion-button>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="car.addKm">
+      <form (submit)="onSubmitKm(car, km.value)">
+        <ion-list inset>
+          <ion-item>
+            <ion-label position="stacked">Kilometraje Actual</ion-label>
+            <ion-input type="number" #km></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-button type="submit" class="ion-margin-top">
+          Registrar Kilometros
+        </ion-button>
+
+        <ion-button
+          color="medium"
+          class="ion-margin-top"
+          (click)="car.addKm = false"
+        >
+          Cancelar
+        </ion-button>
+      </form>
     </ion-card-content>
   </ion-card>
-  
 </ion-content>

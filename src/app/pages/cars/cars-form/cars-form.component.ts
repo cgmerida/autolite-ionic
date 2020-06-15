@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { CarService } from 'src/app/services/app/car.service';
@@ -11,6 +11,10 @@ import { Car } from 'src/app/models/app/car';
 })
 export class CarsFormComponent implements OnInit {
 
+  // Data passed in by componentProps
+  @Input() update: boolean;
+  @Input() car: Car;
+
   private carsForm: FormGroup;
   isSubmitted = false;
 
@@ -21,16 +25,19 @@ export class CarsFormComponent implements OnInit {
     private loadingController: LoadingController,
     private alertCtl: AlertController,
   ) {
-    this.carsForm = this.formBuilder.group({
-      brand: [null, Validators.required],
-      model: [null, [Validators.required, Validators.pattern(/^(19[789]|20[012])\d$/)]],
-      transmition: [null, [Validators.required, Validators.pattern(/^(Automatica|Mecanica)$/)]],
-      color: [null, Validators.required],
-      license: [null, [Validators.required, Validators.pattern(/^(\w{1,3})?\d{3,3}\w{3,3}$/)]]
-    });
+
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.carsForm = this.formBuilder.group({
+      brand: [this.car ? this.car.brand : null, Validators.required],
+      line: [this.car ? this.car.line : null, Validators.required],
+      model: [this.car ? this.car.model : null, [Validators.required, Validators.pattern(/^(19[789]|20[012])\d$/)]],
+      transmition: [this.car ? this.car.transmition : null, [Validators.required, Validators.pattern(/^(Automatica|Mecanica)$/)]],
+      color: [this.car ? this.car.color : null, Validators.required],
+      license: [this.car ? this.car.license : null, [Validators.required, Validators.pattern(/^(\w{1,3})?\d{3,3}\w{3,3}$/)]]
+    });
+  }
 
   dismiss() {
     this.modalController.dismiss();
@@ -46,7 +53,12 @@ export class CarsFormComponent implements OnInit {
       return false;
     }
 
-    this.registrar();
+
+    if (this.update) {
+      this.actualizar();
+    } else {
+      this.registrar();
+    }
   }
 
 
@@ -69,12 +81,34 @@ export class CarsFormComponent implements OnInit {
           })
           .finally(() => {
             loading.dismiss();
-            console.log('despues de add car')
           });
       });
   }
 
-  changeValue(value){
+  actualizar() {
+    this.loadingController.create()
+      .then(loading => {
+        loading.present();
+        // this.carService.addCar({ ...this.carsForm.value })
+        this.carService.updateCar({
+          uid: this.car.uid,
+          ...this.carsForm.value
+        })
+          .then(() => {
+            this.presentAlert(`¡Genial!`, null, `Información Actualizada.`);
+            this.dismiss();
+          })
+          .catch((error) => {
+            this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
+            console.log(error);
+          })
+          .finally(() => {
+            loading.dismiss();
+          });
+      });
+  }
+
+  changeValue(value) {
     console.log(value);
     this.carsForm.get('transmition').patchValue(value);
   }

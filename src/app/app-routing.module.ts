@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { FirstGuard } from './guards/first.guard';
 import { canActivate, redirectLoggedInTo, AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const redirectLoggedInToInicio = () => redirectLoggedInTo(['app/inicio']);

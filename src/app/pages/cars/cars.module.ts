@@ -17,7 +17,8 @@ import { CarsFormComponent } from './cars-form/cars-form.component';
     ReactiveFormsModule,
     CarsPageRoutingModule
   ],
+  // declarations: [CarsPage],
   declarations: [CarsPage, CarsFormComponent],
-  entryComponents: [CarsFormComponent]
+  // entryComponents: [CarsFormComponent]
 })
 export class CarsPageModule {}

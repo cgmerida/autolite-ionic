@@ -6,6 +6,7 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { AuthService } from '../auth.service';
+import { Km } from 'src/app/models/app/km';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { AuthService } from '../auth.service';
 export class CarService {
 
   private carCollection: AngularFirestoreCollection<Car>;
-  private cars: Observable<Car[]>;
+  // private cars: Observable<Car[]>;
 
 
   constructor(private db: AngularFirestore, private authService: AuthService) {
@@ -27,7 +28,7 @@ export class CarService {
   }
 
   getCarsByUser(uid: User['uid']) {
-    return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges();
+    return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
   }
 
   addCar(car: Car) {
@@ -43,21 +44,21 @@ export class CarService {
       });
   }
 
-  updateCar(car: Car) {
-    car.updatedAt = new Date();
-    return this.carCollection.doc(car.uid).update({
-      brand: car.brand,
-      model: car.model,
-      engine: car.engine,
-      trasmition: car.trasmition,
-      color: car.color,
-      license: car.license,
-    });
-
+  addKm(km) {
+    km.createdAt = new Date();
+    return this.db.collection<Km>('km').add({ ...km })
+      .then(() => {
+        return `Kilometraje registrado.`;
+      })
   }
 
-  deleteCar(car: Car) {
-    return this.carCollection.doc(car.uid).delete();
+  updateCar(car: Car) {
+    car.updatedAt = new Date();
+    return this.carCollection.doc(car.uid).update({ ...car });
+  }
+
+  deleteCar(uid: Car['uid']) {
+    return this.carCollection.doc(uid).delete();
   }
 
 }
