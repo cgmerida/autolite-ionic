@@ -33,7 +33,7 @@ export class CarsFormComponent implements OnInit {
       brand: [this.car ? this.car.brand : null, Validators.required],
       line: [this.car ? this.car.line : null, Validators.required],
       model: [this.car ? this.car.model : null, [Validators.required, Validators.pattern(/^(19[789]|20[012])\d$/)]],
-      transmition: [this.car ? this.car.transmition : null, [Validators.required, Validators.pattern(/^(Automatica|Mecanica)$/)]],
+      transmition: [this.car ? this.car.transmition : 'Automatica', [Validators.required, Validators.pattern(/^(Automatica|Mecanica)$/)]],
       color: [this.car ? this.car.color : null, Validators.required],
       license: [this.car ? this.car.license : null, [Validators.required, Validators.pattern(/^(\w{1,3})?\d{3,3}\w{3,3}$/)]]
     });
