@@ -31,6 +31,10 @@ export class CarService {
     return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
   }
 
+  getCarKm(uid) {
+    return this.db.doc(`/km/${uid}`).valueChanges();
+  }
+
   addCar(car: Car) {
     car.createdAt = new Date();
     car.updatedAt = new Date();
@@ -45,10 +49,21 @@ export class CarService {
   }
 
   addKm(km) {
-    km.createdAt = new Date();
-    return this.db.collection<Km>('km').add({ ...km })
-      .then(() => {
-        return `Kilometraje registrado.`;
+    return new Promise((resolve, reject) => {
+      if (km.km <= km.oldKm) {
+        reject(`El kilometraje debe ser mayor al registrado anteriormente`);
+      } else {
+        resolve();
+      }
+    })
+      .then(_ => {
+        km.uid = this.db.createId();
+        km.createdAt = new Date();
+        return this.db.collection<Km>('km').doc(km.uid).set(km)
+          .then(() => {
+            this.carCollection.doc(km.car).update({ km: km.uid });
+            return `Kilometraje registrado.`;
+          })
       })
   }
 

@@ -13,7 +13,7 @@ export class Car {
   color: string;
   license: string;
   owner: User["uid"];
-  km: Km[];
+  km: string | Km;
   createdAt: Date;
   updatedAt: Date;
 }

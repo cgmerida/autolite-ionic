@@ -5,6 +5,8 @@ import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 import { Storage } from '@ionic/storage';
+import { map } from 'rxjs/operators';
+import { Km } from 'src/app/models/app/km';
 
 @Component({
   selector: 'app-cars',
@@ -29,6 +31,13 @@ export class CarsPage implements OnInit {
     this.storage.get('user')
       .then(user => {
         this.carService.getCarsByUser(user.uid).subscribe(cars => {
+          cars.map(car => {
+            if (car.km) {
+              this.carService.getCarKm(car.km).subscribe((km: Km) => {
+                car.km = km;
+              });
+            }
+          });
           this.cars = cars;
         })
       })
@@ -53,13 +62,14 @@ export class CarsPage implements OnInit {
 
         this.carService.addKm({
           km: km,
-          car: car.uid
+          car: car.uid,
+          oldKm: (!!car.km ? car.km.km : 0)
         })
           .then((res) => {
             this.presentAlert('¡Bien!', res);
           })
           .catch((err) => {
-            this.presentAlert('Error', `Hubo un problema.\n Descripcion: ${err}`);
+            this.presentAlert('Error', `${err}`);
           })
           .finally(() => {
             loading.dismiss();
