@@ -41,19 +41,25 @@ const routes: Routes = [
     data: { authGuardPipe: redirectOrVerifyEmail },
   },
   {
-    path: '404',
-    loadChildren: () => import('./notfound/notfound.module').then(m => m.NotfoundPageModule)
-  },
-  {
-    path: '**',
-    redirectTo: '/404',
-    pathMatch: 'full'
-  },
-  {
     path: 'admin/cars',
     loadChildren: () => import('./admin/cars/cars.module').then(m => m.CarsPageModule)
   },
+  {
+    path: 'services',
+    loadChildren: () => import('./admin/services/services.module').then(m => m.ServicesPageModule)
+  },
 ];
+
+
+// {
+//   path: '404',
+//   loadChildren: () => import('./notfound/notfound.module').then(m => m.NotfoundPageModule)
+// },
+// {
+//   path: '**',
+//   redirectTo: '/404',
+//   pathMatch: 'full'
+// },
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

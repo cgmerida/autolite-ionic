@@ -1,0 +1,120 @@
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Service } from 'src/app/models/service';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { ServiceService } from 'src/app/services/app/service.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-services',
+  templateUrl: './services.page.html',
+  styleUrls: ['./services.page.scss'],
+})
+export class ServicesPage implements OnInit {
+
+  private services: Observable<Service[]>;
+
+
+  private servicesForm: FormGroup;
+  isSubmitted = false;
+
+
+  constructor(
+    private serviceService: ServiceService,
+    private loadingController: LoadingController,
+    private alertController: AlertController,
+    private formBuilder: FormBuilder,
+  ) {
+
+    this.services = serviceService.getServices();
+
+    this.servicesForm = this.formBuilder.group({
+      name: [null, Validators.required],
+      price: [null, Validators.required],
+    });
+
+  }
+
+  ngOnInit() {
+  }
+
+
+  get errorControl() {
+    return this.servicesForm.controls;
+  }
+
+  crearServicio() {
+    if (!this.servicesForm.valid) {
+      return false;
+    }
+
+    this.loadingController.create()
+      .then(loading => {
+        loading.present();
+        this.serviceService.addService({ ...this.servicesForm.value })
+          .then((res) => {
+            this.presentAlert(`¡Genial!`, res);
+          })
+          .catch((error) => {
+            this.presentAlert(`Error`, `Problema registrando el vehículo. Error: ${error}`);
+            console.log(error);
+          })
+          .finally(() => {
+            loading.dismiss();
+          });
+      });
+  }
+
+  actualizarServicio(service, name, price) {
+    this.loadingController.create()
+      .then(loading => {
+        loading.present();
+        // this.carService.addCar({ ...this.carsForm.value })
+        this.serviceService.updateService({
+          uid: service.uid,
+          name: (name ? name : service.name),
+          price: (price ? price : service.price),
+          createdAt: service.createdAt,
+          updatedAt: service.updatedAt
+        })
+          .then(() => {
+            this.presentAlert(`¡Genial!`, `Información Actualizada.`);
+          })
+          .catch((error) => {
+            this.presentAlert(`Error`, `Problema registrando el vehículo. Error: ${error}`);
+            console.log(error);
+          })
+          .finally(() => {
+            loading.dismiss();
+          });
+      });
+  }
+
+  eliminar(uid) {
+    this.loadingController.create()
+      .then(loading => {
+        loading.present();
+        this.serviceService.deleteService(uid)
+          .then(() => {
+            this.presentAlert('¡Bien!', 'Carro Eliminado');
+          })
+          .catch((err) => {
+            this.presentAlert('Error', `Hubo un problema.\n Descripcion: ${err}`);
+          })
+          .finally(() => {
+            loading.dismiss();
+          });
+      });
+  }
+
+  async presentAlert(hdr, msg) {
+    const alert = await this.alertController.create({
+      header: hdr,
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+}
