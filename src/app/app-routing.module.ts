@@ -48,6 +48,10 @@ const routes: Routes = [
     path: 'services',
     loadChildren: () => import('./admin/services/services.module').then(m => m.ServicesPageModule)
   },
+  {
+    path: 'products',
+    loadChildren: () => import('./admin/products/products.module').then( m => m.ProductsPageModule)
+  },
 ];
 
 
