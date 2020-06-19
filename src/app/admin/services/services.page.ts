@@ -66,6 +66,16 @@ export class ServicesPage implements OnInit {
   }
 
   actualizarServicio(service, name, price) {
+    delete service.msg;
+    if (!name && !price) {
+      service.msg = `Debe llenar al menos un campo.`;
+      return;
+    }
+
+    if (price && !/^(\d)+(\.\d{2})?$/.test(price)) {
+      service.msg = `El precio no es válido.`;
+      return;
+    }
     this.loadingController.create()
       .then(loading => {
         loading.present();

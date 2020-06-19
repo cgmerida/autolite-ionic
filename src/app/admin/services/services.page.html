@@ -6,7 +6,7 @@
 
 <ion-content fullscreen class="ion-padding">
   <form [formGroup]="servicesForm">
-    <ion-list inset lines="inset">
+    <ion-list inset>
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
@@ -19,7 +19,7 @@
         Especifica la marca del carro.
       </ion-text>
 
-      <ion-item>
+      <ion-item lines="inset">
         <ion-label position="floating">Precio</ion-label>
         <ion-input
           pattern="(\d)+(\.\d{2})?"
@@ -70,6 +70,7 @@
     <ion-card-content [hidden]="!service.edit">
       <form (submit)="actualizarServicio(service, name.value, price.value)">
         <ion-list inset>
+          <h2>Editar</h2>
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
             <ion-input type="text" #name></ion-input>
@@ -77,21 +78,36 @@
 
           <ion-item lines="inset">
             <ion-label position="floating">Precio</ion-label>
-            <ion-input pattern="\d+" type="text" #price></ion-input>
+            <ion-input type="text" #price></ion-input>
           </ion-item>
         </ion-list>
 
-        <ion-button color="warning" type="submit" class="ion-margin-top">
-          Actualizar
-        </ion-button>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-text
+                color="danger"
+                *ngIf="service.msg"
+                class="ion-text-center"
+              >
+                {{service.msg}}
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-margin-top">
+            <ion-col>
+              <ion-button color="warning" type="submit">
+                Actualizar
+              </ion-button>
+            </ion-col>
 
-        <ion-button
-          color="medium"
-          class="ion-margin-top"
-          (click)="service.edit = false"
-        >
-          Cancelar
-        </ion-button>
+            <ion-col>
+              <ion-button color="medium" (click)="service.edit = false">
+                Cancelar
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </form>
     </ion-card-content>
   </ion-card>
