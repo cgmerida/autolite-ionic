@@ -27,8 +27,11 @@ export class CarService {
     return this.carCollection.valueChanges();
   }
 
-  getCarsByUser(uid: User['uid']) {
-    return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
+  getCarsByUser() {
+    return this.authService.getAuthUserUid()
+      .then(uid => {
+        return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
+      })
   }
 
   getCarKm(uid) {

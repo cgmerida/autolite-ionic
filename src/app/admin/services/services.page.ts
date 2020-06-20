@@ -53,6 +53,7 @@ export class ServicesPage implements OnInit {
         loading.present();
         this.serviceService.addService({ ...this.servicesForm.value })
           .then((res) => {
+            this.servicesForm.reset();
             this.presentAlert(`¡Genial!`, res);
           })
           .catch((error) => {

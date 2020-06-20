@@ -28,9 +28,9 @@ export class CarsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.storage.get('user')
-      .then(user => {
-        this.carService.getCarsByUser(user.uid).subscribe(cars => {
+    this.carService.getCarsByUser()
+      .then(obs => {
+        obs.subscribe(cars => {
           cars.map(car => {
             if (car.km) {
               this.carService.getCarKm(car.km).subscribe((km: Km) => {
@@ -41,6 +41,7 @@ export class CarsPage implements OnInit {
           this.cars = cars;
         })
       })
+
   }
 
   km(car) {

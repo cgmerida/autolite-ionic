@@ -52,6 +52,7 @@ export class ProductsPage implements OnInit {
         loading.present();
         this.productService.addProduct({ ...this.productsForm.value })
           .then((res) => {
+            this.productsForm.reset();
             this.presentAlert(`¡Genial!`, res);
           })
           .catch((error) => {
@@ -83,6 +84,7 @@ export class ProductsPage implements OnInit {
           updatedAt: product.updatedAt
         })
           .then(() => {
+            form.reset();
             this.presentAlert(`¡Genial!`, `Información Actualizada.`);
           })
           .catch((error) => {
