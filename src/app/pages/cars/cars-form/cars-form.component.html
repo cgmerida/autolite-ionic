@@ -107,7 +107,7 @@
         Especifica el color del carro.
       </ion-text>
 
-      <ion-item lines="inset">
+      <ion-item>
         <ion-label position="floating">Placas</ion-label>
         <ion-input type="text" formControlName="license"></ion-input>
       </ion-item>
@@ -124,6 +124,29 @@
         *ngIf="isSubmitted && errorControl.license.errors?.pattern"
       >
         Placas inválidas.
+      </ion-text>
+
+      <ion-item lines="inset">
+        <ion-label position="floating">Fotos</ion-label>
+        <ion-button type="button" (click)="takePicture()">
+          Tomar Foto
+        </ion-button>
+        <ion-img></ion-img>
+      </ion-item>
+
+      <!-- <input type="file"
+      id="file"
+      #userPhoto
+      (change)="onFileSelected($event)"
+      name="image"
+      autocomplete="off"
+      /> -->
+
+      <ion-text
+        color="danger"
+        *ngIf="isSubmitted && errorControl.license.errors?.required"
+      >
+        Registra las placas del vehículo.
       </ion-text>
     </ion-list>
 

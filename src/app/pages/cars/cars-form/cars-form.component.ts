@@ -4,6 +4,12 @@ import { ModalController, LoadingController, AlertController } from '@ionic/angu
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 
+import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+const { Camera } = Plugins;
+
+
 @Component({
   selector: 'app-cars-form',
   templateUrl: './cars-form.component.html',
@@ -18,12 +24,14 @@ export class CarsFormComponent implements OnInit {
   private carsForm: FormGroup;
   isSubmitted = false;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private modalController: ModalController,
     private carService: CarService,
     private loadingController: LoadingController,
     private alertCtl: AlertController,
+    private sanitizer: DomSanitizer,
   ) {
 
   }
@@ -59,6 +67,56 @@ export class CarsFormComponent implements OnInit {
     } else {
       this.registrar();
     }
+  }
+
+
+  // async takePicture() {
+  //   const image = await Camera.getPhoto({
+  //     quality: 90,
+  //     allowEditing: true,
+  //     resultType: CameraResultType.Uri
+  //   });
+  //   // image.webPath will contain a path that can be set as an image src. 
+  //   // You can access the original file using image.path, which can be 
+  //   // passed to the Filesystem API to read the raw data of the image, 
+  //   // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+  //   var imageUrl = image.webPath;
+  //   // Can be set to the src of an image now
+  //   // imageElement.src = imageUrl;
+  //   console.log(imageUrl);
+  // }
+
+
+  // async takePicture() {
+  //   const image = await Camera.getPhoto({
+  //     quality: 90,
+  //     allowEditing: true,
+  //     resultType: CameraResultType.Uri,
+  //     source: CameraSource.Camera,
+  //   });
+  //   // image.webPath will contain a path that can be set as an image src. 
+  //   // You can access the original file using image.path, which can be 
+  //   // passed to the Filesystem API to read the raw data of the image, 
+  //   // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+  //   let imageUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+  //   // Can be set to the src of an image now
+  //   // img.src = imageUrl;
+  //   console.log(imageUrl);
+  // }
+
+  takePicture() {
+    // Camera.requestPermissions().then(result => {
+    //   console.log(result);
+    // })
+
+    Camera.getPhoto({
+      quality: 90,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera,
+    }).then(value => {
+      console.log(value.dataUrl);
+
+    })
   }
 
 
