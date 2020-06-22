@@ -132,7 +132,11 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button type="button" (click)="takePicture(img)">
+            <ion-button
+              color="tertiary"
+              type="button"
+              (click)="takePicture(img)"
+            >
               <ion-icon slot="start" name="camera-outline"></ion-icon>
               Subir Foto
             </ion-button>
@@ -141,6 +145,20 @@
         <ion-row>
           <ion-col class="ion-align-items-center">
             <ion-img #img></ion-img>
+          </ion-col>
+        </ion-row>
+        <ion-row [hidden]="!img.src">
+          <ion-col>
+            <ion-button
+              type="button"
+              (click)="img.src = null"
+              color="danger"
+              class="ion-float-right"
+              size="small"
+            >
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              Quitar foto
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
