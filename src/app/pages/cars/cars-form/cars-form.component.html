@@ -135,6 +135,7 @@
             <ion-button
               color="tertiary"
               type="button"
+              [disabled]="img.src"
               (click)="takePicture(img)"
             >
               <ion-icon slot="start" name="camera-outline"></ion-icon>

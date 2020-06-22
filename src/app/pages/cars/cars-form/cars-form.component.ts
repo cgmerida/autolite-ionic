@@ -5,8 +5,8 @@ import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 
 import { Plugins, CameraResultType } from '@capacitor/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
+import { StorageService } from 'src/app/services/storage.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-cars-form',
@@ -29,7 +29,8 @@ export class CarsFormComponent implements OnInit {
     private carService: CarService,
     private loadingController: LoadingController,
     private alertCtl: AlertController,
-    private sanitizer: DomSanitizer,
+    private storageService: StorageService,
+    private errorService: ErrorService,
   ) {
 
   }
@@ -69,6 +70,13 @@ export class CarsFormComponent implements OnInit {
 
 
   async takePicture(img) {
+
+    if (!this.carsForm.get("brand").value || !this.carsForm.get("line").value) {
+
+      this.presentAlert(`Error`, null, `Debe llenar el formulario.`);
+      return;
+    }
+
     const { Camera } = Plugins;
 
     try {
@@ -77,15 +85,29 @@ export class CarsFormComponent implements OnInit {
         allowEditing: true,
         resultType: CameraResultType.Uri
       });
-      
+
       img.src = image.webPath;
 
-    } catch (error) {
-      console.log(error);
-      this.presentAlert(`Error`, null, `No se pudo acceder a la camara.`);
+      const blob = await fetch(image.webPath).then(r => r.blob());
+
+      this.storageService.uploadCar(blob, `${this.carsForm.get("brand").value}_${this.carsForm.get("line").value}`)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          throw new Error(err);
+        });
+
+
+    } catch (err) {
+      console.log(err);
+      if (err.code) {
+        this.presentAlert(`Error`, null, this.errorService.printErrorByCode(err.code));
+      } else {
+        this.presentAlert(`Error`, null, `No se pudo acceder a la camara.`);
+      }
     }
   }
-
 
 
   get errorControl() {
