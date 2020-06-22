@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content fullscreen class="ion-padding">
-  <form [formGroup]="carsForm">
+  <form [formGroup]="carsForm" (submit)="onSubmit()">
     <ion-list inset>
       <ion-item>
         <ion-label position="floating">Marca</ion-label>
@@ -126,13 +126,24 @@
         Placas inválidas.
       </ion-text>
 
-      <ion-item lines="inset">
+      <!-- <ion-item>
         <ion-label position="floating">Fotos</ion-label>
-        <ion-button type="button" (click)="takePicture()">
-          Tomar Foto
-        </ion-button>
-        <ion-img></ion-img>
-      </ion-item>
+      </ion-item> -->
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button type="button" (click)="takePicture(img)">
+              <ion-icon slot="start" name="camera-outline"></ion-icon>
+              Subir Foto
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-items-center">
+            <ion-img #img></ion-img>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
       <!-- <input type="file"
       id="file"
@@ -150,12 +161,7 @@
       </ion-text>
     </ion-list>
 
-    <ion-button
-      type="button"
-      class="ion-margin-top"
-      expand="full"
-      (click)="onSubmit()"
-    >
+    <ion-button type="button" class="ion-margin" expand="full">
       {{ this.update ? "Actualizar" : "Crear" }}
     </ion-button>
   </form>

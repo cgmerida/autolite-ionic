@@ -20,9 +20,8 @@ export class InicioPage implements OnInit {
   private cars: Observable<Car[]>;
 
   private slideOpts = {
-    slidesPerView: 1.3,
+    slidesPerView: 1.5,
     loop: true,
-    autoplay: true,
     centeredSlides: true,
     spaceBetween: 10
   };
