@@ -4,7 +4,7 @@ import { ModalController, LoadingController, AlertController, Platform } from '@
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 
-import { Plugins, CameraResultType, Capacitor } from '@capacitor/core';
+import { Plugins, CameraResultType, Capacitor, CameraSource } from '@capacitor/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
@@ -80,6 +80,7 @@ export class CarsFormComponent implements OnInit {
         quality: 90,
         allowEditing: true,
         resultType: CameraResultType.Uri,
+        source: type === 'camera' ? CameraSource.Camera : CameraSource.Photos
       });
 
       this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.webPath));
@@ -88,7 +89,7 @@ export class CarsFormComponent implements OnInit {
       this.uploadFile = file;
 
     } catch (err) {
-      this.presentAlert(`Error`, `No se obtuvo imagen`, err);
+      this.presentAlert(`Error`, `No se obtuvo foto`, err);
     }
   }
 
