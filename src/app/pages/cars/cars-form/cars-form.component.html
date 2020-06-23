@@ -126,35 +126,51 @@
         Placas inválidas.
       </ion-text>
 
-      <!-- <ion-item>
-        <ion-label position="floating">Fotos</ion-label>
-      </ion-item> -->
       <ion-grid>
         <ion-row>
+          <ion-col>
+            <ion-label position="floating">Fotos</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col></ion-col>
           <ion-col>
             <ion-button
               color="tertiary"
               type="button"
-              [disabled]="img.src"
-              (click)="takePicture(img)"
+              [disabled]="photo"
+              (click)="takePicture('camera')"
             >
               <ion-icon slot="start" name="camera-outline"></ion-icon>
-              Subir Foto
+              Camara
             </ion-button>
           </ion-col>
+          <ion-col>
+            <ion-button
+              color="medium"
+              type="button"
+              [disabled]="photo"
+              (click)="takePicture('gallery')"
+            >
+              <ion-icon slot="start" name="folder-outline"></ion-icon>
+              Galeria
+            </ion-button>
+          </ion-col>
+
+          <ion-col></ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="photo">
           <ion-col class="ion-align-items-center">
-            <ion-img #img></ion-img>
+            <img [src]="photo" />
           </ion-col>
         </ion-row>
-        <ion-row [hidden]="!img.src">
+        <ion-row [hidden]="!photo">
           <ion-col>
             <ion-button
               type="button"
-              (click)="img.src = null"
+              (click)="photo = null"
               color="danger"
-              class="ion-float-right"
+              class="ion-float-right ion-margin-right"
               size="small"
             >
               <ion-icon slot="start" name="trash-outline"></ion-icon>
@@ -164,23 +180,22 @@
         </ion-row>
       </ion-grid>
 
-      <!-- <input type="file"
-      id="file"
-      #userPhoto
-      (change)="onFileSelected($event)"
-      name="image"
-      autocomplete="off"
-      /> -->
-
+      <input
+        type="file"
+        accept="image/*"
+        *ngIf="isDesktop"
+        #filePicker
+        (change)="onFileChoose($event)"
+      />
       <ion-text
         color="danger"
         *ngIf="isSubmitted && errorControl.license.errors?.required"
       >
-        Registra las placas del vehículo.
+        La foto no es válida.
       </ion-text>
     </ion-list>
 
-    <ion-button type="button" class="ion-margin" expand="full">
+    <ion-button type="submit" class="ion-margin" expand="full">
       {{ this.update ? "Actualizar" : "Crear" }}
     </ion-button>
   </form>

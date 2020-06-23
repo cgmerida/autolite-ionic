@@ -1,5 +1,11 @@
-ion-img {
-  width: 80vw;
+ion-img,
+img {
+  display: flex;
   max-width: 550px;
+  max-height: 60vh;
   margin: 0 auto;
+}
+
+input[type="file"] {
+  display: none;
 }

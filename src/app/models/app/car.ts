@@ -14,6 +14,7 @@ export class Car {
   license: string;
   owner: User["uid"];
   km: string | Km;
+  photo: String;
   createdAt: Date;
   updatedAt: Date;
 }

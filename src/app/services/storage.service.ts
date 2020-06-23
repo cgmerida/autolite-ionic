@@ -17,8 +17,9 @@ export class StorageService {
     })
   }
 
-  uploadCar(img, name): AngularFireUploadTask {
+  uploadCar(img, name) {
     let fecha = new Date().toLocaleDateString().replace(/\//g, "-");
-    return this.storage.upload(`cars/${this.uid}/${name}_${fecha}.jpg`, img);
+    return this.storage.upload(`cars/${this.uid}/${name}_${fecha}.jpg`, img)
+      .then(task => task.ref.getDownloadURL());
   }
 }
