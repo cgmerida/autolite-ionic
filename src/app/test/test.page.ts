@@ -12,55 +12,27 @@ const { Modals } = Plugins;
 })
 export class TestPage implements OnInit {
 
-  constructor() { }
+  
+  customYearValues = [2020, 2016, 2008, 2004, 2000, 1996];
+  customDayShortNames = ['s\u00f8n', 'man', 'tir', 'ons', 'tor', 'fre', 'l\u00f8r'];
+  customPickerOptions: any;
+
+  constructor() {
+    this.customPickerOptions = {
+      buttons: [{
+        text: 'Save',
+        handler: () => console.log('Clicked Save!')
+      }, {
+        text: 'Log',
+        handler: () => {
+          console.log('Clicked Log. Do not Dismiss.');
+          return false;
+        }
+      }]
+    }
+   }
 
   ngOnInit() {
   }
-
-
-  async showAlert() {
-    let alertRet = await Modals.alert({
-      title: 'Stop',
-      message: 'this is an error'
-    });
-  }
-
-  async showConfirm() {
-    let confirmRet = await Modals.confirm({
-      title: 'Confirm',
-      message: 'Are you sure you\'d like to press the red button?'
-    });
-    console.log('Confirm ret', confirmRet);
-  }
-
-  async showPrompt() {
-    let promptRet = await Modals.prompt({
-      title: 'Hello',
-      message: 'What\'s your name?'
-    });
-    console.log('Prompt ret', promptRet);
-  }
-
-  async showActions() {
-    let promptRet = await Modals.showActions({
-      title: 'Photo Options',
-      message: 'Select an option to perform',
-      options: [
-        {
-          title: 'Upload'
-        },
-        {
-          title: 'Share'
-        },
-        {
-          title: 'Remove',
-          style: ActionSheetOptionStyle.Destructive
-        }
-      ]
-    })
-    console.log('You selected', promptRet);
-  }
-
-
 
 }

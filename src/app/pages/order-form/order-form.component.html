@@ -1,0 +1,86 @@
+<ion-header translucent>
+  <ion-toolbar color="primary">
+    <ion-title>Solicitar un servicio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  <form [formGroup]="orderForm" (submit)="onSubmit()">
+    <ion-list inset>
+      <ion-item>
+        <ion-label position="floating">Vehículo</ion-label>
+        <ion-select formControlName="car">
+          <ion-select-option *ngFor="let car of cars | async" [value]="car.uid"
+            >{{ car.brand }} {{ car.line }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="
+          (orderForm.get('car').touched || orderForm.get('car').dirty) &&
+          errorControl.car.errors?.required
+        "
+      >
+        Especifica un carro.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Fecha</ion-label>
+        <ion-datetime
+          [min]="minDate | date: 'yyyy-MM-dd'"
+          formControlName="date"
+          displayFormat="DD/MM/YYYY"
+          display-timezone="America/Guatemala"
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="
+          (orderForm.get('date').touched || orderForm.get('date').dirty) &&
+          errorControl.date.errors?.required
+        "
+      >
+        Especifica la marca del carro.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Servicios</ion-label>
+        <ion-select multiple="true" formControlName="services">
+          <ion-select-option
+            *ngFor="let service of services | async"
+            [value]="service.uid"
+            >{{ service.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="
+          (orderForm.get('services').touched ||
+            orderForm.get('services').dirty) &&
+          errorControl.services.errors?.required
+        "
+      >
+        Especifica los servicios.
+      </ion-text>
+    </ion-list>
+
+    <ion-button
+      type="submit"
+      class="ion-margin"
+      expand="full"
+      [disabled]="!orderForm.valid"
+    >
+      Registrar
+    </ion-button>
+  </form>
+</ion-content>

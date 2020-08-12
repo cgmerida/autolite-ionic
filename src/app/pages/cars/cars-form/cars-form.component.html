@@ -1,4 +1,4 @@
-<ion-header translucent>
+<!-- <ion-header translucent>
   <ion-toolbar color="primary">
     <ion-title>Registrar Carro</ion-title>
     <ion-buttons slot="end">
@@ -7,7 +7,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content fullscreen class="ion-padding">
   <form [formGroup]="carsForm" (submit)="onSubmit()">
@@ -17,7 +17,7 @@
         <ion-input
           type="text"
           formControlName="brand"
-          placeholder="Ej: Honda"
+          placeholder="Honda"
         ></ion-input>
       </ion-item>
 
@@ -33,7 +33,7 @@
         <ion-input
           type="text"
           formControlName="line"
-          placeholder="Ej: Civic"
+          placeholder="Civic"
         ></ion-input>
       </ion-item>
 
@@ -49,7 +49,7 @@
         <ion-input
           type="text"
           formControlName="model"
-          placeholder="Ej: 2015"
+          placeholder="2015"
         ></ion-input>
       </ion-item>
 
@@ -68,7 +68,7 @@
       </ion-text>
 
       <ion-item>
-        <ion-label>Tipo de Transmisión</ion-label>
+        <ion-label position="floating">Tipo de Transmisión</ion-label>
         <ion-select
           [value]="this.update ? this.car.transmition : 'Automatica'"
           (ionChange)="changeValue(s.value)"

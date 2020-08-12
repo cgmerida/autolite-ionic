@@ -28,7 +28,7 @@ export class CarsFormComponent implements OnInit {
   @ViewChild('filePicker', { static: false }) filePickerRef: ElementRef<HTMLInputElement>;
   photo: SafeResourceUrl;
 
-  isDesktop: boolean;
+  isDesktop: boolean = false;
 
   uploadFile: File | Blob;
 
@@ -48,7 +48,7 @@ export class CarsFormComponent implements OnInit {
 
   ngOnInit() {
 
-    if ((this.platform.is('mobile') && this.platform.is('hybrid')) || this.platform.is('desktop')) {
+    if (!(this.platform.is('ios') && this.platform.is('android')) || this.platform.is('desktop')) {
       this.isDesktop = true;
     }
 
@@ -70,7 +70,7 @@ export class CarsFormComponent implements OnInit {
 
 
   async takePicture(type: string) {
-    if (!Capacitor.isPluginAvailable('Camera') || (this.isDesktop && type === 'gallery')) {
+    if ((this.isDesktop && type === 'gallery') || !Capacitor.isPluginAvailable('Camera')) {
       this.filePickerRef.nativeElement.click();
       return;
     }

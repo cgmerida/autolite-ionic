@@ -1,15 +1,54 @@
-<ion-header collapse="condense">
-  <ion-toolbar>
+<!-- <ion-header collapse="condense">
+  <ion-toolbar color="dark">
     <ion-title>Inicio iOS</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content padding>
-  <ion-header>
-    <ion-toolbar>
+  <!-- <ion-header>
+    <ion-toolbar color="dark">
       <ion-title>Inicio Android</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
+
+  <section class="ion-text-center">
+    <ion-icon name="person" class="font"></ion-icon>
+    <h1 class="ion-no-margin bolder">
+      Bienvenido
+    </h1>
+    <h3 class="ion-no-margin lighter">Carlos Jeronimo</h3>
+  </section>
+
+  <ion-grid id="main-grid">
+    <ion-row>
+      <ion-col col-6>
+        <ion-card class="ion-text-center" color="tertiary">
+          <ion-card-header>
+            <ion-icon name="cash-sharp"></ion-icon>
+            <ion-card-title>Q 1000.00</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Gastos Generales
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6>
+        <ion-card class="ion-text-center" color="tertiary">
+          <ion-card-header>
+            <ion-icon name="build-sharp"></ion-icon>
+            <ion-card-title>0</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Servicios Recibidos
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-button (click)="registrarOrden()">
+    Solicitar un Servicio
+  </ion-button>
 
   <ion-grid>
     <ion-row class="ion-align-items-center">

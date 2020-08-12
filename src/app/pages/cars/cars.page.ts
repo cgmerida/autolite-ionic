@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { ModalController, LoadingController, AlertController, IonRouterOutlet } from '@ionic/angular';
 import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
@@ -104,6 +104,8 @@ export class CarsPage implements OnInit {
   async presentModal(update = false, car = null) {
     let modalConfig = {
       component: CarsFormComponent,
+      swipeToClose: true,
+      cssClass: 'my-modal',
       componentProps: {
         'update': update,
         'car': car

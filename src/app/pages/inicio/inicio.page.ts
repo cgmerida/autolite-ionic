@@ -7,6 +7,8 @@ import { Service } from 'src/app/models/service';
 import { ServiceService } from 'src/app/services/app/service.service';
 import { Car } from 'src/app/models/app/car';
 import { CarService } from 'src/app/services/app/car.service';
+import { ModalController } from '@ionic/angular';
+import { OrderFormComponent } from '../order-form/order-form.component';
 
 @Component({
   selector: 'app-inicio',
@@ -31,6 +33,7 @@ export class InicioPage implements OnInit {
     private productService: ProductService,
     private serviceService: ServiceService,
     private carService: CarService,
+    private modalController: ModalController
   ) {
     productService.getProducts().subscribe(products => {
       if (products.length > 5) {
@@ -55,5 +58,19 @@ export class InicioPage implements OnInit {
 
   ngOnInit() {
   }
+
+  
+  async registrarOrden(update = false, car = null) {
+    let modalConfig = {
+      component: OrderFormComponent,
+      componentProps: {
+        'update': update,
+        'car': car
+      }
+    }
+    const modal = await this.modalController.create(modalConfig);
+    await modal.present();
+  }
+
 
 }
