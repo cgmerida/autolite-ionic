@@ -1,17 +1,14 @@
-<ion-header translucent>
-  <ion-toolbar color="primary">
-    <ion-title>Solicitar un servicio</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content fullscreen class="ion-padding">
+  <div class="hide-md ion-text-center ion-hide-lg-up">
+    <ion-icon name="chevron-down-outline"></ion-icon>
+  </div>
+
+  <div>
+    <h4 class="ion-no-margin ion-text-center">Solicitar Servicio</h4>
+  </div>
+
   <form [formGroup]="orderForm" (submit)="onSubmit()">
-    <ion-list inset>
+    <ion-list class="ion-no-margin ion-margin-horizontal ion-no-padding">
       <ion-item>
         <ion-label position="floating">Vehículo</ion-label>
         <ion-select formControlName="car">
@@ -29,26 +26,6 @@
         "
       >
         Especifica un carro.
-      </ion-text>
-
-      <ion-item>
-        <ion-label position="floating">Fecha</ion-label>
-        <ion-datetime
-          [min]="minDate | date: 'yyyy-MM-dd'"
-          formControlName="date"
-          displayFormat="DD/MM/YYYY"
-          display-timezone="America/Guatemala"
-        ></ion-datetime>
-      </ion-item>
-
-      <ion-text
-        color="danger"
-        *ngIf="
-          (orderForm.get('date').touched || orderForm.get('date').dirty) &&
-          errorControl.date.errors?.required
-        "
-      >
-        Especifica la marca del carro.
       </ion-text>
 
       <ion-item>
@@ -72,15 +49,37 @@
       >
         Especifica los servicios.
       </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Fecha</ion-label>
+        <ion-datetime
+          [min]="minDate | date: 'yyyy-MM-dd'"
+          formControlName="date"
+          displayFormat="DD/MM/YYYY"
+          display-timezone="America/Guatemala"
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-text
+        color="danger"
+        *ngIf="
+          (orderForm.get('date').touched || orderForm.get('date').dirty) &&
+          errorControl.date.errors?.required
+        "
+      >
+        Especifica la marca del carro.
+      </ion-text>
     </ion-list>
 
     <ion-button
       type="submit"
       class="ion-margin"
-      expand="full"
-      [disabled]="!orderForm.valid"
+      expand="block"
+      color="secondary"
+      [disabled]="!orderForm.valid || clicked"
     >
       Registrar
     </ion-button>
+  
   </form>
 </ion-content>

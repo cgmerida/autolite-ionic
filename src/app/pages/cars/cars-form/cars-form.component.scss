@@ -1,6 +1,7 @@
 ion-img,
 img {
   display: flex;
+  width: 80%;
   max-width: 550px;
   max-height: 60vh;
   margin: 0 auto;
@@ -8,4 +9,8 @@ img {
 
 input[type="file"] {
   display: none;
+}
+
+ion-button.ion-margin {
+  --border-radius: 25px;
 }

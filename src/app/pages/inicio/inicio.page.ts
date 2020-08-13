@@ -60,13 +60,11 @@ export class InicioPage implements OnInit {
   }
 
   
-  async registrarOrden(update = false, car = null) {
+  async registrarOrden() {
     let modalConfig = {
       component: OrderFormComponent,
-      componentProps: {
-        'update': update,
-        'car': car
-      }
+      swipeToClose: true,
+      cssClass: 'my-modal',
     }
     const modal = await this.modalController.create(modalConfig);
     await modal.present();

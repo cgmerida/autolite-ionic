@@ -1,17 +1,14 @@
-<!-- <ion-header translucent>
-  <ion-toolbar color="primary">
-    <ion-title>Registrar Carro</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content fullscreen class="ion-padding">
+  <div class="hide-md ion-text-center ion-hide-lg-up">
+    <ion-icon name="chevron-down-outline"></ion-icon>
+  </div>
+
+  <div>
+    <h4 class="ion-no-margin ion-text-center">Registrar Vehículo</h4>
+  </div>
+
   <form [formGroup]="carsForm" (submit)="onSubmit()">
-    <ion-list inset>
+    <ion-list class="ion-no-margin ion-margin-horizontal ion-no-padding">
       <ion-item>
         <ion-label position="floating">Marca</ion-label>
         <ion-input
@@ -96,7 +93,7 @@
       </ion-text>
 
       <ion-item>
-        <ion-label position="floating">Color</ion-label>
+        <ion-label position="stacked">Color</ion-label>
         <ion-input type="text" formControlName="color"></ion-input>
       </ion-item>
 
@@ -108,7 +105,7 @@
       </ion-text>
 
       <ion-item>
-        <ion-label position="floating">Placas</ion-label>
+        <ion-label position="stacked">Placas</ion-label>
         <ion-input type="text" formControlName="license"></ion-input>
       </ion-item>
 
@@ -125,78 +122,81 @@
       >
         Placas inválidas.
       </ion-text>
-
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label position="floating">Fotos</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col></ion-col>
-          <ion-col>
-            <ion-button
-              color="tertiary"
-              type="button"
-              [disabled]="photo"
-              (click)="takePicture('camera')"
-            >
-              <ion-icon slot="start" name="camera-outline"></ion-icon>
-              Camara
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button
-              color="medium"
-              type="button"
-              [disabled]="photo"
-              (click)="takePicture('gallery')"
-            >
-              <ion-icon slot="start" name="folder-outline"></ion-icon>
-              Galeria
-            </ion-button>
-          </ion-col>
-
-          <ion-col></ion-col>
-        </ion-row>
-        <ion-row *ngIf="photo">
-          <ion-col class="ion-align-items-center">
-            <img [src]="photo" />
-          </ion-col>
-        </ion-row>
-        <ion-row [hidden]="!photo">
-          <ion-col>
-            <ion-button
-              type="button"
-              (click)="photo = null"
-              color="danger"
-              class="ion-float-right ion-margin-right"
-              size="small"
-            >
-              <ion-icon slot="start" name="trash-outline"></ion-icon>
-              Quitar foto
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <input
-        type="file"
-        accept="image/*"
-        *ngIf="isDesktop"
-        #filePicker
-        (change)="onFileChoose($event)"
-      />
-      <ion-text
-        color="danger"
-        *ngIf="isSubmitted && errorControl.license.errors?.required"
-      >
-        La foto no es válida.
-      </ion-text>
     </ion-list>
 
-    <ion-button type="submit" class="ion-margin" expand="full">
-      {{ this.update ? "Actualizar" : "Crear" }}
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          Fotos
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-evenly">
+        <ion-col size="4">
+          <ion-button
+            color="tertiary"
+            type="button"
+            [disabled]="photo"
+            (click)="takePicture('camera')"
+          >
+            <ion-icon slot="start" name="camera-outline"></ion-icon>
+            Camara
+          </ion-button>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button
+            color="medium"
+            type="button"
+            [disabled]="photo"
+            (click)="takePicture('gallery')"
+          >
+            <ion-icon slot="start" name="images-outline"></ion-icon>
+            Galeria
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="photo">
+        <ion-col class="ion-align-items-center">
+          <img [src]="photo" />
+        </ion-col>
+      </ion-row>
+      <ion-row [hidden]="!photo">
+        <ion-col>
+          <ion-button
+            type="button"
+            (click)="photo = null"
+            color="danger"
+            class="ion-float-right ion-margin-right"
+            size="small"
+          >
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Quitar foto
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <input
+      type="file"
+      accept="image/*"
+      *ngIf="isDesktop"
+      #filePicker
+      (change)="onFileChoose($event)"
+    />
+    <ion-text
+      color="danger"
+      *ngIf="isSubmitted && errorControl.license.errors?.required"
+    >
+      La foto no es válida.
+    </ion-text>
+
+    <ion-button
+      type="submit"
+      class="ion-margin"
+      expand="block"
+      color="secondary"
+      [disabled]="clicked"
+    >
+      {{ this.update ? "Actualizar" : "Registrar" }}
     </ion-button>
   </form>
 </ion-content>

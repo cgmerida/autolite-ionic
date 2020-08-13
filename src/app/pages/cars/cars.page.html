@@ -17,6 +17,7 @@
   </ion-button>
 
   <ion-card *ngFor="let car of cars">
+    <ion-img [src]="car.photo"></ion-img>
     <ion-card-header>
       <ion-card-title>{{car.brand}} {{ car.line }}</ion-card-title>
       <ion-card-subtitle>{{ car.model }}</ion-card-subtitle>

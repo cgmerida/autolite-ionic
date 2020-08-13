@@ -24,6 +24,7 @@ export class CarsFormComponent implements OnInit {
 
   private carsForm: FormGroup;
   isSubmitted = false;
+  clicked: boolean;
 
   @ViewChild('filePicker', { static: false }) filePickerRef: ElementRef<HTMLInputElement>;
   photo: SafeResourceUrl;
@@ -121,8 +122,11 @@ export class CarsFormComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
+    this.clicked = true;
+    
 
     if (!this.carsForm.valid) {
+      this.clicked = false;
       return false;
     }
 
@@ -131,19 +135,23 @@ export class CarsFormComponent implements OnInit {
     } else {
       this.registrar();
     }
+    
+  }
+
+  async getImg() {
+    let filename = `${this.carsForm.get("brand").value}_${this.carsForm.get("line").value}`;
+
+    try {
+      return await this.storageService.uploadCarImg(this.uploadFile, filename);
+    } catch (err) {
+      this.presentAlert(`Error`, null, this.errorService.printErrorByCode(err.code));
+    }
+
   }
 
 
   async registrar() {
-    let downloadImg,
-      loading,
-      filename = `${this.carsForm.get("brand").value}_${this.carsForm.get("line").value}`;
-
-    try {
-      downloadImg = await this.storageService.uploadCar(this.uploadFile, filename);
-    } catch (err) {
-      this.presentAlert(`Error`, null, this.errorService.printErrorByCode(err.code));
-    }
+    let downloadImg = await this.getImg();
 
     this.loadingController.create()
       .then(loading => {
@@ -163,14 +171,16 @@ export class CarsFormComponent implements OnInit {
       });
   }
 
-  actualizar() {
+  async actualizar() {
+    let downloadImg = await this.getImg();
+
     this.loadingController.create()
       .then(loading => {
         loading.present();
-        // this.carService.addCar({ ...this.carsForm.value })
         this.carService.updateCar({
           uid: this.car.uid,
-          ...this.carsForm.value
+          ...this.carsForm.value,
+          photo: downloadImg
         })
           .then(() => {
             this.presentAlert(`¡Genial!`, null, `Información Actualizada.`);

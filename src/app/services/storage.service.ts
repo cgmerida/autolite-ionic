@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -17,9 +16,9 @@ export class StorageService {
     })
   }
 
-  uploadCar(img, name) {
-    let fecha = new Date().toLocaleDateString().replace(/\//g, "-");
-    return this.storage.upload(`cars/${this.uid}/${name}_${fecha}.jpg`, img)
+  uploadCarImg(img, name) {
+    // let fecha = new Date().toLocaleDateString().replace(/\//g, "-");
+    return this.storage.upload(`cars/${this.uid}/${name}.jpg`, img)
       .then(task => task.ref.getDownloadURL());
   }
 }

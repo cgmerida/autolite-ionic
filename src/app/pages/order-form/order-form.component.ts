@@ -22,6 +22,8 @@ export class OrderFormComponent implements OnInit {
   private cars: Observable<Car[]>;
   private services: Observable<Service[]>;
   private minDate = new Date().toDateString();
+  
+  clicked: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,11 +59,10 @@ export class OrderFormComponent implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
-
-    // this.modalController.dismiss(DATA);
   }
 
   onSubmit() {
+    this.clicked = true;
     if (!this.orderForm.valid) {
       return false;
     }
@@ -89,6 +90,7 @@ export class OrderFormComponent implements OnInit {
             console.log(error);
           })
           .finally(() => {
+            this.clicked = true;
             loading.dismiss();
           });
       });
