@@ -1,6 +1,12 @@
-section > ion-icon {
-  font-size: 5em;
-  margin-top: 15px;
+section > img {
+  // font-size: 5em;
+  margin-top: 25px;
+  max-width: 400px;
+  width: 90%;
+}
+
+ion-card.ion-no-margin{
+  margin: 15px 5px;
 }
 
 ion-card ion-icon {
