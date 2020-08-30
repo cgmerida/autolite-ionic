@@ -30,6 +30,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/cars/cars.module').then(m => m.CarsPageModule)
       },
       {
+        path: 'servicios',
+        loadChildren: () => import('../pages/orders/orders.module').then(m => m.OrdersPageModule)
+      },
+      {
         path: '',
         redirectTo: '/app/inicio',
         pathMatch: 'full'

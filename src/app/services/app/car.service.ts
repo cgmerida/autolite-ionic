@@ -15,6 +15,7 @@ export class CarService {
 
   private carCollection: AngularFirestoreCollection<Car>;
   // private cars: Observable<Car[]>;
+  // private car: Observable<Car>
 
 
   constructor(private db: AngularFirestore, private authService: AuthService) {

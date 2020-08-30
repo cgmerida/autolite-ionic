@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border ion-margin-top">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/app/inicio" routerDirection="back">
+        Atras
+      </ion-button>
+    </ion-buttons>
+    <ion-title size="large">
+      Servicios
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card *ngFor="let order of orders | async">
+    <ion-card-header>
+      <ion-card-title>
+        Servicio para {{order.car.brand}} {{order.car.line}}
+      </ion-card-title>
+      <ion-card-subtitle>
+        Fecha: {{ order.date.toDate() | date:'dd/MM/yyyy' }}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        Estado: <ion-text [color]="statusColor[order.status]">{{ order.status }}</ion-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-card-title>Progreso {{order.progress}}%</ion-card-title>
+      <ion-progress-bar
+        class="ion-margin-top"
+        color="tertiary"
+        [value]="order.progress/100"
+      ></ion-progress-bar>
+
+      <!-- <div class="progress-outer ion-margin-top">
+        <div class="progress-inner">90%</div>
+      </div> -->
+    </ion-card-content>
+
+    <ion-card-content>
+      <ion-card-title>Servicios</ion-card-title>
+    </ion-card-content>
+    <ion-card-content>
+      <ion-card-title>Total</ion-card-title>
+    </ion-card-content>
+    <ion-card-content>
+      <ion-card-title>Acciones</ion-card-title>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

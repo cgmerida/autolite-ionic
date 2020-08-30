@@ -1,0 +1,38 @@
+.md.title-large {
+  text-indent: 35px;
+}
+
+ion-card {
+  ion-card-content {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 16px;
+  }
+  ion-progress-bar {
+    height: 18px;
+    border-radius: 15px;
+  }
+
+  .progress:after {
+    content: "90%";
+  }
+  .progress-outer {
+    width: 100%;
+    height: 25px;
+    border-radius: 15px;
+    background-color: #f0f0f0;
+    color: #fff;
+
+    .progress-inner {
+      min-width: 15%;
+      width: 90%;
+      height: 100%;
+      border-radius: 15px;
+      padding: 1px;
+      background-color: #3e4479;
+      text-align: center;
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 24px;
+    }
+  }
+}
