@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { ServiceService } from 'src/app/services/app/service.service';
 import { Service } from 'src/app/models/service';
+import { map, reduce } from 'rxjs/operators';
 
 
 @Component({
@@ -22,8 +23,9 @@ export class OrderFormComponent implements OnInit {
   private cars: Observable<Car[]>;
   private services: Observable<Service[]>;
   private minDate = new Date().toDateString();
-  
+
   clicked: boolean;
+  servicesOrder: Service[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,21 +68,23 @@ export class OrderFormComponent implements OnInit {
     if (!this.orderForm.valid) {
       return false;
     }
-      this.registrar();
+    this.registrar();
   }
 
 
   async registrar() {
 
-    try {
-    } catch (err) {
-      this.presentAlert(`Error`, null, this.errorService.printErrorByCode(err.code));
-    }
+    let order = { ...this.orderForm.value };
+
+    this.services.subscribe(services => {
+      this.servicesOrder = services.filter(service => order.services.includes(service.uid));
+    });
 
     this.loadingController.create()
       .then(loading => {
         loading.present();
-        this.orderService.addOrder({ ...this.orderForm.value })
+        order.services = this.servicesOrder;
+        this.orderService.addOrder(order)
           .then((res) => {
             this.presentAlert(`¡Genial!`, null, res);
             this.dismiss();

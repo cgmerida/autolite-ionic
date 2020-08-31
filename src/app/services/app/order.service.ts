@@ -39,7 +39,7 @@ export class OrderService {
       .pipe(
         switchMap(orders => {
           let carsObs = orders.map(
-            order => this.db.doc<Car>(order.car).valueChanges()
+            order => this.db.doc<Car>(`cars/${order.car}`).valueChanges()
           );
 
           return combineLatest(...carsObs, (...cars) => {
@@ -54,6 +54,38 @@ export class OrderService {
     return this.joined$;
 
   }
+
+
+  async addOrder(order: Order) {
+    let uid = await this.authService.getAuthUserUid();
+    // order.services
+
+    order.owner = uid;
+    order.createdAt = new Date();
+    order.updatedAt = new Date();
+    order.date = new Date(order.date);
+    order.status = "Nuevo";
+    order.progress = 0;
+    return this.orderCollection.add(order)
+      .then(() => {
+        return `Se registro correctamente su orden`;
+      })
+      .catch(err => {
+        return `Error: ${err}`;
+      });
+  }
+
+  updateOrder(order: Order) {
+    order.updatedAt = new Date();
+    return this.orderCollection.doc(order.uid).update(order);
+  }
+
+  deleteOrder(uid: Order['uid']) {
+    return this.orderCollection.doc(uid).delete();
+  }
+}
+
+
 
   // METODO ESTATICO
 
@@ -103,30 +135,3 @@ export class OrderService {
   //     );
 
   //   return this.joined$;
-
-
-
-  async addOrder(order: Order) {
-    let uid = await this.authService.getAuthUserUid();
-    order.owner = uid;
-    order.createdAt = new Date();
-    order.updatedAt = new Date();
-    order.date = new Date(order.date);
-    return this.orderCollection.add(order)
-      .then(() => {
-        return `Se registro correctamente su orden`;
-      })
-      .catch(err => {
-        return `Error: ${err}`;
-      });
-  }
-
-  updateOrder(order: Order) {
-    order.updatedAt = new Date();
-    return this.orderCollection.doc(order.uid).update(order);
-  }
-
-  deleteOrder(uid: Order['uid']) {
-    return this.orderCollection.doc(uid).delete();
-  }
-}
