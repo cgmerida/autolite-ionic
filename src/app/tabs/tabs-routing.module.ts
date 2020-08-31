@@ -13,19 +13,6 @@ const routes: Routes = [
         loadChildren: () => import('../pages/inicio/inicio.module').then(m => m.InicioPageModule)
       },
       {
-        path: 'historial',
-        loadChildren: () => import('../pages/inicio/inicio.module').then(m => m.InicioPageModule)
-      },
-      {
-        path: 'notificaciones',
-        loadChildren: () => import('../pages/inicio/inicio.module').then(m => m.InicioPageModule)
-      },
-      {
-        path: 'configuracion',
-        loadChildren: () => import('../pages/inicio/inicio.module').then(m => m.InicioPageModule)
-      },
-
-      {
         path: 'cars',
         loadChildren: () => import('../pages/cars/cars.module').then(m => m.CarsPageModule)
       },

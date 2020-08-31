@@ -24,7 +24,12 @@
           {{ order.status }}
         </ion-text>
       </ion-card-subtitle>
-      <ion-rating *ngIf="order.rating" [rate]="order.rating" size="small" readonly="true"></ion-rating>
+      <ion-rating
+        *ngIf="order.rating"
+        [rate]="order.rating"
+        size="small"
+        readonly="true"
+      ></ion-rating>
     </ion-card-header>
 
     <ion-card-content
@@ -71,10 +76,18 @@
         Total <span>{{sumTotal(order)| currency:'GTQ':'symbol-narrow' }}</span>
       </ion-card-title>
     </ion-card-content>
-    <ion-footer>
+    <ion-footer *ngIf="order.status == 'Completado'">
       <ion-row>
         <ion-col class="ion-padding">
-          <ion-button expand="full" color="primary">Calificar</ion-button>
+          <ion-button
+            expand="full"
+            color="primary"
+            [routerLink]="['/rating', order.uid]"
+            routerDirection="forward"
+            [disabled]="order.rating"
+          >
+            Calificar
+          </ion-button>
         </ion-col>
         <ion-col class="ion-padding">
           <ion-button expand="full" color="light">Reclamar</ion-button>

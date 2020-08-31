@@ -56,6 +56,11 @@ const routes: Routes = [
     path: 'test',
     loadChildren: () => import('./test/test.module').then( m => m.TestPageModule)
   },
+  {
+    path: 'rating/:orderId',
+    loadChildren: () => import('./pages/rating/rating.module').then( m => m.RatingPageModule)
+  },
+
 
 ];
 
