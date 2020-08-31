@@ -1,5 +1,6 @@
 import { Car } from './car';
 import { User } from '../user';
+import { Service } from '../service';
 enum status {
   "Nuevo" = "Nuevo",
   "En Progreso" = "En Progreso",
@@ -10,7 +11,7 @@ export interface Order {
   uid?: string;
   car: Car["uid"] | Car;
   date: Date;
-  services: Object;
+  services: Service[];
   totalPrice?: number;
   progress?: number;
   status?: string;

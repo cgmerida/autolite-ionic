@@ -22,4 +22,18 @@ export class OrdersPage implements OnInit {
   async ngOnInit() {
     this.orders = await this.orderService.getOrdersByUser();
   }
+
+  sumTotal(order: Order) {
+    let total = 0;
+    order.services.forEach(service => {
+      total += Math.round(service.price * 100) / 100;
+      if (service.hasOwnProperty('products') && service.products.length > 0) {
+        service.products.forEach(product => {
+          total += Math.round(product.price * 100) / 100;
+        });
+      }
+    });
+
+    return total;
+  }
 }

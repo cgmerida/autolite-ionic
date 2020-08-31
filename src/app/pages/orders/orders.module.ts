@@ -8,12 +8,16 @@ import { OrdersPageRoutingModule } from './orders-routing.module';
 
 import { OrdersPage } from './orders.page';
 
+import { IonicRatingModule } from 'ionic-rating';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OrdersPageRoutingModule
+    OrdersPageRoutingModule,
+    IonicRatingModule
   ],
   declarations: [OrdersPage]
 })

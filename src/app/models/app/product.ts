@@ -3,7 +3,7 @@ export class Product {
   name: string;
   description: string;
   unit: string;
-  price: string;
+  price: number;
   createdAt: Date;
   updatedAt: Date;
 }
