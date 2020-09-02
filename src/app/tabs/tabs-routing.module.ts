@@ -21,6 +21,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/orders/orders.module').then(m => m.OrdersPageModule)
       },
       {
+        path: 'gastos',
+        loadChildren: () => import('../pages/expenses/expenses.module').then(m => m.ExpensesPageModule)
+      },
+      {
         path: '',
         redirectTo: '/app/inicio',
         pathMatch: 'full'

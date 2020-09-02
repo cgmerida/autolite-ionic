@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gastos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner name="crescent" *ngIf="!chartReady"></ion-spinner>
+  <div class="chart-wrapper" *ngIf="chartReady">
+    <canvas
+      baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [plugins]="barChartPlugins"
+      [legend]="barChartLegend"
+      [chartType]="barChartType"
+      [colors]="chartColors"
+    >
+    </canvas>
+  </div>
+  <ion-grid>
+    <ion-row class="ion-padding">
+      <ion-col class="ion-justify-content-center">
+        <ion-item lines="none">
+          <ion-label position="floating">Fecha Inicio</ion-label>
+          <ion-datetime
+            value="01/01/2020"
+            displayFormat="DD/MM/YYYY"
+            display-timezone="America/Guatemala"
+          ></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col class="ion-justify-content-center">
+        <ion-item lines="none">
+          <ion-label position="floating">Fecha Fin</ion-label>
+          <ion-datetime
+            value="12/31/2020"
+            displayFormat="DD/MM/YYYY"
+            display-timezone="America/Guatemala"
+          ></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list lines="full">
+    <ion-list-header>
+      <ion-label><h1>Gastos por servicio</h1></ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let order of sortedOrders">
+      <ion-icon name="ellipse" slot="start" color="tertiary"></ion-icon>
+      <ion-label>
+        Orden #{{order.uid}} - {{order.date.toDate() | date:'dd/MM/yyyy'}} -
+        {{sumTotal(order) | currency:'GTQ':'symbol-narrow'}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

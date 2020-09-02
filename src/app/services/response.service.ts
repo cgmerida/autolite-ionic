@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 import { Responses } from '../models/app/responses';
-import { count } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +33,7 @@ export class ResponseService {
           rating += response.rating;
           counter++;
         });
-        return this.db.doc(`orders/${res.orderUid}`).update({ rating: 5*(rating/(5*counter)) });
+        return this.db.doc(`orders/${res.orderUid}`).update({ rating: 5 * (rating / (5 * counter)) });
       })
       .then(() => {
 

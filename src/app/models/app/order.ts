@@ -1,6 +1,11 @@
 import { Car } from './car';
 import { User } from '../user';
 import { Service } from '../service';
+
+import { firestore } from 'firebase';
+
+import Timestamp = firestore.Timestamp;
+
 enum status {
   "Nuevo" = "Nuevo",
   "En Progreso" = "En Progreso",
@@ -10,13 +15,14 @@ enum status {
 export interface Order {
   uid?: string;
   car: Car["uid"] | Car;
-  date: Date;
+  date: Timestamp;
   services: Service[];
   totalPrice?: number;
-  progress?: number;
-  status?: string;
+  progress: number;
+  status: string;
   owner: User["uid"];
-  doneAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  doneAt?: Timestamp | Date;
+  createdAt: Timestamp | Date;
+  updatedAt: Timestamp | Date;
+
 }

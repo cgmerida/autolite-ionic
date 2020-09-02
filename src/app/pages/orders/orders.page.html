@@ -26,14 +26,14 @@
       </ion-card-subtitle>
       <ion-rating
         *ngIf="order.rating"
-        [rate]="order.rating"
+        [rate]="order.rating | number:'1.0-0'"
         size="small"
         readonly="true"
       ></ion-rating>
     </ion-card-header>
 
     <ion-card-content
-      *ngIf="order.progress < 100 && order.status != 'Completado'"
+      *ngIf="order.progress < 100 && order.status == 'En Progreso'"
     >
       <ion-card-title>Progreso {{order.progress}}%</ion-card-title>
       <ion-progress-bar

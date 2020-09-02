@@ -32,10 +32,13 @@ export class OrderService {
     return this.orderCollection.valueChanges({ idField: 'uid' });
   }
 
-  async getOrdersByUser() {
+  async getOrdersByUser(): Promise<Observable<Order[]>> {
     let uid = await this.authService.getAuthUserUid();
 
-    this.joined$ = this.db.collection<Order>('orders', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' })
+    this.joined$ = this.db.collection<Order>('orders', ref => {
+      return ref.where('owner', '==', uid).orderBy('createdAt', 'desc');
+    })
+      .valueChanges({ idField: 'uid' })
       .pipe(
         switchMap(orders => {
           let carsObs = orders.map(
@@ -56,6 +59,18 @@ export class OrderService {
   }
 
 
+  async getCompletedOrdersByUser(): Promise<Observable<Order[]>> {
+    let uid = await this.authService.getAuthUserUid();
+
+    return this.db.collection<Order>('orders', ref => {
+      return ref.where('owner', '==', uid)
+        .where('status', '==', 'Completado')
+        .orderBy('date', 'asc');
+    }).valueChanges()
+  }
+
+
+
   async addOrder(order: Order) {
     let uid = await this.authService.getAuthUserUid();
     // order.services
@@ -63,7 +78,6 @@ export class OrderService {
     order.owner = uid;
     order.createdAt = new Date();
     order.updatedAt = new Date();
-    order.date = new Date(order.date);
     order.status = "Nuevo";
     order.progress = 0;
     return this.orderCollection.add(order)

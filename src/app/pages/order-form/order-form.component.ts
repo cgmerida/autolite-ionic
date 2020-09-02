@@ -84,6 +84,8 @@ export class OrderFormComponent implements OnInit {
       .then(loading => {
         loading.present();
         order.services = this.servicesOrder;
+        order.date = new Date(order.date);
+
         this.orderService.addOrder(order)
           .then((res) => {
             this.presentAlert(`¡Genial!`, null, res);
