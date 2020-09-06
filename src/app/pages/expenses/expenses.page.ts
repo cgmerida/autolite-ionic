@@ -14,7 +14,7 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class ExpensesPage implements OnInit {
 
-  private months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+  private months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -88,8 +88,6 @@ export class ExpensesPage implements OnInit {
     this.orderService.getCompletedOrdersByUser().then(orders$ => {
       orders$.subscribe(orders => {
         this.orders = orders;
-        // this.sortedOrders = orders.slice().sort((a, b) => b.date.toDate() - a.date.toDate());
-        this.sortedOrders = orders.reverse();
         this.createBarChart();
         this.chartReady = true;
       })
@@ -101,7 +99,10 @@ export class ExpensesPage implements OnInit {
     let mesesLabel: Label[] = [];
     let dataSet: ChartDataSets[] = [];
     let data = [];
-    this.orders.forEach((order) => {
+    let orders = Array.from(this.orders);
+    // let data: string[] = [];
+
+    orders.reverse().forEach((order) => {
       let monthNum = order.date.toDate().getMonth();
       if (!mesesLabel.includes(this.months[monthNum]))
         mesesLabel.push(this.months[monthNum]);
@@ -109,10 +110,12 @@ export class ExpensesPage implements OnInit {
       let total = this.sumTotal(order);
 
       data[monthNum] = data[monthNum] != undefined ? data[monthNum] += total : total;
-
+      console.log(data);
     });
 
+    console.log(mesesLabel);
     data = data.filter(i => i != null);
+    console.log(data);
 
     dataSet.push({ data });
 

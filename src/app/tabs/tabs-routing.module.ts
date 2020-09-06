@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/expenses/expenses.module').then(m => m.ExpensesPageModule)
       },
       {
+        path: 'perfil',
+        loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
         path: '',
         redirectTo: '/app/inicio',
         pathMatch: 'full'

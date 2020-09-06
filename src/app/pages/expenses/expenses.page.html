@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-spinner name="crescent" *ngIf="!chartReady"></ion-spinner>
-  <div class="chart-wrapper" *ngIf="chartReady">
+  <div class="chart-wrapper ion-padding" *ngIf="chartReady">
     <canvas
       baseChart
       [datasets]="barChartData"
@@ -48,12 +48,18 @@
     <ion-list-header>
       <ion-label><h1>Gastos por servicio</h1></ion-label>
     </ion-list-header>
-    <ion-item *ngFor="let order of sortedOrders">
+    <ion-item *ngFor="let order of orders">
       <ion-icon name="ellipse" slot="start" color="tertiary"></ion-icon>
-      <ion-label>
-        Orden #{{order.uid}} - {{order.date.toDate() | date:'dd/MM/yyyy'}} -
-        {{sumTotal(order) | currency:'GTQ':'symbol-narrow'}}
-      </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="8">
+            Orden del {{order.date.toDate() | date:'dd/MM/yyyy'}}
+          </ion-col>
+          <ion-col>
+            {{sumTotal(order) | currency:'GTQ':'symbol-narrow'}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
   </ion-list>
 </ion-content>
