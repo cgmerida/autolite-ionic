@@ -13,10 +13,8 @@
 
   <section class="ion-text-center">
     <!-- <ion-icon name="person" class="font"></ion-icon> -->
-    <img src="assets/img/logo/logo-full.svg" alt="Logo Full">
-    <h1 class="ion-no-margin bolder">
-      Bienvenido
-    </h1>
+    <img src="assets/img/logo/logo-full.svg" alt="Logo Full" />
+    <h1 class="ion-no-margin bolder">Bienvenido</h1>
     <h3 class="ion-no-margin lighter">Carlos Jeronimo</h3>
   </section>
 
@@ -26,7 +24,15 @@
         <ion-card class="ion-text-center ion-no-margin" color="tertiary">
           <ion-card-header class="ion-no-padding ion-padding-vertical">
             <ion-icon name="cash-sharp"></ion-icon>
-            <ion-card-title>Q 1000.00</ion-card-title>
+
+            <ion-spinner
+              name="crescent"
+              *ngIf="loading"
+              color="light"
+            ></ion-spinner>
+            <ion-card-title *ngIf="!loading">
+              {{totalExpenses| currency:'GTQ':'symbol-narrow'}}
+            </ion-card-title>
           </ion-card-header>
           <ion-card-content class="ion-no-padding ion-padding-vertical">
             Gastos Generales
@@ -37,7 +43,12 @@
         <ion-card class="ion-text-center ion-no-margin" color="tertiary">
           <ion-card-header class="ion-no-padding ion-padding-vertical">
             <ion-icon name="build-sharp"></ion-icon>
-            <ion-card-title>0</ion-card-title>
+            <ion-spinner
+              name="crescent"
+              *ngIf="loading"
+              color="light"
+            ></ion-spinner>
+            <ion-card-title *ngIf="!loading">{{totalOrders}}</ion-card-title>
           </ion-card-header>
           <ion-card-content class="ion-no-padding ion-padding-vertical">
             Servicios Recibidos
@@ -46,10 +57,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
-
-
 
 <!-- <ion-grid>
   <ion-row class="ion-align-items-center">

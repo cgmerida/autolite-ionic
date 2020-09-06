@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { switchMap } from 'rxjs/operators';
-import { CarService } from './car.service';
 import { Observable, combineLatest } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { Order } from 'src/app/models/app/order';
@@ -14,14 +13,11 @@ export class OrderService {
 
   private orderCollection: AngularFirestoreCollection<Order>;
 
-  joined$: Observable<any>
-
   private orders: Order[] = [];
 
   constructor(
     private db: AngularFirestore,
     private authService: AuthService,
-    private carService: CarService,
   ) {
     this.orderCollection = this.db.collection<Order>('orders');
   }
@@ -34,7 +30,7 @@ export class OrderService {
   async getOrdersByUser(): Promise<Observable<Order[]>> {
     let uid = await this.authService.getAuthUserUid();
 
-    this.joined$ = this.db.collection<Order>('orders', ref => {
+    return this.db.collection<Order>('orders', ref => {
       return ref.where('owner', '==', uid).orderBy('date', 'desc');
     })
       .valueChanges({ idField: 'uid' })
@@ -52,8 +48,6 @@ export class OrderService {
           });
         })
       )
-
-    return this.joined$;
 
   }
 

@@ -17,7 +17,7 @@ export interface Order {
   car: Car["uid"] | Car;
   date: Timestamp;
   services: Service[];
-  totalPrice?: number;
+  // totalPrice?: number;
   progress: number;
   status: string;
   owner: User["uid"];
