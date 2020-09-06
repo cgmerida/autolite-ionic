@@ -110,12 +110,9 @@ export class ExpensesPage implements OnInit {
       let total = this.sumTotal(order);
 
       data[monthNum] = data[monthNum] != undefined ? data[monthNum] += total : total;
-      console.log(data);
     });
 
-    console.log(mesesLabel);
     data = data.filter(i => i != null);
-    console.log(data);
 
     dataSet.push({ data });
 

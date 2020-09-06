@@ -47,95 +47,86 @@
     </ion-row>
   </ion-grid>
 
-  <ion-button (click)="registrarOrden()">
-    Solicitar un Servicio
-  </ion-button>
-
-  <ion-grid>
-    <ion-row class="ion-align-items-center">
-      <ion-col><h2>Productos</h2></ion-col>
-      <ion-col>
-        <ion-button size="small" fill="clear" color="dark">
-          Ver más
-        </ion-button>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-spinner [hidden]="products"></ion-spinner>
-
-  <ion-slides [options]="slideOpts">
-    <ion-slide *ngFor="let product of products">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{product.name}}</ion-card-title>
-        </ion-card-header>
-
-        <ion-card-content>
-          Precio: Q.{{ product.price }}
-        </ion-card-content>
-      </ion-card>
-    </ion-slide>
-  </ion-slides>
-
-  <ion-grid>
-    <ion-row class="ion-align-items-center">
-      <ion-col><h2>Servicios</h2></ion-col>
-      <ion-col>
-        <ion-button size="small" fill="clear" color="dark">
-          Ver más
-        </ion-button>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-spinner [hidden]="services"></ion-spinner>
-
-  <ion-slides [options]="slideOpts">
-    <ion-slide *ngFor="let service of services">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{service.name}}</ion-card-title>
-        </ion-card-header>
-
-        <ion-card-content>
-          Precio: Q.{{ service.price }}
-        </ion-card-content>
-      </ion-card>
-    </ion-slide>
-  </ion-slides>
-
-  <ion-grid>
-    <ion-row class="ion-align-items-center">
-      <ion-col><h2>Mis Carros</h2></ion-col>
-      <ion-col>
-        <ion-button size="small" fill="clear" color="dark">
-          Ver más
-        </ion-button>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-spinner [hidden]="cars"></ion-spinner>
-
-  <ion-slides [options]="slideOpts">
-    <ion-slide *ngFor="let car of cars | async">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{car.brand}} {{car.line}}</ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-slide>
-  </ion-slides>
-
-  <ion-button type="submit" (click)="authService.SignOut();" expand="block">
-    Salir
-  </ion-button>
-
-  <ion-button routerLink="/test" routerDirection="forward">
-    Pruebas
-  </ion-button>
 </ion-content>
+
+
+
+<!-- <ion-grid>
+  <ion-row class="ion-align-items-center">
+    <ion-col><h2>Productos</h2></ion-col>
+    <ion-col>
+      <ion-button size="small" fill="clear" color="dark">
+        Ver más
+      </ion-button>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-spinner [hidden]="products"></ion-spinner>
+
+<ion-slides [options]="slideOpts">
+  <ion-slide *ngFor="let product of products">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{product.name}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Precio: Q.{{ product.price }}
+      </ion-card-content>
+    </ion-card>
+  </ion-slide>
+</ion-slides>
+
+<ion-grid>
+  <ion-row class="ion-align-items-center">
+    <ion-col><h2>Servicios</h2></ion-col>
+    <ion-col>
+      <ion-button size="small" fill="clear" color="dark">
+        Ver más
+      </ion-button>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-spinner [hidden]="services"></ion-spinner>
+
+<ion-slides [options]="slideOpts">
+  <ion-slide *ngFor="let service of services">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{service.name}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Precio: Q.{{ service.price }}
+      </ion-card-content>
+    </ion-card>
+  </ion-slide>
+</ion-slides>
+
+<ion-grid>
+  <ion-row class="ion-align-items-center">
+    <ion-col><h2>Mis Carros</h2></ion-col>
+    <ion-col>
+      <ion-button size="small" fill="clear" color="dark">
+        Ver más
+      </ion-button>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-spinner [hidden]="cars"></ion-spinner>
+
+<ion-slides [options]="slideOpts">
+  <ion-slide *ngFor="let car of cars | async">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{car.brand}} {{car.line}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ion-slide>
+</ion-slides> -->

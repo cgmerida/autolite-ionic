@@ -1,34 +1,27 @@
-<ion-header translucent no-border>
-  <ion-toolbar>
+<ion-header class="ion-no-border">
+  <ion-toolbar translucent color="secondary" class="ion-text-center">
     <ion-buttons slot="start">
-      <ion-button color="light">
-        <ion-icon slot="start" name="arrow-back"></ion-icon>
-        Perfil
-      </ion-button>
+      <ion-button color="dark">Salir</ion-button>
     </ion-buttons>
-    <ion-title>&nbsp;</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" src="/assets/img/logo/logo-centro-blanco.svg"></ion-icon>
-      </ion-button>
+      <ion-button (click)="authService.SignOut();">Salir</ion-button>
     </ion-buttons>
+    <ion-title color="light" size="large">Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" slot="fixed" >
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+<ion-content fullscreen="true" slot="fixed">
+  <div class="card">
+    <div class="header">
+      <div class="avatar">
+        <img
+          src="https://southernplasticsurgery.com.au/wp-content/uploads/2013/10/user-placeholder.png"
+        />
+      </div>
+    </div>
   </div>
 
-  <ion-card>
-    <img src="./madison.jpg" />
-    <ion-card-header>
-      <ion-card-subtitle>Destination</ion-card-subtitle>
-      <ion-card-title>Madison, WI</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
-    </ion-card-content>
-  </ion-card>
+  <div class="title">
+    <h1 class="ion-text-center ion-margin">Carlos Jeronimo</h1>
+  </div>
 </ion-content>

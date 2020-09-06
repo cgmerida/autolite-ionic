@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { OrderFormComponent } from '../pages/order-form/order-form.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +9,19 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(private modalController: ModalController) { }
+
+
+
+  async registrarOrden() {
+    let modalConfig = {
+      component: OrderFormComponent,
+      swipeToClose: true,
+      cssClass: 'my-modal',
+    }
+    const modal = await this.modalController.create(modalConfig);
+    await modal.present();
+  }
+
 
 }

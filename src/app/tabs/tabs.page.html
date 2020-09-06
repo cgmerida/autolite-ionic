@@ -25,8 +25,16 @@
     <ion-icon name="add-outline"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="top">
-    <ion-fab-button color="dark" routerDirection="forward" routerLink="/app/cars">
+    <ion-fab-button
+      color="dark"
+      routerDirection="forward"
+      routerLink="/app/cars"
+    >
       <ion-icon name="car-sport-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-button color="dark" (click)="registrarOrden()">
+      <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab-list>
 </ion-fab>
