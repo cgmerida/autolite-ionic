@@ -6,6 +6,7 @@ export interface User {
   tel?: number;
   displayName?: string;
   photoURL?: string;
+  isAdmin?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

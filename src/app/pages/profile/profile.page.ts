@@ -10,21 +10,15 @@ import { User } from 'src/app/models/user';
 })
 export class ProfilePage implements OnInit {
 
-  private user:User;
+  private user: User;
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    ) {
-    this.authService.getAuthUser()
-      .then(user => {
-        return this.userService.getUser(user.uid);
-      })
-      .then(user$ =>{
-        user$.subscribe(user => {
-          this.user = user;
-        })
-      });
+  ) {
+    this.userService.getAuthUser().subscribe(user => {
+      this.user = user;
+    })
   }
 
   ngOnInit() {

@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController, LoadingController, AlertController, IonRouterOutlet } from '@ionic/angular';
 import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
-import { Storage } from '@ionic/storage';
-import { map } from 'rxjs/operators';
 import { Km } from 'src/app/models/app/km';
 
 @Component({
@@ -21,7 +18,6 @@ export class CarsPage implements OnInit {
   constructor(
     private modalController: ModalController,
     private carService: CarService,
-    private storage: Storage,
     private loadingController: LoadingController,
     private alertController: AlertController,
   ) {
@@ -29,17 +25,15 @@ export class CarsPage implements OnInit {
 
   ngOnInit() {
     this.carService.getCarsByUser()
-      .then(obs => {
-        obs.subscribe(cars => {
-          cars.map(car => {
-            if (car.km) {
-              this.carService.getCarKm(car.km).subscribe((km: Km) => {
-                car.km = km;
-              });
-            }
-          });
-          this.cars = cars;
-        })
+      .subscribe(cars => {
+        cars.map(car => {
+          if (car.km) {
+            this.carService.getCarKm(car.km).subscribe((km: Km) => {
+              car.km = km;
+            });
+          }
+        });
+        this.cars = cars;
       })
 
   }

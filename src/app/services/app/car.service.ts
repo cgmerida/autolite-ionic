@@ -29,10 +29,8 @@ export class CarService {
   }
 
   getCarsByUser() {
-    return this.authService.getAuthUserUid()
-      .then(uid => {
-        return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
-      })
+    let uid = this.authService.getAuthUserUid();
+    return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
   }
 
   getCarKm(uid) {
@@ -42,11 +40,8 @@ export class CarService {
   addCar(car: Car) {
     car.createdAt = new Date();
     car.updatedAt = new Date();
-    return this.authService.getAuthUserUid()
-      .then(uid => {
-        car.owner = uid
-        return this.carCollection.add({ ...car });
-      })
+    car.owner = this.authService.getAuthUserUid();
+    return this.carCollection.add({ ...car })
       .then(() => {
         return `Carro registrado`;
       });

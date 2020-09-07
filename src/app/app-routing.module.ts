@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { FirstGuard } from './guards/first.guard';
-import { canActivate, redirectLoggedInTo, AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { map } from 'rxjs/operators';
+import { AdminGuard } from './guards/admin.guard';
+import { AdminRedirectGuard } from './guards/adminRedirect.guard';
 
-const redirectLoggedInToInicio = () => redirectLoggedInTo(['app/inicio']);
+import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { redirectLoggedInToInicio, redirectOrVerifyEmail } from './app-guards';
 
-const redirectOrVerifyEmail = () =>
-  map((user: any) => {
-    return user ? (user.emailVerified ? true : ['/verify-email']) : ['/login'];
-  });
 
 const routes: Routes = [
   {
@@ -24,58 +21,47 @@ const routes: Routes = [
   },
   {
     path: 'login/forgot',
-    loadChildren: () => import('./auth/forgot/forgot.module').then(m => m.ForgotPageModule)
+    loadChildren: () => import('./auth/forgot/forgot.module').then(m => m.ForgotPageModule),
+    ...canActivate(redirectLoggedInToInicio)
   },
   {
     path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule)
+    loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule),
+    ...canActivate(redirectLoggedInToInicio)
   },
   {
     path: 'verify-email',
-    loadChildren: () => import('./auth/verify-email/verify-email.module').then(m => m.VerifyEmailPageModule)
+    loadChildren: () => import('./auth/verify-email/verify-email.module').then(m => m.VerifyEmailPageModule),
+    ...canActivate(redirectLoggedInToInicio)
   },
   {
-    path: '',
+    path: 'app',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectOrVerifyEmail },
-  },
-  {
-    path: 'admin/cars',
-    loadChildren: () => import('./admin/cars/cars.module').then(m => m.CarsPageModule)
-  },
-  {
-    path: 'services',
-    loadChildren: () => import('./admin/services/services.module').then(m => m.ServicesPageModule)
-  },
-  {
-    path: 'products',
-    loadChildren: () => import('./admin/products/products.module').then( m => m.ProductsPageModule)
-  },
-  {
-    path: 'test',
-    loadChildren: () => import('./test/test.module').then( m => m.TestPageModule)
+    canActivate: [AdminRedirectGuard],
+    data: { authGuardPipe: redirectOrVerifyEmail }
   },
   {
     path: 'rating/:orderId',
-    loadChildren: () => import('./pages/rating/rating.module').then( m => m.RatingPageModule)
+    loadChildren: () => import('./pages/rating/rating.module').then(m => m.RatingPageModule),
+    ...canActivate(redirectOrVerifyEmail)
   },
-
-
-
-
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin-tabs/admin-tabs.module').then(m => m.AdminTabsPageModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectOrVerifyEmail }
+  },
+  {
+    path: '404',
+    loadChildren: () => import('./notfound/notfound.module').then(m => m.NotfoundPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/404',
+    pathMatch: 'full'
+  },
 ];
 
-
-// {
-//   path: '404',
-//   loadChildren: () => import('./notfound/notfound.module').then(m => m.NotfoundPageModule)
-// },
-// {
-//   path: '**',
-//   redirectTo: '/404',
-//   pathMatch: 'full'
-// },
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

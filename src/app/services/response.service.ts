@@ -16,16 +16,13 @@ export class ResponseService {
 
 
   addResponse(res) {
-    return this.authService.getAuthUserUid()
-      .then(uid => {
-        let response: Responses = {
-          ...res,
-          userUid: uid,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }
-        return this.responsesCollection.add({ ...response });
-      })
+    let response: Responses = {
+      ...res,
+      userUid: this.authService.getAuthUserUid(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+    return this.responsesCollection.add({ ...response })
       .then(() => {
         let rating = 0;
         let counter = 0;

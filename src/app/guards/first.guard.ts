@@ -17,12 +17,10 @@ export class FirstGuard implements CanActivate {
 
     return this.storage.get('first_time').then(res => {
       if (res === false) {
-        console.log('app isnt for the first time started');
         this.router.navigate(["login"]);
         return false;
       }
 
-      console.log('probably the first time');
       this.storage.set('first_time', false);
       return true;
     });

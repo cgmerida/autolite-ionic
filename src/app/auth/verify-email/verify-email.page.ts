@@ -29,20 +29,16 @@ export class VerifyEmailPage implements OnInit {
 
         this.authService.getAuthUser()
           .then((user) => {
-            user.reload();
+            user.reload()
+              .then(() => {
+                loading.dismiss();
+                if (user && user.emailVerified) {
+                  this.router.navigate(['/app/inicio']);
+                } else {
+                  this.presentAlert('No has verificado tu correo');
+                }
+              })
           });
-
-        setTimeout(() => {
-          this.authService.getAuthUser()
-            .then((user) => {
-              loading.dismiss();
-              if (user && user.emailVerified) {
-                this.router.navigate(['/app/inicio']);
-              } else {
-                this.presentAlert('No has verificado tu correo');
-              }
-            })
-        }, 1000);
       });
   }
 

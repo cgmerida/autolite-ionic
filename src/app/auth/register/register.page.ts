@@ -67,9 +67,6 @@ export class RegisterPage implements OnInit {
             let user: User = {
               uid: res.user.uid,
               ...this.registerForm.value,
-              displayName: res.user.displayName,
-              photoURL: res.user.photoURL,
-              emailVerified: res.user.emailVerified,
               createdAt: new Date(),
               updatedAt: new Date()
             };

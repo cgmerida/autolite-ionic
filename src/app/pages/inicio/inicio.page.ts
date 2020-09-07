@@ -22,7 +22,7 @@ export class InicioPage implements OnInit {
   //   spaceBetween: 10
   // };
 
-  private user:User;
+  private user: User;
 
   private totalOrders = 0;
   private loading = true;
@@ -34,15 +34,9 @@ export class InicioPage implements OnInit {
     private userService: UserService,
   ) {
 
-    this.authService.getAuthUser()
-    .then(user => {
-      return this.userService.getUser(user.uid);
+    this.userService.getAuthUser().subscribe(user => {
+      this.user = user;
     })
-    .then(user$ =>{
-      user$.subscribe(user => {
-        this.user = user;
-      })
-    });
   }
 
   ngOnInit() {

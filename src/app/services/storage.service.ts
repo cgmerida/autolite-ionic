@@ -11,9 +11,7 @@ export class StorageService {
 
   constructor(private storage: AngularFireStorage,
     private authService: AuthService) {
-    authService.getAuthUserUid().then(uid => {
-      this.uid = uid;
-    })
+    this.uid = authService.getAuthUserUid();
   }
 
   uploadCarImg(img, name) {

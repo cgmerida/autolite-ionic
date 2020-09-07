@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { ServiceService } from 'src/app/services/app/service.service';
 import { Service } from 'src/app/models/service';
-import { map, reduce } from 'rxjs/operators';
 
 
 @Component({
@@ -38,10 +37,7 @@ export class OrderFormComponent implements OnInit {
     private serviceService: ServiceService,
   ) {
 
-    carService.getCarsByUser().then(cars => {
-      this.cars = cars
-    });
-
+    this.cars = carService.getCarsByUser();
     this.services = serviceService.getServices();
 
   }
