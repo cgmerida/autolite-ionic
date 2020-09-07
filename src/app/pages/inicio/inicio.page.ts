@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/app/order.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-inicio',
@@ -19,14 +22,27 @@ export class InicioPage implements OnInit {
   //   spaceBetween: 10
   // };
 
+  private user:User;
+
   private totalOrders = 0;
   private loading = true;
   private totalExpenses = 0;
 
   constructor(
-    private orderServcice: OrderService
+    private orderServcice: OrderService,
+    private authService: AuthService,
+    private userService: UserService,
   ) {
 
+    this.authService.getAuthUser()
+    .then(user => {
+      return this.userService.getUser(user.uid);
+    })
+    .then(user$ =>{
+      user$.subscribe(user => {
+        this.user = user;
+      })
+    });
   }
 
   ngOnInit() {

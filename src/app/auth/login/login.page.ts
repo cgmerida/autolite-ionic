@@ -29,7 +29,6 @@ export class LoginPage implements OnInit {
         loading.present();
         this.authService.LogIn(email, password)
           .then((res) => {
-            console.log(res);
             if (res.user.emailVerified) {
               this.router.navigate(['/app/inicio']);
             } else {
@@ -39,7 +38,6 @@ export class LoginPage implements OnInit {
           })
           .catch((error) => {
             this.presentAlert(this.errors.printErrorByCode(error.code));
-            console.log(error);
           })
           .finally(() => {
             loading.dismiss();

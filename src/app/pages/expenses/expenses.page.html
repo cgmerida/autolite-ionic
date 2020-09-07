@@ -1,9 +1,15 @@
-<ion-header>
-  <ion-toolbar>
+
+<ion-header class="ion-no-border">
+  <ion-toolbar translucent class="ion-text-center">
+    <ion-buttons slot="start">
+      <ion-button >Atras</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button class="ion-invisible">Atras</ion-button>
+    </ion-buttons>
     <ion-title>Gastos</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-spinner name="crescent" *ngIf="!chartReady"></ion-spinner>
   <div class="chart-wrapper ion-padding" *ngIf="chartReady">

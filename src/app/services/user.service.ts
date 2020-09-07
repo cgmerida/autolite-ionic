@@ -20,10 +20,10 @@ export class UserService {
   }
 
   getUser(uid: User["uid"]) {
-    return this.userCollection.doc(uid).valueChanges();
+    return this.userCollection.doc<User>(uid).valueChanges();
   }
 
   updateUser(user: User){
-    return this.userCollection.doc(user.uid).update(user);
+    return this.userCollection.doc<User>(user.uid).update(user);
   }
 }

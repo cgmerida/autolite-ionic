@@ -1,21 +1,13 @@
-<!-- <ion-header collapse="condense">
-  <ion-toolbar color="dark">
-    <ion-title>Inicio iOS</ion-title>
-  </ion-toolbar>
-</ion-header> -->
 
 <ion-content padding>
-  <!-- <ion-header>
-    <ion-toolbar color="dark">
-      <ion-title>Inicio Android</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
 
   <section class="ion-text-center">
     <!-- <ion-icon name="person" class="font"></ion-icon> -->
     <img src="assets/img/logo/logo-full.svg" alt="Logo Full" />
     <h1 class="ion-no-margin bolder">Bienvenido</h1>
-    <h3 class="ion-no-margin lighter">Carlos Jeronimo</h3>
+    <h3 class="ion-no-margin lighter">
+      {{user?.firstname ? user?.firstname + ' ' + user?.lastname : user?.displayName | titlecase}}
+    </h3>
   </section>
 
   <ion-grid id="main-grid">

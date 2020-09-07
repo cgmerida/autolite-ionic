@@ -1,12 +1,12 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar translucent color="secondary" class="ion-text-center">
+  <ion-toolbar color="secondary" class="ion-text-center">
     <ion-buttons slot="start">
-      <ion-button color="dark">Salir</ion-button>
+      <ion-button color="dark" class="ion-invisible">Salir</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="authService.SignOut();">Salir</ion-button>
     </ion-buttons>
-    <ion-title color="light" size="large">Perfil</ion-title>
+    <ion-title color="light">Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,13 +15,18 @@
     <div class="header">
       <div class="avatar">
         <img
-          src="https://southernplasticsurgery.com.au/wp-content/uploads/2013/10/user-placeholder.png"
+          *ngIf="user"
+          [src]="user.photoURL || 
+          'https://ui-avatars.com/api/?size=200&background=079db6&color=fff&name=' + user.firstname + '+' + user.lastname || 
+          'https://southernplasticsurgery.com.au/wp-content/uploads/2013/10/user-placeholder.png'"
         />
       </div>
     </div>
   </div>
 
   <div class="title">
-    <h1 class="ion-text-center ion-margin">Carlos Jeronimo</h1>
+    <h1 class="ion-text-center ion-margin">
+      {{user?.firstname ? user?.firstname + ' ' + user?.lastname : user?.displayName | titlecase}}
+    </h1>
   </div>
 </ion-content>
