@@ -48,19 +48,20 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin-tabs/admin-tabs.module').then(m => m.AdminTabsPageModule),
-    canActivate: [AngularFireAuthGuard],
+    canActivate: [AdminGuard],
     data: { authGuardPipe: redirectOrVerifyEmail }
   },
   {
     path: '404',
     loadChildren: () => import('./notfound/notfound.module').then(m => m.NotfoundPageModule)
   },
-  {
-    path: '**',
-    redirectTo: '/404',
-    pathMatch: 'full'
-  },
 ];
+
+// {
+//   path: '**',
+//   redirectTo: '/404',
+//   pathMatch: 'full'
+// },
 
 @NgModule({
   imports: [

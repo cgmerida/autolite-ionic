@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { map, flatMap } from 'rxjs/operators';
-
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AdminRedirectGuard implements CanActivate {
-    private isAdmin = false;
-
+    
     constructor(
         private router: Router,
         private userService: UserService,
