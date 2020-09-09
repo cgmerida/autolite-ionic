@@ -69,8 +69,7 @@ export class OrderFormComponent implements OnInit {
 
 
   async registrar() {
-
-    let order = { ...this.orderForm.value };
+    let order = this.orderForm.value;
 
     this.services.subscribe(services => {
       this.servicesOrder = services.filter(service => order.services.includes(service.uid));
@@ -89,7 +88,6 @@ export class OrderFormComponent implements OnInit {
           })
           .catch((error) => {
             this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
-            console.log(error);
           })
           .finally(() => {
             this.clicked = true;

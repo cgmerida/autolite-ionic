@@ -37,7 +37,7 @@ const routes: Routes = [
   {
     path: 'app',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AdminRedirectGuard],
+    canActivate: [AngularFireAuthGuard, AdminRedirectGuard],
     data: { authGuardPipe: redirectOrVerifyEmail }
   },
   {
@@ -48,7 +48,7 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin-tabs/admin-tabs.module').then(m => m.AdminTabsPageModule),
-    canActivate: [AdminGuard],
+    canActivate: [AngularFireAuthGuard, AdminGuard],
     data: { authGuardPipe: redirectOrVerifyEmail }
   },
   {

@@ -1,13 +1,16 @@
-<ion-header translucent>
-  <ion-toolbar color="secondary">
-    <ion-title>Administración de Productos</ion-title>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-img src="assets/img/logo/logo.svg" class="logo-header"></ion-img>
+    </ion-buttons>
+    <ion-title>Productos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="ion-padding">
+<ion-content class="ion-padding">
   <form [formGroup]="productsForm">
-    <ion-list inset>
-      <ion-item>
+    <ion-list>
+      <ion-item lines="inset">
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
@@ -19,7 +22,7 @@
         Especifica el nombre del producto.
       </ion-text>
 
-      <ion-item>
+      <ion-item lines="inset">
         <ion-label position="floating">Descripción</ion-label>
         <ion-input type="text" formControlName="description"></ion-input>
       </ion-item>
@@ -31,7 +34,7 @@
         Especifica la descripción del producto.
       </ion-text>
 
-      <ion-item>
+      <ion-item lines="inset">
         <ion-label position="floating">Unidad</ion-label>
         <ion-input type="text" formControlName="unit"></ion-input>
       </ion-item>
@@ -43,7 +46,7 @@
         Especifica el tipo de unidad del producto.
       </ion-text>
 
-      <ion-item lines="inset">
+      <ion-item lines="inset" lines="inset">
         <ion-label position="floating">Precio</ion-label>
         <ion-input
           pattern="(\d)+(\.\d{2})?"
@@ -62,7 +65,7 @@
 
     <ion-button
       type="button"
-      class="ion-margin-top"
+      class="ion-margin"
       expand="full"
       (click)="crearProducto()"
     >
@@ -70,7 +73,7 @@
     </ion-button>
   </form>
 
-  <ion-card *ngFor="let product of products | async">
+  <ion-card *ngFor="let product of products | async" class="ion-margin-top">
     <ion-card-header>
       <ion-card-title>{{product.name}}</ion-card-title>
     </ion-card-header>
@@ -79,16 +82,19 @@
       Precio: Q.{{ product.price }}
       <br />
       <hr />
-      <ion-button
-        color="tertiary"
-        (click)="product.edit = true"
-        [disabled]="product.edit"
-      >
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button color="danger" (click)="eliminar(product.uid)">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-      </ion-button>
+
+      <div class="ion-text-end">
+        <ion-button
+          color="tertiary"
+          (click)="product.edit = true"
+          [disabled]="product.edit"
+        >
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="eliminar(product.uid)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
     </ion-card-content>
 
     <ion-card-content [hidden]="!product.edit">
@@ -96,22 +102,22 @@
         <ion-list inset>
           <h2>Editar</h2>
 
-          <ion-item>
+          <ion-item lines="inset">
             <ion-label position="floating">Nombre</ion-label>
             <ion-input type="text" ngModel name="name"></ion-input>
           </ion-item>
 
-          <ion-item>
+          <ion-item lines="inset">
             <ion-label position="floating">Descripción</ion-label>
             <ion-input type="text" ngModel name="description"></ion-input>
           </ion-item>
 
-          <ion-item>
+          <ion-item lines="inset">
             <ion-label position="floating">Unidad</ion-label>
             <ion-input type="text" ngModel name="unit"></ion-input>
           </ion-item>
 
-          <ion-item lines="inset">
+          <ion-item lines="inset" lines="inset">
             <ion-label position="floating">Precio</ion-label>
             <ion-input
               pattern="(\d)+(\.\d{2})?"

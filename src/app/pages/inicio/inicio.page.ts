@@ -36,7 +36,7 @@ export class InicioPage implements OnInit {
 
     this.userService.getAuthUser().subscribe(user => {
       this.user = user;
-    })
+    });
   }
 
   ngOnInit() {
@@ -59,7 +59,7 @@ export class InicioPage implements OnInit {
           this.loading = false;
 
         })
-      })
+      });
   }
 
 }

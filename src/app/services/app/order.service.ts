@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { Order } from 'src/app/models/app/order';
+import { User } from 'src/app/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,39 @@ export class OrderService {
     this.orderCollection = this.db.collection<Order>('orders');
   }
 
-
   getOrders() {
-    return this.orderCollection.valueChanges({ idField: 'uid' });
+    return this.db.collection<Order>('orders', ref => {
+      return ref.orderBy('date', 'desc');
+    })
+      .valueChanges({ idField: 'uid' })
+      .pipe(
+        switchMap(orders => {
+          let carsObs = orders.map(
+            order => this.db.doc<Car>(`cars/${order.car}`).valueChanges()
+          );
+
+          return combineLatest(...carsObs, (...cars) => {
+            orders.forEach((order, index) => {
+              order.car = cars[index];
+            });
+            return orders;
+          });
+        })
+      )
+      .pipe(
+        switchMap(orders => {
+          let userObs = orders.map(
+            order => this.db.doc<User>(`users/${order.owner}`).valueChanges()
+          );
+
+          return combineLatest(...userObs, (...users) => {
+            orders.forEach((order, index) => {
+              order.owner = users[index];
+            });
+            return orders;
+          });
+        })
+      )
   }
 
   async getOrdersByUser(): Promise<Observable<Order[]>> {
@@ -47,7 +78,7 @@ export class OrderService {
             return orders;
           });
         })
-      )
+      );
 
   }
 
@@ -62,6 +93,15 @@ export class OrderService {
     }).valueChanges()
   }
 
+
+  async getCompletedOrders(): Promise<Observable<Order[]>> {
+    let uid = await this.authService.getAuthUserUid();
+
+    return this.db.collection<Order>('orders', ref => {
+      return ref.where('status', '==', 'Completado')
+        .orderBy('date', 'desc');
+    }).valueChanges()
+  }
 
 
   async addOrder(order: Order) {
@@ -82,7 +122,7 @@ export class OrderService {
       });
   }
 
-  updateOrder(order: Order) {
+  updateOrder(order) {
     order.updatedAt = new Date();
     return this.orderCollection.doc(order.uid).update(order);
   }

@@ -1,13 +1,16 @@
-<ion-header translucent>
-  <ion-toolbar color="secondary">
-    <ion-title>Administración de Servicios</ion-title>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-img src="assets/img/logo/logo.svg" class="logo-header"></ion-img>
+    </ion-buttons>
+    <ion-title>Servicios</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="ion-padding">
+<ion-content class="ion-padding">
   <form [formGroup]="servicesForm">
-    <ion-list inset>
-      <ion-item>
+    <ion-list>
+      <ion-item lines="inset">
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
@@ -38,7 +41,7 @@
 
     <ion-button
       type="button"
-      class="ion-margin-top"
+      class="ion-margin"
       expand="full"
       (click)="crearServicio()"
     >
@@ -46,7 +49,7 @@
     </ion-button>
   </form>
 
-  <ion-card *ngFor="let service of services | async">
+  <ion-card *ngFor="let service of services | async" class="ion-margin-top">
     <ion-card-header>
       <ion-card-title>{{service.name}}</ion-card-title>
     </ion-card-header>
@@ -55,16 +58,19 @@
       Precio: Q.{{ service.price }}
       <br />
       <hr />
-      <ion-button
-        color="tertiary"
-        (click)="service.edit = true"
-        [disabled]="service.edit"
-      >
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button color="danger" (click)="eliminar(service.uid)">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-      </ion-button>
+
+      <div class="ion-text-end">
+        <ion-button
+          color="tertiary"
+          (click)="service.edit = true"
+          [disabled]="service.edit"
+        >
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="eliminar(service.uid)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
     </ion-card-content>
 
     <ion-card-content [hidden]="!service.edit">

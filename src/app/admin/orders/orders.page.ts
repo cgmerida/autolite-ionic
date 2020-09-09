@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController, AlertController, ModalController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { Order } from 'src/app/models/app/order';
+import { OrderService } from 'src/app/services/app/order.service';
+import { OrdersFormComponent } from '../orders-form/orders-form.component';
 
 @Component({
   selector: 'app-orders',
@@ -7,9 +12,95 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersPage implements OnInit {
 
-  constructor() { }
+  orders: Observable<Order[]>;
+  orderCompleted = false;
 
-  ngOnInit() {
+  private statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success","Cancelado": "danger" };
+
+  constructor(
+    private loadingController: LoadingController,
+    private orderService: OrderService,
+    private alertCtl: AlertController,
+    private modalController: ModalController
+  ) { }
+
+  async ngOnInit() {
+    this.orders = await this.orderService.getOrders();
+  }
+
+  async segmentChanged(ev) {
+    const loading = await this.loadingController.create();
+
+    await loading.present();
+
+    if (ev.detail.value == 'completados') {
+      this.orderCompleted = true;
+    } else {
+      this.orderCompleted = false;
+    }
+
+    await loading.dismiss();
+  }
+
+  async orderStatus(orderUid, newStatus) {
+    const loading = await this.loadingController.create();
+    await loading.present();
+
+    try {
+      await this.orderService.updateOrder({
+        uid: orderUid,
+        status: newStatus
+      })
+
+      this.presentAlert('¡Genial!', `Se actualizó el estado de la orden a ${newStatus}`);
+
+    } catch (error) {
+      this.presentAlert('Error', error);
+      console.log(error);
+
+    } finally {
+      await loading.dismiss();
+    }
+  }
+
+
+  async tracing(order: Order) {
+    let modalConfig = {
+      component: OrdersFormComponent,
+      swipeToClose: true,
+      cssClass: 'my-modal',
+      componentProps: {
+        'order': order
+      }
+    }
+    const modal = await this.modalController.create(modalConfig);
+    await modal.present();
+  }
+
+  sumTotal(order: Order) {
+    let total = 0;
+    order.services.forEach(service => {
+      total += Math.round(service.price * 100) / 100;
+      if (service.hasOwnProperty('products') && service.products.length > 0) {
+        service.products.forEach(product => {
+          total += Math.round(product.price * 100) / 100;
+        });
+      }
+    });
+
+    return total;
+  }
+
+
+
+  async presentAlert(hdr, msg) {
+    const alert = await this.alertCtl.create({
+      header: hdr,
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

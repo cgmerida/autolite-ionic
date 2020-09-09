@@ -5,6 +5,7 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { AuthService } from './auth.service';
 import { map, take, flatMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class UserService {
 
   getAuthUser() {
     return this.fireAuth.authState.pipe(
-      flatMap(fireUser => this.userCollection.doc<User>(fireUser.uid).valueChanges())
+      flatMap(fireUser => fireUser ? this.userCollection.doc<User>(fireUser.uid).valueChanges() : [])
     )
   }
 

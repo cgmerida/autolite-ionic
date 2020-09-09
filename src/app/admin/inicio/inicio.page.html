@@ -1,9 +1,91 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>inicio</ion-title>
+    <ion-buttons slot="end">
+      <ion-img src="assets/img/logo/logo.svg" class="logo-header"></ion-img>
+    </ion-buttons>
+    <ion-title>Autolite</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card class="ion-margin-bottom">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Ordenes por status</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-wrapper">
+        <canvas
+          baseChart
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend"
+          [colors]="chartColors"
+        >
+        </canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-card class="ion-margin-bottom">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Gastos Mensuales</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-wrapper">
+        <canvas
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+        >
+        </canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-margin-bottom">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Servicios</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-wrapper">
+        <canvas
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+        >
+        </canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-margin-bottom">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Productos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-wrapper">
+        <canvas
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+        >
+        </canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

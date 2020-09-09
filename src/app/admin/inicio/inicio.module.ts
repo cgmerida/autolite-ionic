@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { InicioPageRoutingModule } from './inicio-routing.module';
 
 import { InicioPage } from './inicio.page';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InicioPageRoutingModule
+    InicioPageRoutingModule,
+    ChartsModule
   ],
   declarations: [InicioPage]
 })
