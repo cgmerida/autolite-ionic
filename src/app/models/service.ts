@@ -6,5 +6,6 @@ export class Service {
   price: number;
   createdAt: Date;
   updatedAt: Date;
+  addProducts?: boolean;
   products?: Product[];
 }

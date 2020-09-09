@@ -20,7 +20,6 @@ export interface Order {
   // totalPrice?: number;
   progress: number;
   status: string;
-  addProducts?: boolean;
   owner: User["uid"] | User;
   doneAt?: Timestamp | Date;
   createdAt: Timestamp | Date;

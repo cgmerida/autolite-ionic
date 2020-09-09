@@ -77,6 +77,20 @@ export class OrdersFormComponent implements OnInit {
       }).length > 0;
   }
 
+  delService(serviceUid) {
+    this.order.services.splice(this.order.services.findIndex(service => service.uid === serviceUid), 1)
+  }
+
+  delProduct(serviceUid, productUid) {
+    this.order.services.forEach(service => {
+      if (service.uid === serviceUid) {
+        service.products.splice(
+          service.products.findIndex(product => product.uid === productUid)
+          , 1)
+      }
+    })
+  }
+
 
   async updateOrder() {
 
@@ -92,7 +106,7 @@ export class OrdersFormComponent implements OnInit {
       await this.orderService.updateOrder({
         uid: this.order.uid,
         progress: this.order.progress,
-        status: this.order.progress == 100 ? 'Completado': this.order.status,
+        status: this.order.progress == 100 ? 'Completado' : this.order.status,
         services: this.order.services
       })
 

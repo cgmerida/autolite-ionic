@@ -1,8 +1,7 @@
-
 <ion-header class="ion-no-border">
   <ion-toolbar translucent class="ion-text-center">
     <ion-buttons slot="start">
-      <ion-button >Atras</ion-button>
+      <ion-button>Atras</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button class="ion-invisible">Atras</ion-button>
@@ -49,7 +48,7 @@
       </div> -->
     </ion-card-content>
 
-    <ion-card-content *ngIf="order.services">
+    <ion-card-content *ngIf="order.services && order.services.length > 0">
       <ion-card-title>Servicios</ion-card-title>
       <ion-list lines="none">
         <div *ngFor="let service of order.services">
@@ -59,7 +58,7 @@
               {{service.price | currency:'GTQ':'symbol-narrow'}}
             </ion-badge>
           </ion-item>
-          <ion-item *ngIf="service.products">
+          <ion-item *ngIf="service.products && service.products.length > 0">
             <ion-list>
               <ion-item *ngFor="let product of service.products">
                 <ion-label>{{product.name}}</ion-label>

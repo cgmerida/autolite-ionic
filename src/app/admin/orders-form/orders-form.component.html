@@ -58,11 +58,11 @@
       <ion-item
         (click)="service.addProducts = service.addProducts ? false : true"
       >
-        <ion-checkbox
+        <!-- <ion-checkbox
           slot="start"
           color="success"
           class="ion-no-margin"
-        ></ion-checkbox>
+        ></ion-checkbox> -->
         <ion-grid>
           <ion-row>
             <ion-col size="8">
@@ -74,7 +74,12 @@
           </ion-row>
         </ion-grid>
 
-        <ion-button class="ion-no-margin" color="danger" slot="end">
+        <ion-button
+          class="ion-no-margin"
+          color="danger"
+          slot="end"
+          (click)="delService(service.uid);"
+        >
           <ion-icon name="trash" slot="icon-only"></ion-icon>
         </ion-button>
         <ion-icon
@@ -88,9 +93,13 @@
             <ion-grid>
               <ion-row>
                 <ion-col size="8">Producto</ion-col>
-                <ion-col size="4" class="ion-text-right">Precio</ion-col>
+                <ion-col class="ion-text-right">Precio</ion-col>
               </ion-row>
             </ion-grid>
+
+            <ion-button class="ion-no-margin ion-invisible" slot="end">
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-button>
           </ion-item>
           <ion-item
             *ngFor="let product of service.products"
@@ -101,12 +110,21 @@
               <ion-grid>
                 <ion-row class="ion-align-items-center">
                   <ion-col size="8">{{ product.name }}</ion-col>
-                  <ion-col>
+                  <ion-col class="ion-text-right">
                     {{ product.price | currency: "GTQ":"symbol-narrow" }}
                   </ion-col>
                 </ion-row>
               </ion-grid>
             </ion-label>
+
+            <ion-button
+              class="ion-no-margin"
+              color="danger"
+              slot="end"
+              (click)="delProduct(service.uid, product.uid)"
+            >
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-button>
           </ion-item>
 
           <!-- ITEM PARA AGREGAR PRODUCTOS -->
