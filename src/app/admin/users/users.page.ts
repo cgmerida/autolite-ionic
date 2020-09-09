@@ -29,4 +29,13 @@ export class UsersPage implements OnInit {
     // })
   }
 
+
+  addAdmin(userUid) {
+    this.userService.updateUser({ uid: userUid, isAdmin: true });
+  }
+
+  removeAdmin(userUid) {
+    this.userService.updateUser({ uid: userUid, isAdmin: false });
+  }
+
 }

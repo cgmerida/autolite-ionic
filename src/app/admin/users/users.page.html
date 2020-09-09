@@ -13,7 +13,20 @@
 
     <ion-item-sliding *ngFor="let user of users | async">
       <ion-item-options side="start">
-        <ion-item-option expandable color="success">
+        <ion-item-option
+          expandable
+          color="success"
+          *ngIf="!user.isAdmin"
+          (click)="addAdmin(user.uid);"
+        >
+          <ion-icon slot="icon-only" name="shield-checkmark"></ion-icon>
+        </ion-item-option>
+        <ion-item-option
+          expandable
+          color="danger"
+          *ngIf="user.isAdmin"
+          (click)="removeAdmin(user.uid);"
+        >
           <ion-icon slot="icon-only" name="shield-checkmark"></ion-icon>
         </ion-item-option>
       </ion-item-options>

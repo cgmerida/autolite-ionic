@@ -42,7 +42,7 @@ export class UserService {
     )
   }
 
-  updateUser(user: User) {
+  updateUser(user) {
     return this.userCollection.doc<User>(user.uid).update(user);
   }
 }
