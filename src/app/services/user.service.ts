@@ -27,6 +27,11 @@ export class UserService {
       .set({ ...user });
   }
 
+  getUsers() {
+    return this.userCollection.valueChanges();
+  }
+
+
   getUser(uid: User["uid"]) {
     return this.userCollection.doc<User>(uid).valueChanges();
   }

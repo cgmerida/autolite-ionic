@@ -32,6 +32,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
+        path: 'users',
+        loadChildren: () => import('../admin/users/users.module').then(m => m.UsersPageModule)
+      },
+      {
         path: '',
         redirectTo: '/admin/inicio',
         pathMatch: 'full'
