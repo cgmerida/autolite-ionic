@@ -22,7 +22,7 @@ export class CarsFormComponent implements OnInit {
   @Input() update: boolean;
   @Input() car: Car;
 
-  private carsForm: FormGroup;
+  carsForm: FormGroup;
   isSubmitted = false;
   clicked: boolean;
 
@@ -123,7 +123,7 @@ export class CarsFormComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     this.clicked = true;
-    
+
 
     if (!this.carsForm.valid) {
       this.clicked = false;
@@ -135,7 +135,7 @@ export class CarsFormComponent implements OnInit {
     } else {
       this.registrar();
     }
-    
+
   }
 
   async getImg() {
@@ -151,49 +151,61 @@ export class CarsFormComponent implements OnInit {
 
 
   async registrar() {
-    let downloadImg = await this.getImg();
+    let loading = await this.loadingController.create();
+    await loading.present();
+    let downloadImg, res;
 
-    this.loadingController.create()
-      .then(loading => {
-        loading.present();
-        this.carService.addCar({ ...this.carsForm.value, photo: downloadImg })
-          .then((res) => {
-            this.presentAlert(`¡Genial!`, null, res);
-            this.dismiss();
-          })
-          .catch((error) => {
-            this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
-            console.log(error);
-          })
-          .finally(() => {
-            loading.dismiss();
-          });
-      });
+    try {
+      if (this.uploadFile) {
+        downloadImg = await this.getImg();
+
+        res = await this.carService.addCar({ ...this.carsForm.value, photo: downloadImg });
+      } else {
+        res = await this.carService.addCar({ ...this.carsForm.value });
+      }
+
+      await this.presentAlert(`¡Genial!`, null, res);
+      this.dismiss();
+
+    } catch (error) {
+      this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
+    } finally {
+
+      loading.dismiss();
+    }
+
   }
 
   async actualizar() {
-    let downloadImg = await this.getImg();
+    let loading = await this.loadingController.create();
+    await loading.present();
+    let downloadImg, res;
 
-    this.loadingController.create()
-      .then(loading => {
-        loading.present();
-        this.carService.updateCar({
+    try {
+      if (this.uploadFile) {
+        downloadImg = await this.getImg();
+
+        res = await this.carService.updateCar({
           uid: this.car.uid,
           ...this.carsForm.value,
           photo: downloadImg
-        })
-          .then(() => {
-            this.presentAlert(`¡Genial!`, null, `Información Actualizada.`);
-            this.dismiss();
-          })
-          .catch((error) => {
-            this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
-            console.log(error);
-          })
-          .finally(() => {
-            loading.dismiss();
-          });
-      });
+        });
+      } else {
+        res = await this.carService.updateCar({
+          uid: this.car.uid,
+          ...this.carsForm.value,
+        });
+      }
+
+      this.presentAlert(`¡Genial!`, null, `Información Actualizada.`);
+      this.dismiss();
+
+    } catch (error) {
+      this.presentAlert(`Error`, null, `Problema actualizando el vehículo`);
+    } finally {
+
+      loading.dismiss();
+    }
   }
 
   changeValue(value) {

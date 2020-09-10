@@ -10,7 +10,7 @@ import { User } from 'src/app/models/user';
 })
 export class ProfilePage implements OnInit {
 
-  private user: User;
+  user: User;
 
   constructor(
     private authService: AuthService,
@@ -22,6 +22,10 @@ export class ProfilePage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  async logOut() {
+    await this.authService.SignOut();
   }
 
 }

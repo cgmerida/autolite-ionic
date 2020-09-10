@@ -33,13 +33,17 @@ export class VerifyEmailPage implements OnInit {
               .then(() => {
                 loading.dismiss();
                 if (user && user.emailVerified) {
-                  this.router.navigate(['/app/inicio']);
+                  this.router.navigate(['/']);
                 } else {
                   this.presentAlert('No has verificado tu correo');
                 }
               })
           });
       });
+  }
+
+  async enviarCorreo() {
+    await this.authService.SendVerificationMail()
   }
 
   async presentAlert(msg) {

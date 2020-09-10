@@ -12,10 +12,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ServicesPage implements OnInit {
 
-  private services: Observable<Service[]>;
-
-
-  private servicesForm: FormGroup;
+  services: Observable<Service[]>;
+  servicesForm: FormGroup;
   isSubmitted = false;
 
 

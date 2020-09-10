@@ -13,7 +13,7 @@ export class OrdersPage implements OnInit {
 
   orders: Observable<Order[]>;
 
-  private statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success" };
+  statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success" };
 
   constructor(private orderService: OrderService) {
 

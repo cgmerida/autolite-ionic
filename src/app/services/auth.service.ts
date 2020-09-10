@@ -68,7 +68,7 @@ export class AuthService {
     return this.fireAuth.signInWithEmailAndPassword(email, password
     ).then((result) => {
       this.ngZone.run(() => {
-        this.router.navigate(['/app/inicio']);
+        this.router.navigate(['/app']);
       })
       this.storeUserProvider(result.user);
     }).catch((err) => {
@@ -93,7 +93,7 @@ export class AuthService {
     return this.fireAuth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['/app/inicio']);
+          this.router.navigate(['/app']);
         })
         this.storeUserProvider(result.user);
       }).catch((err) => {

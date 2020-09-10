@@ -12,8 +12,7 @@ import { Km } from 'src/app/models/app/km';
 })
 export class CarsPage implements OnInit {
 
-  private cars: Car[];
-
+  cars: Car[];
 
   constructor(
     private modalController: ModalController,

@@ -21,11 +21,11 @@ export class RatingPage implements OnInit {
   };
 
   private orderId: Order["uid"];
-  private progress = 0;
-  private questions: Observable<Questions["questions"]>;
+  progress = 0;
+  questions: Observable<Questions["questions"]>;
   private answers = [];
-  private endSurvey = false;
-  private completed = false;
+  endSurvey = false;
+  completed = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -105,7 +105,7 @@ export class RatingPage implements OnInit {
           .finally(() => {
             loading.dismiss();
             setTimeout(() => {
-              this.router.navigate(["app/servicios"]);
+              this.router.navigate(["/app/servicios"]);
             }, 1500);
           });
       });

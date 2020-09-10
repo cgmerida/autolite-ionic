@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CarService } from 'src/app/services/app/car.service';
+import { Observable } from 'rxjs';
+import { Car } from 'src/app/models/app/car';
 
 @Component({
   selector: 'app-cars',
@@ -9,12 +11,15 @@ import { CarService } from 'src/app/services/app/car.service';
 })
 export class CarsPage implements OnInit {
 
+  cars: Observable<Car[]>
+
   constructor(
     private modalController: ModalController,
     private carService: CarService
   ) { }
 
   ngOnInit() {
+    this.cars = this.carService.getAllCars();
   }
 
   // async presentModal() {

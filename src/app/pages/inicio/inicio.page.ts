@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/app/order.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -22,15 +21,14 @@ export class InicioPage implements OnInit {
   //   spaceBetween: 10
   // };
 
-  private user: User;
+  user: User;
 
-  private totalOrders = 0;
-  private loading = true;
-  private totalExpenses = 0;
+  totalOrders = 0;
+  loading = true;
+  totalExpenses = 0;
 
   constructor(
     private orderServcice: OrderService,
-    private authService: AuthService,
     private userService: UserService,
   ) {
 

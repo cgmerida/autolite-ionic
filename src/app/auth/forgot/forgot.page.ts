@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPage implements OnInit {
 
-  private enviado: boolean = false;
+  enviado: boolean = false;
 
   constructor() { }
 

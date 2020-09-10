@@ -18,10 +18,10 @@ import { Service } from 'src/app/models/service';
 })
 export class OrderFormComponent implements OnInit {
 
-  private orderForm: FormGroup;
-  private cars: Observable<Car[]>;
-  private services: Observable<Service[]>;
-  private minDate = new Date().toDateString();
+  orderForm: FormGroup;
+  cars: Observable<Car[]>;
+  services: Observable<Service[]>;
+  minDate = new Date().toDateString();
 
   clicked: boolean;
   servicesOrder: Service[];
@@ -31,18 +31,17 @@ export class OrderFormComponent implements OnInit {
     private modalController: ModalController,
     private loadingController: LoadingController,
     private alertCtl: AlertController,
-    private errorService: ErrorService,
     private orderService: OrderService,
     private carService: CarService,
     private serviceService: ServiceService,
   ) {
 
-    this.cars = carService.getCarsByUser();
-    this.services = serviceService.getServices();
-
   }
 
   ngOnInit() {
+    this.cars = this.carService.getCarsByUser();
+    this.services = this.serviceService.getServices();
+
     this.orderForm = this.formBuilder.group({
       car: [null, Validators.required],
       date: [null, Validators.required],

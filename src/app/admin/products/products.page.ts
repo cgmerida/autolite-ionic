@@ -12,9 +12,8 @@ import { Product } from 'src/app/models/app/product';
 })
 export class ProductsPage implements OnInit {
 
-  private products: Observable<Product[]>;
-
-  private productsForm: FormGroup;
+  products: Observable<Product[]>;
+  productsForm: FormGroup;
   isSubmitted = false;
 
 

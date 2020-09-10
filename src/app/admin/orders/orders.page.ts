@@ -15,7 +15,7 @@ export class OrdersPage implements OnInit {
   orders: Observable<Order[]>;
   orderCompleted = false;
 
-  private statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success","Cancelado": "danger" };
+  statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success","Cancelado": "danger" };
 
   constructor(
     private loadingController: LoadingController,
