@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -15,35 +16,40 @@ export class VerifyEmailPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private router: Router,
+    private userService: UserService,
   ) {
   }
 
   ngOnInit() {
   }
 
-  enviarInicio() {
+  async enviarInicio() {
 
-    this.loadingController.create()
-      .then(loading => {
-        loading.present();
+    let loading = await this.loadingController.create()
 
-        this.authService.getAuthUser()
-          .then((user) => {
-            user.reload()
-              .then(() => {
-                loading.dismiss();
-                if (user && user.emailVerified) {
-                  this.router.navigate(['/']);
-                } else {
-                  this.presentAlert('No has verificado tu correo');
-                }
-              })
-          });
-      });
+    loading.present();
+
+    let fireUser = await this.authService.getAuthUser();
+
+    await fireUser.reload();
+
+
+    await loading.dismiss();
+
+
+    if (fireUser && fireUser.emailVerified) {
+      this.userService.updateUser({
+        uid: fireUser.uid,
+        emailVerified: fireUser.emailVerified
+      })
+      this.router.navigate(['/app/inicio']);
+    } else {
+      this.presentAlert('No has verificado tu correo');
+    }
   }
 
   async enviarCorreo() {
-    await this.authService.SendVerificationMail()
+    await this.authService.SendVerificationMail();
   }
 
   async presentAlert(msg) {

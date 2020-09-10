@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { User } from "src/app/models/user";
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { AuthService } from './auth.service';
-import { map, take, flatMap } from 'rxjs/operators';
+import { flatMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +14,6 @@ export class UserService {
 
   constructor(
     private db: AngularFirestore,
-    private authService: AuthService,
     private fireAuth: AngularFireAuth,
   ) {
     this.userCollection = this.db.collection<User>('users');
@@ -37,9 +34,17 @@ export class UserService {
   }
 
   getAuthUser() {
-    return this.fireAuth.authState.pipe(
-      flatMap(fireUser => fireUser ? this.userCollection.doc<User>(fireUser.uid).valueChanges() : [])
-    )
+    return this.fireAuth.authState
+      .pipe(
+        flatMap(fireUser => {
+          if (fireUser) {
+            fireUser.reload();
+            return this.db.doc<User>(`users/${fireUser.uid}`).valueChanges();
+          } else {
+            return null;
+          }
+        }),
+      );
   }
 
   updateUser(user) {

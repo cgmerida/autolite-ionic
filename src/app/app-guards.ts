@@ -3,11 +3,11 @@ import { redirectLoggedInTo } from '@angular/fire/auth-guard';
 import { map } from 'rxjs/operators';
 import { User } from 'firebase';
 
-export const redirectLoggedInToInicio = () => redirectLoggedInTo(['/app']);
+export const redirectLoggedInToInicio = () => redirectLoggedInTo(['admin/inicio']);
 
 export const redirectVerified = () =>
     map((user: User) => {
-        return user ? (!user.emailVerified ? true : ['/app']) : ['/login'];
+        return user ? (!user.emailVerified ? true : ['admin/inicio']) : ['/login'];
     });
 
 export const redirectOrVerifyEmail = () =>

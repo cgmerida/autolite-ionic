@@ -16,9 +16,8 @@
       <div class="avatar">
         <img
           *ngIf="user"
-          [src]="user.photoURL || 
-          'https://ui-avatars.com/api/?size=200&background=079db6&color=fff&name=' + user.firstname + '+' + user.lastname || 
-          'https://southernplasticsurgery.com.au/wp-content/uploads/2013/10/user-placeholder.png'"
+          [src]="user.photoURL"
+          (error)="updateUrl()"
         />
       </div>
     </div>
@@ -26,7 +25,8 @@
 
   <div class="title">
     <h1 class="ion-text-center ion-margin">
-      {{user?.firstname ? user?.firstname + ' ' + user?.lastname : user?.displayName | titlecase}}
+      {{user?.firstname ? user?.firstname + ' ' + user?.lastname :
+      user?.displayName | titlecase}}
     </h1>
   </div>
 </ion-content>

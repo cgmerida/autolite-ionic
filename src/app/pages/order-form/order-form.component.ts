@@ -70,6 +70,8 @@ export class OrderFormComponent implements OnInit {
   async registrar() {
     let order = this.orderForm.value;
 
+    console.log(order);
+
     this.services.subscribe(services => {
       this.servicesOrder = services.filter(service => order.services.includes(service.uid));
     });

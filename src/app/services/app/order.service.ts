@@ -67,7 +67,13 @@ export class OrderService {
   }
 
   async getOrdersByUser(): Promise<Observable<Order[]>> {
-    let uid = await this.authService.getAuthUserUid();
+    let uid: string;
+    try {
+      uid = await this.authService.getAuthUserUid();
+    } catch (err) {
+      console.log(err);
+      return;
+    }
 
     return this.db.collection<Order>('orders', ref => {
       return ref.where('owner', '==', uid).orderBy('date', 'desc');

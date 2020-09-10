@@ -37,10 +37,10 @@ export class CarService {
     return this.db.doc(`/km/${uid}`).valueChanges();
   }
 
-  addCar(car: Car) {
+  async addCar(car: Car) {
     car.createdAt = new Date();
     car.updatedAt = new Date();
-    car.owner = this.authService.getAuthUserUid();
+    car.owner = await this.authService.getAuthUserUid();
     return this.carCollection.add({ ...car })
       .then(() => {
         return `Carro registrado`;

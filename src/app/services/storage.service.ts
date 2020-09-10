@@ -11,7 +11,11 @@ export class StorageService {
 
   constructor(private storage: AngularFireStorage,
     private authService: AuthService) {
-    this.uid = authService.getAuthUserUid();
+    this.loadUser();
+  }
+
+  async loadUser() {
+    this.uid = await this.authService.getAuthUserUid();
   }
 
   uploadCarImg(img, name) {

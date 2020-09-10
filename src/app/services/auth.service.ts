@@ -24,12 +24,25 @@ export class AuthService {
     private errors: ErrorService,
   ) {
     this.fireAuth.authState.subscribe(fireUser => {
-      this.authUser = fireUser;
+      if (fireUser)
+        this.authUser = fireUser;
     })
   }
 
-  getAuthUserUid() {
-    return this.authUser.uid;
+  getAuthUserUid(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (this.authUser) {
+        resolve(this.authUser.uid)
+      } else {
+        return this.fireAuth.currentUser
+          .then(fireUser => {
+            if (fireUser)
+              resolve(fireUser.uid);
+          })
+      }
+      reject(`No esta disponible el usuario`);
+    })
+
   }
 
   getAuthUser() {
@@ -62,21 +75,6 @@ export class AuthService {
       })
   }
 
-
-  // Login in with email/password
-  LogIn(email: string, password: string) {
-    return this.fireAuth.signInWithEmailAndPassword(email, password
-    ).then((result) => {
-      this.ngZone.run(() => {
-        this.router.navigate(['/app']);
-      })
-      this.storeUserProvider(result.user);
-    }).catch((err) => {
-      this.presentAlert('Error', 'Problema iniciando sesión',
-        this.errors.printErrorByCode(err.code));
-    })
-  }
-
   // Sign in with Gmail
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider());
@@ -88,12 +86,26 @@ export class AuthService {
     return this.AuthLogin(new auth.FacebookAuthProvider());
   }
 
+  // Login in with email/password
+  LogIn(email: string, password: string) {
+    return this.fireAuth.signInWithEmailAndPassword(email, password
+    ).then((result) => {
+      this.ngZone.run(() => {
+        this.router.navigate(['/app/inicio']);
+      })
+      // this.storeUser(result.user);
+    }).catch((err) => {
+      this.presentAlert('Error', 'Problema iniciando sesión',
+        this.errors.printErrorByCode(err.code));
+    })
+  }
+
   // Auth providers
   private AuthLogin(provider) {
     return this.fireAuth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['/app']);
+          this.router.navigate(['/app/inicio']);
         })
         this.storeUserProvider(result.user);
       }).catch((err) => {
@@ -101,7 +113,6 @@ export class AuthService {
       })
   }
 
-  // Store user in this.storage
   private storeUserProvider(user) {
 
     const userRef: AngularFirestoreDocument<User> = this.fireStore.doc<User>(`users/${user.uid}`);
@@ -120,23 +131,22 @@ export class AuthService {
     })
   }
 
-  // Store user in this.storage
   private storeUser(user) {
+
+    console.log(user);
 
     const userRef: AngularFirestoreDocument<User> = this.fireStore.doc<User>(`users/${user.uid}`);
 
     const userData = {
       uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      createdAt: new Date(),
       updatedAt: new Date(),
     }
-    return userRef.set(userData, {
-      merge: true
-    })
+    userRef.update(userData);
+
+    userRef.valueChanges().subscribe(user => {
+      console.log(user);
+    });
   }
 
   // Sign-out 

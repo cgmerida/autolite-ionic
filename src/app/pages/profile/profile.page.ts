@@ -17,15 +17,21 @@ export class ProfilePage implements OnInit {
     private userService: UserService,
   ) {
     this.userService.getAuthUser().subscribe(user => {
-      this.user = user;
+      if (user) {
+        this.user = user;
+        this.user.photoURL = this.user.photoURL ? this.user.photoURL :
+          `https://ui-avatars.com/api/?size=200&background=079db6&color=fff&name=${user.firstname}+${user.lastname}`;
+      }
     })
   }
-
   ngOnInit() {
   }
 
   async logOut() {
     await this.authService.SignOut();
+  }
+  updateUrl() {
+    this.user.photoURL = 'https://southernplasticsurgery.com.au/wp-content/uploads/2013/10/user-placeholder.png';
   }
 
 }

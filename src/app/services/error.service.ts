@@ -21,6 +21,8 @@ export class ErrorService {
     'auth/wrong-password': 'La contraseña no es correcta.',
     'auth/user-disabled': 'La cuenta ha sido deshabilitada por el administrador.',
     'auth/email-already-in-use': 'El correo ya esta en uso en otra cuenta.',
+    'auth/network-request-failed': 'No se pudo establecer conexión a internet.',
+    'auth/too-many-requests': 'Se han hecho demasiados intentos. Espere 1 minuto para volver a intentar',
     'storage/invalid-argument': 'Archivo no válido.'
   } as MessagesIndex;
 

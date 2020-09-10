@@ -33,7 +33,9 @@ export class InicioPage implements OnInit {
   ) {
 
     this.userService.getAuthUser().subscribe(user => {
-      this.user = user;
+      if (user) {
+        this.user = user;
+      }
     });
   }
 
