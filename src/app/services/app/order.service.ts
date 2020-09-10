@@ -58,6 +58,14 @@ export class OrderService {
       )
   }
 
+  async getOnlyOrders(): Promise<Observable<Order[]>> {
+    let uid = await this.authService.getAuthUserUid();
+
+    return this.db.collection<Order>('orders', ref => {
+      return ref.orderBy('date', 'desc');
+    }).valueChanges()
+  }
+
   async getOrdersByUser(): Promise<Observable<Order[]>> {
     let uid = await this.authService.getAuthUserUid();
 

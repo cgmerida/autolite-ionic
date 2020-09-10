@@ -5,7 +5,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { AdminRedirectGuard } from './guards/adminRedirect.guard';
 
 import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { redirectLoggedInToInicio, redirectOrVerifyEmail } from './app-guards';
+import { redirectLoggedInToInicio, redirectOrVerifyEmail, redirectVerified } from './app-guards';
 
 
 const routes: Routes = [
@@ -32,7 +32,7 @@ const routes: Routes = [
   {
     path: 'verify-email',
     loadChildren: () => import('./auth/verify-email/verify-email.module').then(m => m.VerifyEmailPageModule),
-    ...canActivate(redirectLoggedInToInicio)
+    ...canActivate(redirectVerified)
   },
   {
     path: 'app',

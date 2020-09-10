@@ -37,4 +37,8 @@ export class ResponseService {
         return `Respuestas registradas`;
       });
   }
+
+  getResponses() {
+    return this.responsesCollection.valueChanges();
+  }
 }

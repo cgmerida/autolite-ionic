@@ -8,6 +8,7 @@ import { InicioPageRoutingModule } from './inicio-routing.module';
 
 import { InicioPage } from './inicio.page';
 import { ChartsModule } from 'ng2-charts';
+import { IonicRatingModule } from 'ionic-rating';
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { ChartsModule } from 'ng2-charts';
     FormsModule,
     IonicModule,
     InicioPageRoutingModule,
-    ChartsModule
+    ChartsModule,
+    IonicRatingModule
   ],
   declarations: [InicioPage]
 })
-export class InicioPageModule {}
+export class InicioPageModule { }

@@ -48,7 +48,11 @@
     <ion-grid>
       <ion-row class="ion-justify-content-center ion-margin-bottom">
         <ion-col size="2" class="ion-justify-content-center">
-          <ion-img src="assets/img/redes/fb.svg" alt="Facebook"></ion-img>
+          <ion-img
+            src="assets/img/redes/fb.svg"
+            alt="Facebook"
+            (click)="authFb();"
+          ></ion-img>
         </ion-col>
 
         <ion-col size="2" class="ion-justify-content-center">
@@ -63,7 +67,7 @@
           <ion-img
             src="assets/img/redes/google-c.svg"
             alt="Google"
-            (click)="authService.GoogleAuth()"
+            (click)="authGoogle();"
           ></ion-img>
         </ion-col>
       </ion-row>
@@ -73,9 +77,7 @@
       <ion-row class="ion-justify-content-center ion-margin-bottom">
         <div class="ion-text-center">
           ¿No tienes cuenta?
-          <a routerLink="/register" routerDirection="forward">
-            Registrate
-          </a>
+          <a routerLink="/register" routerDirection="forward"> Registrate </a>
         </div>
       </ion-row>
 

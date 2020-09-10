@@ -8,8 +8,8 @@
       <ion-list lines="full" class="ion-no-margin ion-no-padding">
         <ion-item color="primary">
           <ion-label position="stacked">
-            Nombre <ion-text color="danger">*</ion-text></ion-label
-          >
+            Nombre <ion-text color="danger">*</ion-text>
+          </ion-label>
           <ion-input
             required
             formControlName="firstname"
@@ -25,9 +25,9 @@
         </span>
 
         <ion-item color="primary">
-          <ion-label position="stacked"
-            >Apellido <ion-text color="danger">*</ion-text></ion-label
-          >
+          <ion-label position="stacked">
+            Apellido <ion-text color="danger">*</ion-text>
+          </ion-label>
           <ion-input
             required
             formControlName="lastname"
@@ -43,9 +43,9 @@
         </span>
 
         <ion-item color="primary">
-          <ion-label position="stacked"
-            >Correo <ion-text color="danger">*</ion-text></ion-label
-          >
+          <ion-label position="stacked">
+            Correo <ion-text color="danger">*</ion-text>
+          </ion-label>
           <ion-input required formControlName="email" type="email"></ion-input>
         </ion-item>
 
@@ -57,21 +57,23 @@
         </span>
 
         <ion-item color="primary">
-          <ion-label position="stacked">Telefono</ion-label>
+          <ion-label position="stacked">
+            Telefono <ion-text color="danger">*</ion-text>
+          </ion-label>
           <ion-input type="text" formControlName="tel"></ion-input>
         </ion-item>
 
         <span
           class="error"
-          *ngIf="isSubmitted && errorControl.tel.errors?.pattern"
+          *ngIf="isSubmitted && (errorControl.tel.errors?.required || errorControl.tel.errors?.pattern)"
         >
           El telefono no es válido.
         </span>
 
         <ion-item color="primary">
-          <ion-label position="stacked"
-            >Contraseña <ion-text color="danger">*</ion-text></ion-label
-          >
+          <ion-label position="stacked">
+            Contraseña <ion-text color="danger">*</ion-text>
+          </ion-label>
           <ion-input
             required
             formControlName="password"
@@ -86,10 +88,10 @@
         </span>
 
         <ion-item color="primary">
-          <ion-label position="stacked"
-            >Confirmar Contraseña
-            <ion-text color="danger">*</ion-text></ion-label
-          >
+          <ion-label position="stacked">
+            Confirmar Contraseña
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
           <ion-input
             required
             formControlName="confirmpassword"
@@ -97,10 +99,7 @@
           ></ion-input>
         </ion-item>
 
-        <span
-          class="error"
-          *ngIf="!confirm"
-        >
+        <span class="error" *ngIf="!confirm">
           La contraseña debe coincidir en ambos campos.
         </span>
       </ion-list>
@@ -122,9 +121,7 @@
 
     <div class="ion-text-center">
       ¿Ya tienes cuenta?
-      <a routerLink="/login" routerDirection="root">
-        Inicia Sesión
-      </a>
+      <a routerLink="/login" routerDirection="root"> Inicia Sesión </a>
     </div>
   </div>
 </ion-content>

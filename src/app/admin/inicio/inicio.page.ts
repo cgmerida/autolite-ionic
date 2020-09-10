@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user';
 import { OrderService } from 'src/app/services/app/order.service';
-import { UserService } from 'src/app/services/user.service';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartType } from 'chart.js';
 import { Label, SingleDataSet, monkeyPatchChartJsTooltip, monkeyPatchChartJsLegend } from 'ng2-charts';
+import { Order } from 'src/app/models/app/order';
+import { ResponseService } from 'src/app/services/response.service';
+import { Response } from 'src/app/models/app/responses';
 
 @Component({
   selector: 'app-inicio',
@@ -12,28 +13,19 @@ import { Label, SingleDataSet, monkeyPatchChartJsTooltip, monkeyPatchChartJsLege
 })
 export class InicioPage implements OnInit {
 
+  private orders: Order[];
+  responses: Response[] = [];
 
-  private user: User;
-
-  private totalOrders = 0;
-  private loading = true;
-  private totalExpenses = 0;
-
-
-  // IONIC CHART BAR
-
-  public pieChartOptions: ChartOptions = {
+  // ORDENES X STATUS CHART
+  pieChartOptions: ChartOptions = {
     responsive: true,
     aspectRatio: 1.7,
   };
-  public pieChartLabels: Label[] = ['Nuevo', 'En Progreso', 'Completado', 'Cancelado'];
-  public pieChartData: SingleDataSet = [30, 50, 20, 5];
-  public pieChartType: ChartType = 'pie';
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
-
-
-  chartColors = [
+  pieChartLabels: Label[] = ['Nuevo', 'En Progreso', 'Completado', 'Cancelado'];
+  pieChartData: SingleDataSet = [];
+  pieChartType: ChartType = 'pie';
+  pieChartLegend = true;
+  pieChartColors = [
     {
       backgroundColor: (context) => {
         let i = context.dataIndex;
@@ -52,8 +44,9 @@ export class InicioPage implements OnInit {
   ];
 
 
-
-  // BARS CHART
+  // GENERAL BAR CHART
+  orderChartReady = false;
+  barChartType: ChartType = 'bar';
   barChartOptions: ChartOptions = {
     responsive: true,
     responsiveAnimationDuration: 1000,
@@ -72,53 +65,168 @@ export class InicioPage implements OnInit {
     }
   };
 
-  barChartLabels: Label[] = ['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'];
-  barChartType: ChartType = 'bar';
-  barChartLegend = false;
-  barChartPlugins = [];
+  // GASTOS X MES
+  private months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo",
+    "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  barChartData: ChartDataSets[] = [
-    { data: [45, 37, 60, 70, 46, 33], label: 'Best Fruits' }
+
+  expensesChartLabels: Label[] = [];
+  expensesChartType: ChartType = 'bar';
+  expensesChartLegend = false;
+  expensesChartData: SingleDataSet = [];
+  expensesChartColors = [
+    {
+      backgroundColor: function (context) {
+        var i = context.dataIndex;
+        return i % 2 ? 'rgba(7,157,182,.5)' : 'rgba(82,96,255,.5)';
+      }
+    },
   ];
 
 
+  // SERVICIOS
+  servicesChartLabels: Label[] = [];
+  servicesChartData: SingleDataSet = [];
+  servicesChartLegend = false;
+
+  chartColors = [{
+    backgroundColor: [
+      'rgba(2,2,62,.5)', 'rgba(7,157,182,.5)', 'rgba(82,96,255,.5)',
+      'rgba(45,211,111,.5)', 'rgba(235,68,90,.5)',
+    ]
+  }];
+
+  // PRODUCTS
+  productsChartLabels: Label[] = [];
+  productsChartData: SingleDataSet = [];
+  productsChartLegend = false;
 
 
   constructor(
     private orderServcice: OrderService,
-    private userService: UserService,
+    private responseService: ResponseService,
   ) {
-    this.userService.getAuthUser().subscribe(user => {
-      this.user = user;
-    });
 
+    this.getAvgRating();
 
+    this.orderServcice.getOnlyOrders()
+      .then(orders$ => {
+        orders$.subscribe(orders => {
+          this.orders = orders;
+
+          this.ordersChart();
+        })
+      });
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
   }
+  ngOnInit() { }
 
-  ngOnInit() {
-
-    this.orderServcice.getCompletedOrders()
-      .then(orders$ => {
-        orders$.subscribe(orders => {
-
-          orders.forEach(order => {
-            this.totalOrders++;
-            order.services.forEach(service => {
-              this.totalExpenses += Math.round(service.price * 100) / 100;
-              if (service.hasOwnProperty('products') && service.products.length > 0) {
-                service.products.forEach(product => {
-                  this.totalExpenses += Math.round(product.price * 100) / 100;
-                });
-              }
-            })
+  getAvgRating() {
+    this.responseService.getResponses()
+      .subscribe(orderResp => {
+        orderResp.forEach(resp => {
+          resp.responses.forEach(r => {
+            // Mapear todo el rating
+            let i = this.responses.findIndex((resp => resp.question == r.question));
+            if (i !== -1) {
+              this.responses[i].rating += r.rating;
+            } else {
+              this.responses.push(r);
+            }
           })
-
-          this.loading = false;
-
         })
+        // Obtener rating promedio
+        this.responses = this.responses.map(resp => {
+          resp.rating = 5 * (resp.rating / (5 * orderResp.length))
+          return resp;
+        });
       });
+  }
+
+  ordersChart() {
+    let orders = Array.from(this.orders);
+
+    // Datos status
+    let pieDataSchema = {
+      'Nuevo': 0,
+      'En Progreso': 0,
+      'Completado': 0,
+      'Cancelado': 0
+    };
+
+    // Datos expenses
+    let expenses: { [key: string]: number } = {};
+
+    // Datos servicios
+    let servicios: { [key: string]: number } = {};
+
+    // Datos Productos
+    let productos: { [key: string]: number } = {};
+
+    orders.reverse().forEach((order) => {
+      // Obtener no. de ordenes por status
+      pieDataSchema[order.status]++;
+
+      // Obtener gastos de ordenes
+      if (order.status == 'Completado') {
+        let monthNum = order.date.toDate().getMonth();
+        if (!expenses.hasOwnProperty(this.months[monthNum])) {
+          expenses[this.months[monthNum]] = 0;
+        }
+        expenses[this.months[monthNum]] += this.sumTotal(order);
+      }
+
+      // Obtener servicios
+      order.services.forEach(service => {
+        if (!servicios.hasOwnProperty(service.name)) {
+          servicios[service.name] = 0;
+        }
+        servicios[service.name]++;
+
+        // obtener conteo productos
+        if (service.products) {
+          service.products.forEach(product => {
+            if (!productos.hasOwnProperty(product.name)) {
+              productos[product.name] = 0;
+            }
+            productos[product.name]++;
+          });
+        }
+      })
+    });
+
+
+    // EXPENSES X MONTH
+    this.expensesChartLabels = Object.keys(expenses);
+    this.expensesChartData = Object.values(expenses);
+
+    // ORDERS X STATUS
+    this.pieChartData = Object.values(pieDataSchema);
+
+    // Servicios
+    this.servicesChartLabels = Object.keys(servicios);
+    this.servicesChartData = Object.values(servicios);
+
+    // Productos
+    this.productsChartLabels = Object.keys(productos);
+    this.productsChartData = Object.values(productos);
+
+    this.orderChartReady = true;
+  }
+
+  sumTotal(order: Order) {
+    let total = 0;
+    order.services.forEach(service => {
+      total += Math.round(service.price * 100) / 100;
+      if (service.hasOwnProperty('products') && service.products.length > 0) {
+        service.products.forEach(product => {
+          total += Math.round(product.price * 100) / 100;
+        });
+      }
+    });
+
+    return total;
   }
 
 }

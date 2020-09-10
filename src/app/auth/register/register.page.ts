@@ -6,6 +6,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user';
 import { ErrorService } from 'src/app/services/error.service';
+import { auth } from 'firebase';
 
 @Component({
   selector: 'app-register',
@@ -32,7 +33,7 @@ export class RegisterPage implements OnInit {
       firstname: [null, Validators.required],
       lastname: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
-      tel: [null, Validators.pattern('[0-9]{8}')],
+      tel: [null, [Validators.required, Validators.pattern('[0-9]{8}')]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       confirmpassword: [null, [Validators.required, Validators.minLength(8)]]
     });
@@ -58,35 +59,36 @@ export class RegisterPage implements OnInit {
     this.register(this.registerForm.get('email').value, this.registerForm.get('password').value);
   }
 
-  register(email, password) {
-    this.loadingController.create()
-      .then(loading => {
-        loading.present();
-        this.authService.RegisterUser(email, password)
-          .then((res) => {
-            let user: User = {
-              uid: res.user.uid,
-              ...this.registerForm.value,
-              createdAt: new Date(),
-              updatedAt: new Date()
-            };
+  async register(email, password) {
+    let loading = await this.loadingController.create();
+    await loading.present();
 
-            return this.userService.addUser(user);
-          })
-          .then(() => {
-            return this.authService.SendVerificationMail();
-          })
-          .then(() => {
-            this.router.navigate(['verify-email']);
-          })
-          .catch((error) => {
-            console.log(error);
-            this.presentAlert(this.errors.printErrorByCode(error.code));
-          })
-          .finally(() => {
-            loading.dismiss();
-          });
-      })
+    try {
+      let authUser = await this.authService.RegisterUser(email, password);
+      let temp = this.registerForm.value;
+
+      delete temp.password;
+      delete temp.confirmpassword;
+
+      let user: User = {
+        uid: authUser.user.uid,
+        emailVerified: authUser.user.emailVerified,
+        ...temp,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      await this.userService.addUser(user);
+      await this.authService.SendVerificationMail();
+
+      await this.router.navigate(['verify-email']);
+
+    } catch (err) {
+      await this.presentAlert(this.errors.printErrorByCode(err.code));
+    } finally {
+      await loading.dismiss();
+    }
+
   }
 
 

@@ -3,6 +3,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-users',
@@ -15,27 +16,47 @@ export class UsersPage implements OnInit {
 
   constructor(
     private userService: UserService,
-    private fireAuth: AngularFireAuth,
+    private loadingController: LoadingController,
   ) { }
 
   ngOnInit() {
     this.users = this.userService.getUsers();
+  }
 
-    // this.fireAuth.authState.subscribe(fireUser => {
-    //   fireUser.delete()
-    // });
-    // this.fireAuth.currentUser.then(fireUser => {
-    //   fireUser.delete()
-    // })
+  async addAdmin(userUid) {
+    const loading = await this.loadingController.create();
+    await loading.present();
+    await this.userService.updateUser({ uid: userUid, isAdmin: true });
+    await loading.dismiss();
+  }
+
+  async removeAdmin(userUid) {
+    const loading = await this.loadingController.create();
+    await loading.present();
+    await this.userService.updateUser({ uid: userUid, isAdmin: false });
+    await loading.dismiss();
+  }
+
+  async lockUser(userUid) {
+    const loading = await this.loadingController.create();
+    await loading.present();
+    await this.userService.updateUser({ uid: userUid, disabled: true });
+    await loading.dismiss();
+  }
+
+  async unlockUser(userUid) {
+    const loading = await this.loadingController.create();
+    await loading.present();
+    await this.userService.updateUser({ uid: userUid, disabled: false });
+    await loading.dismiss();
   }
 
 
-  addAdmin(userUid) {
-    this.userService.updateUser({ uid: userUid, isAdmin: true });
-  }
-
-  removeAdmin(userUid) {
-    this.userService.updateUser({ uid: userUid, isAdmin: false });
+  async delUser(userUid) {
+    const loading = await this.loadingController.create();
+    await loading.present();
+    await this.userService.delUser({ uid: userUid });
+    await loading.dismiss();
   }
 
 }

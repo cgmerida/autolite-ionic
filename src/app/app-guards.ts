@@ -5,6 +5,11 @@ import { User } from 'firebase';
 
 export const redirectLoggedInToInicio = () => redirectLoggedInTo(['app/inicio']);
 
+export const redirectVerified = () =>
+    map((user: User) => {
+        return user ? (!user.emailVerified ? true : ['/app/inicio']) : ['/login'];
+    });
+
 export const redirectOrVerifyEmail = () =>
     map((user: User) => {
         return user ? (user.emailVerified ? true : ['/verify-email']) : ['/login'];

@@ -24,7 +24,7 @@ export class UserService {
 
   addUser(user: User): Promise<void> {
     return this.userCollection.doc(user.uid)
-      .set({ ...user });
+      .set(user);
   }
 
   getUsers() {
@@ -44,5 +44,9 @@ export class UserService {
 
   updateUser(user) {
     return this.userCollection.doc<User>(user.uid).update(user);
+  }
+
+  delUser(user) {
+    return this.userCollection.doc<User>(user.uid).delete();
   }
 }

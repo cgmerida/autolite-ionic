@@ -15,7 +15,7 @@ export class ErrorService {
     'auth/uid-already-exists': 'Otro usuario ya utiliza el uid proporcionado.',
     'auth/email-already-exists': 'Otro usuario ya está utilizando el correo electrónico proporcionado.',
     'auth/user-not-found': 'No existe ningún registro de usuario que corresponda a las credenciales. Verifique que este registrado.',
-    'auth/operation-not-allowed': 'El proveedor de acceso proporcionado está inhabilitado para tu proyecto de Firebase.',
+    'auth/operation-not-allowed': 'El metodo de autenticación proporcionado está inhabilitado.',
     'auth/auth/invalid-credential': 'La credencial que se usa en la autenticación de los SDK de Admin no se puede emplear para realizar la acción deseada.',
     'auth/phone-number-already-exists': 'Otro usuario ya utiliza el número de telefono proporcionado.',
     'auth/wrong-password': 'La contraseña no es correcta.',

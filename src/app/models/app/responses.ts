@@ -5,7 +5,12 @@ export class Responses {
     uid?: string;
     userUid: User["uid"];
     orderUid: Order["uid"];
-    responses: object; // [{question: "", response:"0-5"}]
+    responses: Response[]; // [{question: "", rating:"0-5"}]
     createdAt: Date;
     updatedAt: Date;
+}
+
+export class Response {
+    question: string;
+    rating: number;
 }

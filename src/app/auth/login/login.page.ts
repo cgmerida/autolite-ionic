@@ -14,48 +14,57 @@ export class LoginPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private alertCtl: AlertController,
+    // private router: Router,
+    // private alertCtl: AlertController,
     private loadingController: LoadingController,
-    private errors: ErrorService,
+    // private errors: ErrorService,
   ) { }
 
   ngOnInit() {
   }
 
-  logIn(email, password) {
-    this.loadingController.create()
-      .then(loading => {
-        loading.present();
-        this.authService.LogIn(email, password)
-          .then((res) => {
-            if (res.user.emailVerified) {
-              this.router.navigate(['/app/inicio']);
-            } else {
-              this.presentAlert('Correo no verificado.');
-              return false;
-            }
-          })
-          .catch((error) => {
-            this.presentAlert(this.errors.printErrorByCode(error.code));
-          })
-          .finally(() => {
-            loading.dismiss();
-          });
-      });
+  async logIn(email, password) {
+
+    let loading = await this.loadingController.create();
+    await loading.present();
+
+    await this.authService.LogIn(email, password);
+
+    await loading.dismiss();
   }
 
+  async authGoogle() {
 
-  async presentAlert(msg) {
-    const alert = await this.alertCtl.create({
-      // cssClass: 'my-custom-class',
-      header: 'Error',
-      subHeader: 'Problema iniciando sesión.',
-      message: msg,
-      buttons: ['OK']
-    });
+    let loading = await this.loadingController.create();
+    await loading.present();
 
-    await alert.present();
+    await this.authService.GoogleAuth();
+
+    await loading.dismiss();
+
   }
+
+  async authFb() {
+
+    let loading = await this.loadingController.create();
+    await loading.present();
+
+    await this.authService.FacebookAuth();
+
+    await loading.dismiss();
+
+  }
+
+  // async presentAlert(msg) {
+  //   const alert = await this.alertCtl.create({
+  //     // cssClass: 'my-custom-class',
+  //     header: 'Error',
+  //     subHeader: 'Problema iniciando sesión.',
+  //     message: msg,
+  //     buttons: ['OK']
+  //   });
+
+  //   await alert.present();
+  // }
 
 }
