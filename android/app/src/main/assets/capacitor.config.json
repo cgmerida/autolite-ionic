@@ -6,7 +6,11 @@
   "webDir": "www",
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchShowDuration": 0,
+      "backgroundColor": "#02023e",
+      "splashFullScreen": true,
+      "splashImmersive": true,
+      "androidScaleType": "CENTER_CROP"
     }
   },
   "linuxAndroidStudioPath": "/snap/android-studio/current/android-studio/bin/studio.sh",
