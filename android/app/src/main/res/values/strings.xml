@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">autolite</string>
-    <string name="title_activity_main">autolite</string>
-    <string name="package_name">com.ion.autolite</string>
-    <string name="custom_url_scheme">com.ion.autolite</string>
+  <string name="app_name">autolite</string>
+  <string name="title_activity_main">autolite</string>
+  <string name="package_name">com.ion.autolite</string>
+  <string name="custom_url_scheme">com.ion.autolite</string>
+
+  <string name="fb_app_name">Autolite</string>
+  <string name="fb_app_id">620801475301223</string>
+  <string name="fb_login_protocol_scheme">fb620801475301223</string>
 </resources>

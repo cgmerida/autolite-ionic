@@ -21,7 +21,10 @@ import { AngularFireStorageModule } from "@angular/fire/storage";
 
 
 import { environment } from 'src/environments/environment';
+
+// AUTH PROVIDERS FOR MOBILE
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
 
 
 @NgModule({
@@ -42,7 +45,8 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFireAuthGuard,
-    GooglePlus
+    GooglePlus,
+    Facebook
 
   ],
   bootstrap: [AppComponent]

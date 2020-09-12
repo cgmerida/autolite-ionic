@@ -49,7 +49,14 @@ export class VerifyEmailPage implements OnInit {
   }
 
   async enviarCorreo() {
+
+    let loading = await this.loadingController.create()
+
+    loading.present();
+
     await this.authService.SendVerificationMail();
+
+    await loading.dismiss();
   }
 
   async presentAlert(msg) {

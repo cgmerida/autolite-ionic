@@ -8,6 +8,7 @@ import { auth, User as fireUser } from 'firebase/app';
 import { AlertController, Platform } from '@ionic/angular';
 import { ErrorService } from './error.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class AuthService {
     private errors: ErrorService,
     private googlePlus: GooglePlus,
     private platform: Platform,
+    private fb: Facebook,
 
   ) {
     this.fireAuth.authState.subscribe(fireUser => {
@@ -81,33 +83,20 @@ export class AuthService {
 
   // Sign in with Gmail
   GoogleAuth() {
-    if (this.platform.is('android')) {
-      this.googleAuthAndroid()
+    if (this.platform.is('capacitor') && this.platform.is('android')) {
+      this.googleAuthAndroid();
     } else {
       return this.AuthLogin(new auth.GoogleAuthProvider());
     }
   }
 
-  async googleAuthAndroid() {
-    const res = await this.googlePlus.login({
-      'webClientId': '320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com',
-      'offline': true
-    });
-
-    try {
-      const resConfirmed = await this.fireAuth.signInWithCredential(auth.GoogleAuthProvider.credential(res.idToken));
-      this.router.navigate(['/app/inicio']);
-      this.storeUserProvider(resConfirmed.user);
-    } catch (err) {
-      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
-    }
-
-  }
-
-
   // Sign in with Facebook
   FacebookAuth() {
-    return this.AuthLogin(new auth.FacebookAuthProvider());
+    if (this.platform.is('capacitor') && this.platform.is('android')) {
+      this.fbAuthAndroid();
+    } else {
+      this.AuthLogin(new auth.FacebookAuthProvider());
+    }
   }
 
   // Login in with email/password
@@ -124,14 +113,45 @@ export class AuthService {
       })
   }
 
+
+  async googleAuthAndroid() {
+    const res = await this.googlePlus.login({
+      'webClientId': '320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com',
+      'offline': true
+    });
+
+    try {
+      const resConfirmed = await this.fireAuth.signInWithCredential(auth.GoogleAuthProvider.credential(res.idToken));
+      this.storeUserProvider(resConfirmed.user);
+      this.router.navigate(['/app/inicio']);
+    } catch (err) {
+      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
+    }
+  }
+
+  async fbAuthAndroid() {
+    const res: FacebookLoginResponse = await this.fb.login(['public_profile', 'email']);
+
+    try {
+      const resConfirmed = await this.fireAuth.signInWithCredential(auth.FacebookAuthProvider.credential(res.authResponse.accessToken));
+      this.storeUserProvider(resConfirmed.user);
+      console.log(resConfirmed.user);
+      this.router.navigate(['/app/inicio']);
+    } catch (err) {
+      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
+    }
+  }
+
+
+
   // Auth providers
   private AuthLogin(provider) {
     return this.fireAuth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
+          this.storeUserProvider(result.user);
           this.router.navigate(['/app/inicio']);
         })
-        this.storeUserProvider(result.user);
       }).catch((err) => {
         this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
       })
