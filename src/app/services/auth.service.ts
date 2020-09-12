@@ -5,8 +5,9 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from "../models/user";
 import { auth, User as fireUser } from 'firebase/app';
-import { AlertController } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { ErrorService } from './error.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,9 @@ export class AuthService {
     private ngZone: NgZone,
     private alertCtl: AlertController,
     private errors: ErrorService,
+    private googlePlus: GooglePlus,
+    private platform: Platform,
+
   ) {
     this.fireAuth.authState.subscribe(fireUser => {
       if (fireUser)
@@ -77,7 +81,27 @@ export class AuthService {
 
   // Sign in with Gmail
   GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider());
+    if (this.platform.is('android')) {
+      this.googleAuthAndroid()
+    } else {
+      return this.AuthLogin(new auth.GoogleAuthProvider());
+    }
+  }
+
+  async googleAuthAndroid() {
+    const res = await this.googlePlus.login({
+      'webClientId': '320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com',
+      'offline': true
+    });
+
+    try {
+      const resConfirmed = await this.fireAuth.signInWithCredential(auth.GoogleAuthProvider.credential(res.idToken));
+      this.router.navigate(['/app/inicio']);
+      this.storeUserProvider(resConfirmed.user);
+    } catch (err) {
+      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
+    }
+
   }
 
 
@@ -88,16 +112,16 @@ export class AuthService {
 
   // Login in with email/password
   LogIn(email: string, password: string) {
-    return this.fireAuth.signInWithEmailAndPassword(email, password
-    ).then((result) => {
-      this.ngZone.run(() => {
-        this.router.navigate(['/app/inicio']);
+    return this.fireAuth.signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['/app/inicio']);
+        })
+        // this.storeUser(result.user);
+      }).catch((err) => {
+        this.presentAlert('Error', 'Problema iniciando sesión',
+          this.errors.printErrorByCode(err.code));
       })
-      // this.storeUser(result.user);
-    }).catch((err) => {
-      this.presentAlert('Error', 'Problema iniciando sesión',
-        this.errors.printErrorByCode(err.code));
-    })
   }
 
   // Auth providers

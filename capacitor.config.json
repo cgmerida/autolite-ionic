@@ -1,6 +1,6 @@
 {
   "appId": "com.ion.autolite",
-  "appName": "autolite",
+  "appName": "Autolite",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

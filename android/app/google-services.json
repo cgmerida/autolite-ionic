@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "320328269998",
+    "firebase_url": "https://autolite-7901a.firebaseio.com",
+    "project_id": "autolite-7901a",
+    "storage_bucket": "autolite-7901a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320328269998:android:7fdf5486108ff46e896d3f",
+        "android_client_info": {
+          "package_name": "com.ion.autolite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320328269998-7ctc858b9v0odf6jguvjtmbi56ilda7d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ion.autolite",
+            "certificate_hash": "295617d1c935f537c432bf18958fc4aaf1fb5547"
+          }
+        },
+        {
+          "client_id": "320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNLDMUgE6c5LbwBzVb00-ioidabRbFBbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
