@@ -17,15 +17,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
-  <div *ngFor="let order of orders">
+<ion-content>
+  <div *ngFor="let order of orders | async">
     <ion-card
       *ngIf="order.status != 'Cancelado' && (order.status == 'Completado') == orderCompleted"
     >
       <ion-card-header>
-        <ion-card-title>
+        <ion-card-title *ngIf="order.car;else noCar">
           Servicio para {{order.car.brand}} {{order.car.line}}
         </ion-card-title>
+        <ng-template #noCar>
+          <ion-card-title> Carro no registrado </ion-card-title>
+        </ng-template>
+
         <ion-card-subtitle>
           Fecha: {{ order.date.toDate() | date:'dd/MM/yyyy' }}
         </ion-card-subtitle>

@@ -5,7 +5,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from "../models/user";
 import { auth, User as fireUser } from 'firebase/app';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, NavController, Platform } from '@ionic/angular';
 import { ErrorService } from './error.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
@@ -29,6 +29,7 @@ export class AuthService {
     private googlePlus: GooglePlus,
     private platform: Platform,
     private fb: Facebook,
+    private navController: NavController
 
   ) {
     this.userSub = this.fireAuth.authState.subscribe(fireUser => {
@@ -105,6 +106,7 @@ export class AuthService {
     return this.fireAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
+          this.navController.setDirection('root');
           this.router.navigate(['/app/inicio']);
         })
         // this.storeUser(result.user);
@@ -124,6 +126,7 @@ export class AuthService {
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.GoogleAuthProvider.credential(res.idToken));
       this.storeUserProvider(resConfirmed.user);
+      this.navController.setDirection('root');
       this.router.navigate(['/app/inicio']);
     } catch (err) {
       this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
@@ -136,6 +139,7 @@ export class AuthService {
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.FacebookAuthProvider.credential(res.authResponse.accessToken));
       this.storeUserProvider(resConfirmed.user);
+      this.navController.setDirection('root');
       this.router.navigate(['/app/inicio']);
     } catch (err) {
       this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
@@ -150,6 +154,7 @@ export class AuthService {
       .then((result) => {
         this.ngZone.run(() => {
           this.storeUserProvider(result.user);
+          this.navController.setDirection('root');
           this.router.navigate(['/app/inicio']);
         })
       }).catch((err) => {
@@ -197,6 +202,7 @@ export class AuthService {
   SignOut() {
     this.userSub.unsubscribe();
     return this.fireAuth.signOut().then(() => {
+      this.navController.setDirection('root');
       this.router.navigate(['login']);
     })
   }

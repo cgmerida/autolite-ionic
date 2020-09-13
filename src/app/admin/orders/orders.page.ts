@@ -12,8 +12,7 @@ import { OrdersFormComponent } from '../orders-form/orders-form.component';
 })
 export class OrdersPage {
 
-  ordersSub: Subscription;
-  orders: Order[];
+  orders: Observable<Order[]>;
   orderCompleted = false;
 
   statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success", "Cancelado": "danger" };
@@ -24,13 +23,7 @@ export class OrdersPage {
     private alertCtl: AlertController,
     private modalController: ModalController
   ) {
-  }
-
-
-  ionViewWillEnter() {
-    this.ordersSub = this.orderService.getOrders().subscribe(orders => {
-      this.orders = orders;
-    })
+    this.orders = this.orderService.getOrders();
   }
 
   async segmentChanged(ev) {
@@ -106,11 +99,5 @@ export class OrdersPage {
     });
 
     await alert.present();
-  }
-
-
-
-  ionViewWillLeave() {
-    this.ordersSub.unsubscribe();
   }
 }

@@ -12,7 +12,7 @@ export class Car {
   transmition: TransmitonTypes;
   color: string;
   license: string;
-  owner: User["uid"];
+  owner: User["uid"] | User;
   km: string | Km;
   photo: String;
   createdAt: Date;

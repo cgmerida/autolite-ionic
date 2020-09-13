@@ -14,7 +14,7 @@ export class StorageService {
     this.loadUser();
   }
 
-  async loadUser() {
+  private async loadUser() {
     this.uid = await this.authService.getAuthUserUid();
   }
 
@@ -22,5 +22,9 @@ export class StorageService {
     // let fecha = new Date().toLocaleDateString().replace(/\//g, "-");
     return this.storage.upload(`cars/${this.uid}/${name}.jpg`, img)
       .then(task => task.ref.getDownloadURL());
+  }
+
+  deleteCarPhoto(downloadUrl) {
+    return this.storage.storage.refFromURL(downloadUrl).delete();
   }
 }

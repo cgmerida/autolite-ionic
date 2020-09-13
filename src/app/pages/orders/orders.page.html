@@ -13,9 +13,13 @@
 <ion-content class="ion-padding">
   <ion-card *ngFor="let order of orders">
     <ion-card-header>
-      <ion-card-title>
+      <ion-card-title *ngIf="order.car;else noCar">
         Servicio para {{order.car.brand}} {{order.car.line}}
       </ion-card-title>
+      <ng-template #noCar>
+        <ion-card-title> Carro no registrado </ion-card-title>
+      </ng-template>
+
       <ion-card-subtitle>
         Fecha: {{ order.date.toDate() | date:'dd/MM/yyyy' }}
       </ion-card-subtitle>

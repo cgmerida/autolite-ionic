@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-
-import { Car } from 'src/app/models/app/car';
-
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { Km } from 'src/app/models/app/km';
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
+import { Car } from 'src/app/models/app/car';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,31 @@ export class CarService {
   // private car: Observable<Car>
 
 
-  constructor(private db: AngularFirestore, private authService: AuthService) {
+  constructor(
+    private db: AngularFirestore,
+    private authService: AuthService
+  ) {
     this.carCollection = this.db.collection<Car>('cars');
     // Obtiene todos los carros
     // this.cars = this.carCollection.valueChanges();
   }
 
   getAllCars() {
-    return this.carCollection.valueChanges();
+    return this.carCollection.valueChanges()
+      .pipe(
+        switchMap(cars => {
+          let userObs = cars.map(
+            car => this.db.doc<User>(`/users/${car.owner}`).valueChanges()
+          );
+
+          return combineLatest(...userObs, (...users) => {
+            cars.forEach((car, index) => {
+              car.owner = users[index];
+            });
+            return cars;
+          });
+        })
+      );
   }
 
   async getCarsByUser() {

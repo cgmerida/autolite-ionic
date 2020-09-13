@@ -5,6 +5,7 @@ import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 import { Km } from 'src/app/models/app/km';
 import { Subscription } from 'rxjs';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-cars',
@@ -21,6 +22,7 @@ export class CarsPage {
     private carService: CarService,
     private loadingController: LoadingController,
     private alertController: AlertController,
+    private storageService: StorageService,
   ) {
   }
 
@@ -80,21 +82,23 @@ export class CarsPage {
     this.presentModal(true, car);
   }
 
-  eliminar(uid) {
-    this.loadingController.create()
-      .then(loading => {
-        loading.present();
-        this.carService.deleteCar(uid)
-          .then(() => {
-            this.presentAlert('¡Bien!', 'Carro Eliminado');
-          })
-          .catch((err) => {
-            this.presentAlert('Error', `Hubo un problema.\n Descripcion: ${err}`);
-          })
-          .finally(() => {
-            loading.dismiss();
-          });
-      });
+  async eliminar(uid, url) {
+    let loading = await this.loadingController.create();
+
+    await loading.present();
+
+    try {
+      await this.carService.deleteCar(uid);
+      if (url) {
+        await this.storageService.deleteCarPhoto(url);
+      }
+      this.presentAlert('¡Bien!', 'Carro Eliminado');
+    } catch (err) {
+      this.presentAlert('Error', `Hubo un problema.\n Descripcion: ${err}`);
+    } finally {
+      loading.dismiss();
+    }
+
   }
 
   async presentModal(update = false, car = null) {
