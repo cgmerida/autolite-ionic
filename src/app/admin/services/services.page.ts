@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Service } from 'src/app/models/service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ServiceService } from 'src/app/services/app/service.service';
@@ -10,9 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './services.page.html',
   styleUrls: ['./services.page.scss'],
 })
-export class ServicesPage implements OnInit {
+export class ServicesPage {
 
-  services: Observable<Service[]>;
+  services: Service[];
+
+  private servicesSub: Subscription;
+
   servicesForm: FormGroup;
   isSubmitted = false;
 
@@ -24,8 +27,6 @@ export class ServicesPage implements OnInit {
     private formBuilder: FormBuilder,
   ) {
 
-    this.services = serviceService.getServices();
-
     this.servicesForm = this.formBuilder.group({
       name: [null, Validators.required],
       price: [null, Validators.required],
@@ -33,9 +34,12 @@ export class ServicesPage implements OnInit {
 
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    this.servicesSub = this.serviceService.getServices()
+      .subscribe(services => {
+        this.services = services;
+      });
   }
-
 
   get errorControl() {
     return this.servicesForm.controls;
@@ -125,5 +129,10 @@ export class ServicesPage implements OnInit {
 
     await alert.present();
   }
+
+  ionViewWillLeave() {
+    this.servicesSub.unsubscribe();
+  }
+
 
 }

@@ -9,12 +9,14 @@ import { AlertController, Platform } from '@ionic/angular';
 import { ErrorService } from './error.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private userSub: Subscription;
   private authUser: fireUser;
 
   constructor(
@@ -29,24 +31,23 @@ export class AuthService {
     private fb: Facebook,
 
   ) {
-    this.fireAuth.authState.subscribe(fireUser => {
+    this.userSub = this.fireAuth.authState.subscribe(fireUser => {
       if (fireUser)
         this.authUser = fireUser;
     })
   }
 
   getAuthUserUid(): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.authUser) {
         resolve(this.authUser.uid)
       } else {
-        return this.fireAuth.currentUser
+        this.fireAuth.currentUser
           .then(fireUser => {
             if (fireUser)
               resolve(fireUser.uid);
           })
       }
-      reject(`No esta disponible el usuario`);
     })
 
   }
@@ -135,7 +136,6 @@ export class AuthService {
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.FacebookAuthProvider.credential(res.authResponse.accessToken));
       this.storeUserProvider(resConfirmed.user);
-      console.log(resConfirmed.user);
       this.router.navigate(['/app/inicio']);
     } catch (err) {
       this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
@@ -195,6 +195,7 @@ export class AuthService {
 
   // Sign-out 
   SignOut() {
+    this.userSub.unsubscribe();
     return this.fireAuth.signOut().then(() => {
       this.router.navigate(['login']);
     })

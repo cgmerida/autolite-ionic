@@ -5,13 +5,14 @@ import { Label, SingleDataSet, monkeyPatchChartJsTooltip, monkeyPatchChartJsLege
 import { Order } from 'src/app/models/app/order';
 import { ResponseService } from 'src/app/services/response.service';
 import { Response } from 'src/app/models/app/responses';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage implements OnInit {
+export class InicioPage {
 
   private orders: Order[];
   responses: Response[] = [];
@@ -102,28 +103,34 @@ export class InicioPage implements OnInit {
   productsChartLegend = false;
 
 
+  private orderSub: Subscription;
+  private resSub: Subscription;
+
+
   constructor(
     private orderServcice: OrderService,
     private responseService: ResponseService,
   ) {
+    monkeyPatchChartJsTooltip();
+    monkeyPatchChartJsLegend();
+  }
 
+  ionViewWillEnter() {
     this.getAvgRating();
 
     this.orderServcice.getOnlyOrders()
       .then(orders$ => {
-        orders$.subscribe(orders => {
+        this.orderSub = orders$.subscribe(orders => {
           this.orders = orders;
-
           this.ordersChart();
-        })
+        });
       });
-    monkeyPatchChartJsTooltip();
-    monkeyPatchChartJsLegend();
+
   }
-  ngOnInit() { }
+
 
   getAvgRating() {
-    this.responseService.getResponses()
+    this.resSub = this.responseService.getResponses()
       .subscribe(orderResp => {
         orderResp.forEach(resp => {
           resp.responses.forEach(r => {
@@ -227,6 +234,11 @@ export class InicioPage implements OnInit {
     });
 
     return total;
+  }
+
+  ionViewWillLeave() {
+    this.orderSub.unsubscribe();
+    this.resSub.unsubscribe();
   }
 
 }

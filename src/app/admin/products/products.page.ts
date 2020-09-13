@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { AlertController, LoadingController } from '@ionic/angular';
@@ -10,9 +10,11 @@ import { Product } from 'src/app/models/app/product';
   templateUrl: './products.page.html',
   styleUrls: ['./products.page.scss'],
 })
-export class ProductsPage implements OnInit {
+export class ProductsPage {
 
-  products: Observable<Product[]>;
+  products: Product[];
+  productsSub: Subscription;
+
   productsForm: FormGroup;
   isSubmitted = false;
 
@@ -21,9 +23,8 @@ export class ProductsPage implements OnInit {
     private productService: ProductService,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private formBuilder: FormBuilder,) {
-
-    this.products = productService.getProducts();
+    private formBuilder: FormBuilder,
+  ) {
 
     this.productsForm = this.formBuilder.group({
       name: [null, Validators.required],
@@ -33,7 +34,11 @@ export class ProductsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    this.productsSub = this.productService.getProducts()
+      .subscribe(products => {
+        this.products = products;
+      });
   }
 
 
@@ -121,6 +126,10 @@ export class ProductsPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  ionViewWillLeave() {
+    this.productsSub.unsubscribe();
   }
 
 

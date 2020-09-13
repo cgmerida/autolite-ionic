@@ -59,11 +59,9 @@ export class OrderService {
   }
 
   async getOnlyOrders(): Promise<Observable<Order[]>> {
-    let uid = await this.authService.getAuthUserUid();
-
     return this.db.collection<Order>('orders', ref => {
       return ref.orderBy('date', 'desc');
-    }).valueChanges()
+    }).valueChanges();
   }
 
   async getOrdersByUser(): Promise<Observable<Order[]>> {
@@ -108,9 +106,7 @@ export class OrderService {
   }
 
 
-  async getCompletedOrders(): Promise<Observable<Order[]>> {
-    let uid = await this.authService.getAuthUserUid();
-
+  getCompletedOrders(): Observable<Order[]> {
     return this.db.collection<Order>('orders', ref => {
       return ref.where('status', '==', 'Completado')
         .orderBy('date', 'desc');

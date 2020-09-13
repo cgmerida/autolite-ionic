@@ -5,6 +5,7 @@ import { Label } from 'ng2-charts';
 import { Order } from 'src/app/models/app/order';
 import { OrderService } from 'src/app/services/app/order.service';
 import { CurrencyPipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { CurrencyPipe } from '@angular/common';
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss'],
 })
-export class ExpensesPage implements OnInit {
+export class ExpensesPage {
 
   private months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -60,8 +61,8 @@ export class ExpensesPage implements OnInit {
   //   { data: [45, 37, 60], label: 'Best Fruits 3' }
   // ];
 
+  private orderSub: Subscription;
   orders: Order[];
-  sortedOrders: Order[];
 
   chartReady = false;
 
@@ -70,9 +71,6 @@ export class ExpensesPage implements OnInit {
     private currencyPipe: CurrencyPipe,
   ) {
 
-  }
-
-  ngOnInit() {
     let ccy = this.currencyPipe;
 
     this.barChartOptions.tooltips = {
@@ -85,24 +83,28 @@ export class ExpensesPage implements OnInit {
       }
     };
 
+  }
+
+
+
+  ionViewWillEnter() {
     this.orderService.getCompletedOrdersByUser().then(orders$ => {
-      orders$.subscribe(orders => {
+      this.orderSub = orders$.subscribe(orders => {
         this.orders = orders;
         this.createBarChart();
         this.chartReady = true;
       })
-    })
+    });
   }
-
 
   createBarChart() {
     let mesesLabel: Label[] = [];
     let dataSet: ChartDataSets[] = [];
     let data = [];
-    let orders = Array.from(this.orders);
+    let ordersSorted = Array.from(this.orders);
     // let data: string[] = [];
 
-    orders.reverse().forEach((order) => {
+    ordersSorted.reverse().forEach((order) => {
       let monthNum = order.date.toDate().getMonth();
       if (!mesesLabel.includes(this.months[monthNum]))
         mesesLabel.push(this.months[monthNum]);
@@ -134,5 +136,8 @@ export class ExpensesPage implements OnInit {
     return total;
   }
 
+  ionViewWillLeave() {
+    this.orderSub.unsubscribe();
+  }
 
 }

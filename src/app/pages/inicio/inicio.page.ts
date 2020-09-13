@@ -2,17 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/app/order.service';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage implements OnInit {
-
-  // private products: Product[];
-  // private services: Service[];
-  // private cars: Observable<Car[]>;
+export class InicioPage {
 
   // private slideOpts = {
   //   slidesPerView: 1.5,
@@ -20,6 +17,9 @@ export class InicioPage implements OnInit {
   //   centeredSlides: true,
   //   spaceBetween: 10
   // };
+
+  private userSub: Subscription;
+  private orderSub: Subscription;
 
   user: User;
 
@@ -32,34 +32,38 @@ export class InicioPage implements OnInit {
     private userService: UserService,
   ) {
 
-    this.userService.getAuthUser().subscribe(user => {
+  }
+
+  ionViewWillEnter() {
+    this.userSub = this.userService.getAuthUser().subscribe(user => {
       if (user) {
         this.user = user;
       }
     });
+    this.orderServcice.getCompletedOrdersByUser().then(orders$ => {
+      this.orderSub = orders$.subscribe(orders => {
+
+        orders.forEach(order => {
+          this.totalOrders++;
+          order.services.forEach(service => {
+            this.totalExpenses += Math.round(service.price * 100) / 100;
+            if (service.hasOwnProperty('products') && service.products.length > 0) {
+              service.products.forEach(product => {
+                this.totalExpenses += Math.round(product.price * 100) / 100;
+              });
+            }
+          })
+        })
+
+        this.loading = false;
+
+      });
+    });
   }
 
-  ngOnInit() {
-    this.orderServcice.getCompletedOrdersByUser()
-      .then(orders$ => {
-        orders$.subscribe(orders => {
-
-          orders.forEach(order => {
-            this.totalOrders++;
-            order.services.forEach(service => {
-              this.totalExpenses += Math.round(service.price * 100) / 100;
-              if (service.hasOwnProperty('products') && service.products.length > 0) {
-                service.products.forEach(product => {
-                  this.totalExpenses += Math.round(product.price * 100) / 100;
-                });
-              }
-            })
-          })
-
-          this.loading = false;
-
-        })
-      });
+  ionViewWillLeave() {
+    this.userSub.unsubscribe();
+    this.orderSub.unsubscribe();
   }
 
 }

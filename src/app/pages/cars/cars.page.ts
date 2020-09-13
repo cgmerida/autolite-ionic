@@ -4,14 +4,16 @@ import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 import { Km } from 'src/app/models/app/km';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cars',
   templateUrl: './cars.page.html',
   styleUrls: ['./cars.page.scss'],
 })
-export class CarsPage implements OnInit {
+export class CarsPage {
 
+  private carSub: Subscription;
   cars: Car[];
 
   constructor(
@@ -22,20 +24,21 @@ export class CarsPage implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-    this.carService.getCarsByUser()
-      .subscribe(cars => {
-        cars.map(car => {
-          if (car.km) {
-            this.carService.getCarKm(car.km).subscribe((km: Km) => {
-              car.km = km;
-            });
-          }
-        });
-        this.cars = cars;
-      })
 
+  async ionViewWillEnter() {
+    let cars$ = await this.carService.getCarsByUser();
+    this.carSub = cars$.subscribe(cars => {
+      cars.map(car => {
+        if (car.km) {
+          this.carService.getCarKm(car.km).subscribe((km: Km) => {
+            car.km = km;
+          });
+        }
+      });
+      this.cars = cars;
+    });
   }
+
 
   km(car) {
     car.addKm = true
@@ -119,5 +122,8 @@ export class CarsPage implements OnInit {
     await alert.present();
   }
 
+  ionViewWillLeave() {
+    this.carSub.unsubscribe();
+  }
 
 }

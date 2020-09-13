@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { OrderService } from 'src/app/services/app/order.service';
 import { Order } from 'src/app/models/app/order';
 
@@ -9,9 +9,11 @@ import { Order } from 'src/app/models/app/order';
   templateUrl: './orders.page.html',
   styleUrls: ['./orders.page.scss'],
 })
-export class OrdersPage implements OnInit {
+export class OrdersPage {
 
-  orders: Observable<Order[]>;
+  // orders: Observable<Order[]>;
+  orderSub: Subscription;
+  orders: Order[];
 
   statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success" };
 
@@ -19,8 +21,13 @@ export class OrdersPage implements OnInit {
 
   }
 
-  async ngOnInit() {
-    this.orders = await this.orderService.getOrdersByUser();
+  ionViewWillEnter() {
+    this.orderService.getOrdersByUser()
+      .then(orders$ => {
+        this.orderSub = orders$.subscribe(orders => {
+          this.orders = orders;
+        })
+      });
   }
 
   sumTotal(order: Order) {
@@ -36,4 +43,9 @@ export class OrdersPage implements OnInit {
 
     return total;
   }
+
+  ionViewWillLeave() {
+    this.orderSub.unsubscribe();
+  }
+
 }

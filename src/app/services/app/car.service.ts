@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Car } from 'src/app/models/app/car';
 
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { User } from 'src/app/models/user';
 import { AuthService } from '../auth.service';
 import { Km } from 'src/app/models/app/km';
 
@@ -28,8 +26,8 @@ export class CarService {
     return this.carCollection.valueChanges();
   }
 
-  getCarsByUser() {
-    let uid = this.authService.getAuthUserUid();
+  async getCarsByUser() {
+    let uid = await this.authService.getAuthUserUid();
     return this.db.collection<Car>('cars', ref => ref.where('owner', '==', uid)).valueChanges({ idField: 'uid' });
   }
 

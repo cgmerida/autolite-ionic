@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, AlertController, ModalController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Order } from 'src/app/models/app/order';
 import { OrderService } from 'src/app/services/app/order.service';
 import { OrdersFormComponent } from '../orders-form/orders-form.component';
@@ -10,22 +10,27 @@ import { OrdersFormComponent } from '../orders-form/orders-form.component';
   templateUrl: './orders.page.html',
   styleUrls: ['./orders.page.scss'],
 })
-export class OrdersPage implements OnInit {
+export class OrdersPage {
 
-  orders: Observable<Order[]>;
+  ordersSub: Subscription;
+  orders: Order[];
   orderCompleted = false;
 
-  statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success","Cancelado": "danger" };
+  statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success", "Cancelado": "danger" };
 
   constructor(
     private loadingController: LoadingController,
     private orderService: OrderService,
     private alertCtl: AlertController,
     private modalController: ModalController
-  ) { }
+  ) {
+  }
 
-  async ngOnInit() {
-    this.orders = await this.orderService.getOrders();
+
+  ionViewWillEnter() {
+    this.ordersSub = this.orderService.getOrders().subscribe(orders => {
+      this.orders = orders;
+    })
   }
 
   async segmentChanged(ev) {
@@ -103,4 +108,9 @@ export class OrdersPage implements OnInit {
     await alert.present();
   }
 
+
+
+  ionViewWillLeave() {
+    this.ordersSub.unsubscribe();
+  }
 }

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { ServiceService } from 'src/app/services/app/service.service';
 import { Service } from 'src/app/models/service';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -35,18 +36,16 @@ export class OrderFormComponent implements OnInit {
     private carService: CarService,
     private serviceService: ServiceService,
   ) {
-
-  }
-
-  ngOnInit() {
-    this.cars = this.carService.getCarsByUser();
-    this.services = this.serviceService.getServices();
-
     this.orderForm = this.formBuilder.group({
       car: [null, Validators.required],
       date: [null, Validators.required],
       services: [null, Validators.required],
     });
+  }
+
+  async ngOnInit() {
+    this.cars = await this.carService.getCarsByUser();
+    this.services = this.serviceService.getServices();
   }
 
   get errorControl() {
@@ -72,9 +71,11 @@ export class OrderFormComponent implements OnInit {
 
     console.log(order);
 
-    this.services.subscribe(services => {
-      this.servicesOrder = services.filter(service => order.services.includes(service.uid));
-    });
+    this.services
+      .pipe(take(1))
+      .subscribe(services => {
+        this.servicesOrder = services.filter(service => order.services.includes(service.uid));
+      });
 
     this.loadingController.create()
       .then(loading => {
@@ -88,7 +89,7 @@ export class OrderFormComponent implements OnInit {
             this.dismiss();
           })
           .catch((error) => {
-            this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
+            this.presentAlert(`Error`, `error: ${error}`, `Problema registrando el vehículo.`);
           })
           .finally(() => {
             this.clicked = true;
