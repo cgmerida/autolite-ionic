@@ -168,7 +168,7 @@ export class CarsFormComponent implements OnInit {
       this.dismiss();
 
     } catch (error) {
-      this.presentAlert(`Error`, null, `Problema registrando el vehículo`);
+      this.presentAlert(`Error`, `error: ${error}`, `Problema registrando el vehículo`);
     } finally {
 
       loading.dismiss();

@@ -35,6 +35,10 @@ export class InicioPage {
   }
 
   ionViewWillEnter() {
+    this.totalOrders = 0;
+    this.loading = true;
+    this.totalExpenses = 0;
+
     this.userSub = this.userService.getAuthUser().subscribe(user => {
       if (user) {
         this.user = user;

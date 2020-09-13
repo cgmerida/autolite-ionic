@@ -135,7 +135,7 @@
           <ion-button
             color="tertiary"
             type="button"
-            [disabled]="photo"
+            [disabled]="car.photo || photo"
             (click)="takePicture('camera')"
           >
             <ion-icon slot="start" name="camera-outline"></ion-icon>
@@ -146,7 +146,7 @@
           <ion-button
             color="medium"
             type="button"
-            [disabled]="photo"
+            [disabled]="car.photo || photo"
             (click)="takePicture('gallery')"
           >
             <ion-icon slot="start" name="images-outline"></ion-icon>
@@ -154,12 +154,12 @@
           </ion-button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="photo">
+      <ion-row *ngIf="car.photo || photo">
         <ion-col class="ion-align-items-center">
-          <img [src]="photo" />
+          <img [src]="car.photo || photo" />
         </ion-col>
       </ion-row>
-      <ion-row [hidden]="!photo">
+      <ion-row [hidden]="!(car.photo || photo)">
         <ion-col>
           <ion-button
             type="button"

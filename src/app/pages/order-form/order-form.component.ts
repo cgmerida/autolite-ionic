@@ -69,18 +69,9 @@ export class OrderFormComponent implements OnInit {
   async registrar() {
     let order = this.orderForm.value;
 
-    console.log(order);
-
-    this.services
-      .pipe(take(1))
-      .subscribe(services => {
-        this.servicesOrder = services.filter(service => order.services.includes(service.uid));
-      });
-
     this.loadingController.create()
       .then(loading => {
         loading.present();
-        order.services = this.servicesOrder;
         order.date = new Date(order.date);
 
         this.orderService.addOrder(order)

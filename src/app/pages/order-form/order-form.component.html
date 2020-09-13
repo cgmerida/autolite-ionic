@@ -33,7 +33,7 @@
         <ion-select multiple="true" formControlName="services">
           <ion-select-option
             *ngFor="let service of services | async"
-            [value]="service.uid"
+            [value]="service"
             >{{ service.name }}</ion-select-option
           >
         </ion-select>
