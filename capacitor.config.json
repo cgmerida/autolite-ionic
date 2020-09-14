@@ -8,7 +8,6 @@
     "SplashScreen": {
       "launchShowDuration": 0,
       "backgroundColor": "#02023e",
-      "splashFullScreen": true,
       "splashImmersive": true,
       "androidScaleType": "CENTER_CROP"
     }

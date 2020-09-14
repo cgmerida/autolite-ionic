@@ -8,9 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="presentModal();" expand="block">
-    Registrar Carro
-  </ion-button>
+  <ion-button expand="block"> Registrar Carro </ion-button>
 
   <ion-card *ngFor="let car of cars | async">
     <ion-img [src]="car.photo"></ion-img>
