@@ -208,6 +208,29 @@ export class CarsFormComponent implements OnInit {
     }
   }
 
+  async deletePhoto() {
+    let loading = await this.loadingController.create();
+    await loading.present();
+    
+    this.photo = null;
+
+    try {
+      if (this.car.photo) {
+        await this.storageService.deleteCarPhoto(this.car.photo);
+        this.car.photo = null;
+        await this.carService.updateCar({
+          uid: this.car.uid,
+          photo: null
+        });
+      }
+    } catch (err) {
+      this.presentAlert(`Error`, `Problema actualizando el vehículo`, `Descripción del error: ${err}`);
+    } finally {
+      loading.dismiss();
+    }
+
+  }
+
   changeValue(value) {
     console.log(value);
     this.carsForm.get('transmition').patchValue(value);

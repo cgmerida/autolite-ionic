@@ -236,7 +236,7 @@ $grid-breakpoints: (
   // Phablet (576px - 767px)
   md: 768px,
   // Tablet vertical (768px - 991px)
-  lg: 992px // Tablet horizontal, Desktop (992px and above),,,,
+  lg: 992px // Tablet horizontal, Desktop (992px and above),,,,,
 );
 
 $grid-max-widths: (
@@ -256,5 +256,16 @@ ion-header .toolbar {
     margin: 0;
     padding-right: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
     padding-left: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+  }
+}
+
+@media (max-width: map-get($grid-breakpoints, md)) {
+  .my-modal {
+    .modal-wrapper {
+      border-radius: 10px 10px 0px 0px;
+      top: 20%;
+      position: absolute;
+      height: 80%;
+    }
   }
 }

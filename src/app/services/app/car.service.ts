@@ -82,9 +82,9 @@ export class CarService {
       })
   }
 
-  updateCar(car: Car) {
+  updateCar(car: Partial<Car>) {
     car.updatedAt = new Date();
-    return this.carCollection.doc(car.uid).update({ ...car });
+    return this.carCollection.doc<Car>(car.uid).update({ ...car });
   }
 
   deleteCar(uid: Car['uid']) {

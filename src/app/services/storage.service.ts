@@ -24,7 +24,7 @@ export class StorageService {
       .then(task => task.ref.getDownloadURL());
   }
 
-  deleteCarPhoto(downloadUrl) {
+  deleteCarPhoto(downloadUrl): Promise<void> {
     return this.storage.storage.refFromURL(downloadUrl).delete();
   }
 }
