@@ -14,11 +14,7 @@
   <div class="card">
     <div class="header">
       <div class="avatar">
-        <img
-          *ngIf="user"
-          [src]="user.photoURL"
-          (error)="updateUrl()"
-        />
+        <img *ngIf="user" [src]="user.photoURL" (error)="updateUrl()" />
       </div>
     </div>
   </div>

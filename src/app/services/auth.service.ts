@@ -74,13 +74,14 @@ export class AuthService {
   }
 
   // Recover password
-  PasswordRecover(passwordResetEmail) {
-    return this.fireAuth.sendPasswordResetEmail(passwordResetEmail)
-      .then(() => {
-        this.presentAlert('¡Bien!', null, 'El correo para reiniciar tu contraseña ya fue enviado, revisa tu correo');
-      }).catch((err) => {
-        this.presentAlert('Error', 'Problema enviando correo', err);
-      })
+  async PasswordRecover() {
+    let authUser = await this.getAuthUser();
+    try {
+      await this.fireAuth.sendPasswordResetEmail(authUser.email);
+      this.presentAlert('¡Bien!', null, 'El correo para reiniciar tu contraseña ya fue enviado, revisa tu correo');
+    } catch (err) {
+      this.presentAlert('Error', 'Problema enviando correo', err);
+    }
   }
 
   // Sign in with Gmail
