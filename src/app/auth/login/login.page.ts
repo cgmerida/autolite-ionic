@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
 import { AuthService } from 'src/app/services/auth.service';
-import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
-import { ErrorService } from 'src/app/services/error.service';
+import { Plugins, StatusBarStyle } from '@capacitor/core';
+
+const { StatusBar } = Plugins;
 
 @Component({
   selector: 'app-login',
@@ -22,6 +22,12 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
   }
+  
+  ionViewDidEnter() {
+    StatusBar.setBackgroundColor({ color: '#02023e' });
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
+  }
+
 
   async logIn(email, password) {
 

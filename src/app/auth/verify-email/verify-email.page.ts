@@ -3,13 +3,16 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { Plugins, StatusBarStyle } from '@capacitor/core';
+
+const { StatusBar } = Plugins;
 
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.page.html',
   styleUrls: ['./verify-email.page.scss'],
 })
-export class VerifyEmailPage implements OnInit {
+export class VerifyEmailPage {
 
   constructor(
     private authService: AuthService,
@@ -20,7 +23,10 @@ export class VerifyEmailPage implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  
+  ionViewDidEnter() {
+    StatusBar.setBackgroundColor({ color: '#079db6' });
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
   }
 
   async enviarInicio() {

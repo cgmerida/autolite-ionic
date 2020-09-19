@@ -17,13 +17,16 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  initializeApp() {
-    this.platform.ready().then(async () => {
-      if (this.platform.is('hybrid')) {
-        await StatusBar.setBackgroundColor({ color: '#02023e' });
-        await StatusBar.setStyle({ style: StatusBarStyle.Dark });
-        await SplashScreen.hide();
-      }
-    });
+  async initializeApp() {
+
+    await StatusBar.setBackgroundColor({ color: '#02023e' });
+    await StatusBar.setStyle({ style: StatusBarStyle.Dark });
+
+    this.platform.ready()
+      .then(async () => {
+        if (this.platform.is('hybrid')) {
+          await SplashScreen.hide();
+        }
+      });
   }
 }

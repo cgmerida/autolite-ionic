@@ -6,7 +6,11 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user';
 import { ErrorService } from 'src/app/services/error.service';
-import { auth } from 'firebase';
+
+
+import { Plugins, StatusBarStyle } from '@capacitor/core';
+
+const { StatusBar } = Plugins;
 
 @Component({
   selector: 'app-register',
@@ -40,6 +44,11 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() { }
+
+  ionViewDidEnter() {
+    StatusBar.setBackgroundColor({ color: '#079db6' });
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
+  }
 
   get errorControl() {
     return this.registerForm.controls;
