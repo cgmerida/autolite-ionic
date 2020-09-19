@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OrderService } from 'src/app/services/app/order.service';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label, SingleDataSet, monkeyPatchChartJsTooltip, monkeyPatchChartJsLegend } from 'ng2-charts';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage {
+export class InicioPage implements OnInit, OnDestroy {
 
   private orders: Order[];
   responses: Response[] = [];
@@ -115,7 +115,7 @@ export class InicioPage {
     monkeyPatchChartJsLegend();
   }
 
-  ionViewWillEnter() {
+  ngOnInit() {
     this.getAvgRating();
 
     this.orderServcice.getOnlyOrders()
@@ -236,7 +236,7 @@ export class InicioPage {
     return total;
   }
 
-  ionViewWillLeave() {
+  ngOnDestroy() {
     this.orderSub.unsubscribe();
     this.resSub.unsubscribe();
   }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { Plugins, StatusBarStyle } from '@capacitor/core';
@@ -20,13 +20,16 @@ export class VerifyEmailPage {
     private loadingController: LoadingController,
     private router: Router,
     private userService: UserService,
+    private platform: Platform,
   ) {
   }
 
-  
+
   ionViewDidEnter() {
-    StatusBar.setBackgroundColor({ color: '#079db6' });
-    StatusBar.setStyle({ style: StatusBarStyle.Dark });
+    if (this.platform.is('hybrid')) {
+      StatusBar.setBackgroundColor({ color: '#079db6' });
+      StatusBar.setStyle({ style: StatusBarStyle.Dark });
+    }
   }
 
   async enviarInicio() {

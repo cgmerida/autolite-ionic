@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { LoadingController } from '@ionic/angular';
 
 @Component({
@@ -10,22 +9,20 @@ import { LoadingController } from '@ionic/angular';
   templateUrl: './users.page.html',
   styleUrls: ['./users.page.scss'],
 })
-export class UsersPage {
+export class UsersPage implements OnInit {
 
-  users: User[];
-  usersSub: Subscription;
+  users: Observable<User[]>;
 
   constructor(
     private userService: UserService,
     private loadingController: LoadingController,
   ) { }
 
-  ionViewWillEnter() {
-    this.usersSub = this.userService.getUsers().subscribe(users => {
-      this.users = users
-    });
+  async ngOnInit() {
+    this.users = this.userService.getUsers();
   }
-  
+
+
   async addAdmin(userUid) {
     const loading = await this.loadingController.create();
     await loading.present();
@@ -60,10 +57,6 @@ export class UsersPage {
     await loading.present();
     await this.userService.delUser({ uid: userUid });
     await loading.dismiss();
-  }
-
-  ionViewWillLeave() {
-    this.usersSub.unsubscribe();
   }
 
 }

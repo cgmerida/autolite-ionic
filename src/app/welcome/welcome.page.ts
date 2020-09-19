@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { ViewChild } from "@angular/core";
 
@@ -7,14 +7,11 @@ import { ViewChild } from "@angular/core";
   templateUrl: './welcome.page.html',
   styleUrls: ['./welcome.page.scss'],
 })
-export class WelcomePage implements OnInit {
+export class WelcomePage {
 
   @ViewChild(IonSlides) slides: IonSlides;
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
   onSlideChanged() {
 

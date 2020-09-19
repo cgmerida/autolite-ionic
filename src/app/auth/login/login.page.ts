@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 import { Plugins, StatusBarStyle } from '@capacitor/core';
 
 const { StatusBar } = Plugins;
@@ -18,14 +18,18 @@ export class LoginPage implements OnInit {
     // private alertCtl: AlertController,
     private loadingController: LoadingController,
     // private errors: ErrorService,
+    private platform: Platform,
   ) { }
 
   ngOnInit() {
   }
-  
+
   ionViewDidEnter() {
-    StatusBar.setBackgroundColor({ color: '#02023e' });
-    StatusBar.setStyle({ style: StatusBarStyle.Dark });
+
+    if (this.platform.is('hybrid')) {
+      StatusBar.setBackgroundColor({ color: '#02023e' });
+      StatusBar.setStyle({ style: StatusBarStyle.Dark });
+    }
   }
 
 

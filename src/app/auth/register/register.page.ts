@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user';
 import { ErrorService } from 'src/app/services/error.service';
@@ -31,6 +31,7 @@ export class RegisterPage implements OnInit {
     private userService: UserService,
     private errors: ErrorService,
     private loadingController: LoadingController,
+    private platform: Platform,
   ) {
 
     this.registerForm = this.formBuilder.group({
@@ -46,8 +47,10 @@ export class RegisterPage implements OnInit {
   ngOnInit() { }
 
   ionViewDidEnter() {
-    StatusBar.setBackgroundColor({ color: '#079db6' });
-    StatusBar.setStyle({ style: StatusBarStyle.Dark });
+    if (this.platform.is('hybrid')) {
+      StatusBar.setBackgroundColor({ color: '#079db6' });
+      StatusBar.setStyle({ style: StatusBarStyle.Dark });
+    }
   }
 
   get errorControl() {

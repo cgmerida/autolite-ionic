@@ -50,7 +50,7 @@
 
         <ion-card-content>
           <ion-card-title>Cliente</ion-card-title>
-          <ion-list lines="none" class="small">
+          <ion-list lines="none" class="small" *ngIf="order.owner">
             <ion-item>
               <ion-label>
                 <b>Nombre:</b> {{order.owner.firstname ? order.owner.firstname +
@@ -65,6 +65,9 @@
               <ion-label><b>Telefono:</b> {{order.owner.tel }}</ion-label>
             </ion-item>
           </ion-list>
+          <ion-text *ngIf="!(!!order.owner)" color="danger">
+            El cliente ya no se encuentra registrado en la aplicación
+          </ion-text>
         </ion-card-content>
 
         <ion-card-content

@@ -106,10 +106,9 @@ export class AuthService {
   LogIn(email: string, password: string) {
     return this.fireAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.navController.setDirection('root');
-          this.router.navigate(['/app/inicio']);
-        })
+        this.ngZone.run(async () => {
+          this.redirectAuth();
+        });
         // this.storeUser(result.user);
       }).catch((err) => {
         this.presentAlert('Error', 'Problema iniciando sesión',
@@ -126,9 +125,8 @@ export class AuthService {
 
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.GoogleAuthProvider.credential(res.idToken));
-      this.storeUserProvider(resConfirmed.user);
-      this.navController.setDirection('root');
-      this.router.navigate(['/app/inicio']);
+      await this.storeUserProvider(resConfirmed.user);
+      this.redirectAuth();
     } catch (err) {
       this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
     }
@@ -139,9 +137,8 @@ export class AuthService {
 
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.FacebookAuthProvider.credential(res.authResponse.accessToken));
-      this.storeUserProvider(resConfirmed.user);
-      this.navController.setDirection('root');
-      this.router.navigate(['/app/inicio']);
+      await this.storeUserProvider(resConfirmed.user);
+      this.redirectAuth();
     } catch (err) {
       this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
     }
@@ -153,11 +150,10 @@ export class AuthService {
   private AuthLogin(provider) {
     return this.fireAuth.signInWithPopup(provider)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.storeUserProvider(result.user);
-          this.navController.setDirection('root');
-          this.router.navigate(['/app/inicio']);
-        })
+        this.ngZone.run(async () => {
+          await this.storeUserProvider(result.user);
+          this.redirectAuth();
+        });
       }).catch((err) => {
         this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
       })
@@ -220,5 +216,9 @@ export class AuthService {
     await alert.present();
   }
 
+  redirectAuth() {
+    this.navController.setDirection('root');
+    this.router.navigate(['/app/inicio']);
+  }
 
 }
