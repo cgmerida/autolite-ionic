@@ -15,10 +15,10 @@ export class ResponseService {
   }
 
 
-  addResponse(res) {
+  async addResponse(res) {
     let response: Responses = {
       ...res,
-      userUid: this.authService.getAuthUserUid(),
+      owner: await this.authService.getAuthUserUid(),
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -33,7 +33,6 @@ export class ResponseService {
         return this.db.doc(`orders/${res.orderUid}`).update({ rating: 5 * (rating / (5 * counter)) });
       })
       .then(() => {
-
         return `Respuestas registradas`;
       });
   }

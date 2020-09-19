@@ -38,7 +38,7 @@ export class AuthService {
     })
   }
 
-  getAuthUserUid(): Promise<string> {
+  getAuthUserUid(): Promise<string | null> {
     return new Promise(resolve => {
       if (this.authUser) {
         resolve(this.authUser.uid)

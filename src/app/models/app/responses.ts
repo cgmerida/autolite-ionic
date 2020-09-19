@@ -3,7 +3,7 @@ import { Order } from './order';
 
 export class Responses {
     uid?: string;
-    userUid: User["uid"];
+    owner: User["uid"];
     orderUid: Order["uid"];
     responses: Response[]; // [{question: "", rating:"0-5"}]
     createdAt: Date;
