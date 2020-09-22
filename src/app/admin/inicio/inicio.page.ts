@@ -148,6 +148,7 @@ export class InicioPage implements OnInit, OnDestroy {
           resp.rating = 5 * (resp.rating / (5 * orderResp.length))
           return resp;
         });
+
       });
   }
 

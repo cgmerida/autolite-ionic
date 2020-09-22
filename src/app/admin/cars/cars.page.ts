@@ -22,6 +22,12 @@ export class CarsPage implements OnInit {
     this.cars = this.carService.getAllCars();
   }
 
+
+  trackBy(index: number, car: Car) {
+    return car.uid;
+  }
+
+  
   // async presentModal() {
   //   const modal = await this.modalController.create({
   //     component: ModalPage,

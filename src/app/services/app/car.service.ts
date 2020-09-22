@@ -50,7 +50,7 @@ export class CarService {
   }
 
   getCarKm(uid) {
-    return this.db.doc(`/km/${uid}`).valueChanges();
+    return this.db.doc<Km>(`/km/${uid}`).valueChanges();
   }
 
   async addCar(car: Car) {

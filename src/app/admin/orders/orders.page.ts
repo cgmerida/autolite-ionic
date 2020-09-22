@@ -90,6 +90,9 @@ export class OrdersPage {
   }
 
 
+  trackBy(index: number, order: Order) {
+    return order.uid;
+  }
 
   async presentAlert(hdr, msg) {
     const alert = await this.alertCtl.create({

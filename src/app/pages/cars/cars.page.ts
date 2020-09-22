@@ -4,18 +4,19 @@ import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 import { Km } from 'src/app/models/app/km';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { StorageService } from 'src/app/services/storage.service';
+import { flatMap, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-cars',
   templateUrl: './cars.page.html',
   styleUrls: ['./cars.page.scss'],
 })
-export class CarsPage {
+export class CarsPage implements OnInit {
 
-  private carSub: Subscription;
-  cars: Car[];
+  cars: Observable<Car[]>;
 
   constructor(
     private modalController: ModalController,
@@ -24,21 +25,25 @@ export class CarsPage {
     private alertController: AlertController,
     private storageService: StorageService,
   ) {
+
   }
 
+  async ngOnInit() {
+    this.cars = (await this.carService.getCarsByUser()).pipe(
+      flatMap(cars => {
+        let kmObs = cars.map(
+          car => this.carService.getCarKm(car.km)
+        );
 
-  async ionViewWillEnter() {
-    let cars$ = await this.carService.getCarsByUser();
-    this.carSub = cars$.subscribe(cars => {
-      cars.map(car => {
-        if (car.km) {
-          this.carService.getCarKm(car.km).subscribe((km: Km) => {
-            car.km = km;
+        return combineLatest(...kmObs, (...km) => {
+          cars.forEach((car, index) => {
+            car.km = km[index];
           });
-        }
-      });
-      this.cars = cars;
-    });
+          return cars;
+        });
+      })
+    );
+
   }
 
 
@@ -101,6 +106,10 @@ export class CarsPage {
 
   }
 
+  trackBy(i: number, car: Car) {
+    return car.uid;
+  }
+
   async presentModal(update = false, car = null) {
     let modalConfig = {
       component: CarsFormComponent,
@@ -124,10 +133,6 @@ export class CarsPage {
     });
 
     await alert.present();
-  }
-
-  ionViewWillLeave() {
-    this.carSub.unsubscribe();
   }
 
 }

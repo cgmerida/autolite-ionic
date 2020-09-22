@@ -126,16 +126,14 @@
 
     <ion-grid>
       <ion-row>
-        <ion-col class="ion-text-center">
-          Fotos
-        </ion-col>
+        <ion-col class="ion-text-center">Fotos</ion-col>
       </ion-row>
       <ion-row class="ion-justify-content-evenly">
         <ion-col size="4">
           <ion-button
             color="tertiary"
             type="button"
-            [disabled]="car.photo || photo"
+            [disabled]="update ? !!car.photo : !!photo"
             (click)="takePicture('camera')"
           >
             <ion-icon slot="start" name="camera-outline"></ion-icon>
@@ -146,7 +144,7 @@
           <ion-button
             color="medium"
             type="button"
-            [disabled]="car.photo || photo"
+            [disabled]="update ? !!car.photo : !!photo"
             (click)="takePicture('gallery')"
           >
             <ion-icon slot="start" name="images-outline"></ion-icon>
@@ -154,16 +152,16 @@
           </ion-button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="car.photo || photo">
+      <ion-row *ngIf="update ? !!car.photo : !!photo">
         <ion-col class="ion-align-items-center">
           <img [src]="car.photo || photo" />
         </ion-col>
       </ion-row>
-      <ion-row [hidden]="!(car.photo || photo)">
+      <ion-row [hidden]="!(update ? !!car.photo : !!photo)">
         <ion-col>
           <ion-button
             type="button"
-            (click)="deletePhoto();"
+            (click)="deletePhoto()"
             color="danger"
             class="ion-float-right ion-margin-right"
             size="small"

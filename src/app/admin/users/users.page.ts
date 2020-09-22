@@ -59,4 +59,8 @@ export class UsersPage implements OnInit {
     await loading.dismiss();
   }
 
+  trackBy(index: number, user: User) {
+    return user.uid;
+  }
+
 }

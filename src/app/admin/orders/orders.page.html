@@ -19,7 +19,7 @@
 
 <ion-content>
   <ion-grid fixed>
-    <div *ngFor="let order of orders | async">
+    <div *ngFor="let order of orders | async; trackBy:trackBy">
       <ion-card
         *ngIf="order.status != 'Cancelado' && (order.status == 'Completado') == orderCompleted"
       >

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { flatMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -37,12 +36,8 @@ export class UserService {
     return this.fireAuth.authState
       .pipe(
         flatMap(fireUser => {
-          if (fireUser) {
-            fireUser.reload();
+          if (fireUser)
             return this.db.doc<User>(`users/${fireUser.uid}`).valueChanges();
-          } else {
-            return null;
-          }
         }),
       );
   }

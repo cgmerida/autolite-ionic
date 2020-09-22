@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/app/order.service';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage {
+export class InicioPage implements OnInit, OnDestroy {
 
   // private slideOpts = {
   //   slidesPerView: 1.5,
@@ -18,10 +19,9 @@ export class InicioPage {
   //   spaceBetween: 10
   // };
 
-  private userSub: Subscription;
   private orderSub: Subscription;
 
-  user: User;
+  user: Observable<User>;
 
   totalOrders = 0;
   loading = true;
@@ -31,19 +31,14 @@ export class InicioPage {
     private orderServcice: OrderService,
     private userService: UserService,
   ) {
-
+    this.user = this.userService.getAuthUser().pipe(take(1));
   }
 
-  ionViewWillEnter() {
+  ngOnInit() {
     this.totalOrders = 0;
     this.loading = true;
     this.totalExpenses = 0;
 
-    this.userSub = this.userService.getAuthUser().subscribe(user => {
-      if (user) {
-        this.user = user;
-      }
-    });
     this.orderServcice.getCompletedOrdersByUser().then(orders$ => {
       this.orderSub = orders$.subscribe(orders => {
 
@@ -58,15 +53,13 @@ export class InicioPage {
             }
           })
         })
-
-        this.loading = false;
-
       });
+
+      this.loading = false;
     });
   }
 
-  ionViewWillLeave() {
-    this.userSub.unsubscribe();
+  ngOnDestroy() {
     this.orderSub.unsubscribe();
   }
 

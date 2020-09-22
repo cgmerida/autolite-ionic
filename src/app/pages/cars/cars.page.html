@@ -15,7 +15,7 @@
     Registrar Carro
   </ion-button>
 
-  <ion-card *ngFor="let car of cars">
+  <ion-card *ngFor="let car of cars | async; trackBy:trackBy">
     <ion-img *ngIf="!!car.photo" [src]="car.photo"></ion-img>
     <ion-card-header>
       <ion-card-title>{{car.brand}} {{ car.line }}</ion-card-title>

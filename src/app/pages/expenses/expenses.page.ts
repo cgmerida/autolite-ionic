@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss'],
 })
-export class ExpensesPage {
+export class ExpensesPage implements OnInit, OnDestroy {
 
   private months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -87,7 +87,7 @@ export class ExpensesPage {
 
 
 
-  ionViewWillEnter() {
+  ngOnInit() {
     this.orderService.getCompletedOrdersByUser().then(orders$ => {
       this.orderSub = orders$.subscribe(orders => {
         this.orders = orders;
@@ -136,7 +136,7 @@ export class ExpensesPage {
     return total;
   }
 
-  ionViewWillLeave() {
+  ngOnDestroy() {
     this.orderSub.unsubscribe();
   }
 

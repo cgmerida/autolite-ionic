@@ -32,7 +32,7 @@
     <ion-list lines="none">
       <ion-list-header>Gestión de Usuarios</ion-list-header>
 
-      <ion-item-sliding *ngFor="let user of users | async">
+      <ion-item-sliding *ngFor="let user of users | async; trackBy:trackBy">
         <ion-item-options side="start">
           <ion-item-option
             expandable

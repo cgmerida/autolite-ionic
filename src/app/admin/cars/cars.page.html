@@ -11,8 +11,8 @@
   <ion-grid fixed>
     <ion-button expand="block"> Registrar Carro </ion-button>
 
-    <ion-card *ngFor="let car of cars | async">
-      <ion-img [src]="car.photo"></ion-img>
+    <ion-card *ngFor="let car of cars | async; trackBy:trackBy">
+      <ion-img *ngIf="!!car.photo" [src]="car.photo"></ion-img>
       <ion-card-header>
         <ion-card-title>{{car.brand}} {{ car.line }}</ion-card-title>
         <ion-card-subtitle>{{ car.model }}</ion-card-subtitle>
@@ -20,7 +20,7 @@
 
       <ion-card-content>
         <ion-card-title>Cliente</ion-card-title>
-        <ion-list lines="none" class="small">
+        <ion-list lines="none" class="small" *ngIf="car.owner">
           <ion-item>
             <ion-label>
               <b>Nombre:</b> {{car.owner.firstname ? car.owner.firstname + ' ' +
@@ -34,6 +34,10 @@
             <ion-label><b>Telefono:</b> {{car.owner.tel }}</ion-label>
           </ion-item>
         </ion-list>
+
+        <ion-text *ngIf="!(!!car.owner)" color="danger">
+          El cliente ya no se encuentra registrado en la aplicación
+        </ion-text>
       </ion-card-content>
 
       <ion-card-content *ngIf="!!car.km || !!car.service">

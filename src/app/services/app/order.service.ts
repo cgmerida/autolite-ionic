@@ -132,7 +132,7 @@ export class OrderService {
       });
   }
 
-  updateOrder(order) {
+  updateOrder(order: Partial<Order>) {
     order.updatedAt = new Date();
     return this.orderCollection.doc(order.uid).update(order);
   }

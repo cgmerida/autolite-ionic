@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { AlertController, LoadingController } from '@ionic/angular';
@@ -12,9 +12,7 @@ import { Product } from 'src/app/models/app/product';
 })
 export class ProductsPage {
 
-  products: Product[];
-  productsSub: Subscription;
-
+  products: Observable<Product[]>;
   productsForm: FormGroup;
   isSubmitted = false;
 
@@ -32,13 +30,8 @@ export class ProductsPage {
       unit: [null, Validators.required],
       price: [null, Validators.required],
     });
-  }
 
-  ionViewWillEnter() {
-    this.productsSub = this.productService.getProducts()
-      .subscribe(products => {
-        this.products = products;
-      });
+    this.products = this.productService.getProducts();
   }
 
 
@@ -118,6 +111,10 @@ export class ProductsPage {
       });
   }
 
+  trackBy(index: number, product: Product) {
+    return product.uid;
+  }
+
   async presentAlert(hdr, msg) {
     const alert = await this.alertController.create({
       header: hdr,
@@ -127,10 +124,4 @@ export class ProductsPage {
 
     await alert.present();
   }
-
-  ionViewWillLeave() {
-    this.productsSub.unsubscribe();
-  }
-
-
 }

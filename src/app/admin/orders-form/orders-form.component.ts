@@ -29,8 +29,8 @@ export class OrdersFormComponent implements OnInit {
     private loadingController: LoadingController,
   ) {
     // https://stackblitz.com/edit/nested-list?file=src%2Fapp%2Fapp.component.ts
-    this.services = serviceService.getServices();
-    this.products = productService.getProducts();
+    this.services = this.serviceService.getServices();
+    this.products = this.productService.getProducts();
   }
 
   ngOnInit() {
@@ -97,9 +97,8 @@ export class OrdersFormComponent implements OnInit {
     const loading = await this.loadingController.create();
     await loading.present();
 
-    this.order.services.forEach((service, i) => {
+    this.order.services.forEach((service) => {
       delete service.addProducts;
-      this.order.services[i] = service;
     });
 
     try {
@@ -108,7 +107,7 @@ export class OrdersFormComponent implements OnInit {
         progress: this.order.progress,
         status: this.order.progress == 100 ? 'Completado' : this.order.status,
         services: this.order.services
-      })
+      });
 
       this.presentAlert('¡Genial!', `Se actualizó correctamente.`);
 

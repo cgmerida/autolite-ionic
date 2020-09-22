@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Service } from 'src/app/models/service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ServiceService } from 'src/app/services/app/service.service';
@@ -12,9 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ServicesPage {
 
-  services: Service[];
-
-  private servicesSub: Subscription;
+  services: Observable<Service[]>;
 
   servicesForm: FormGroup;
   isSubmitted = false;
@@ -32,13 +30,7 @@ export class ServicesPage {
       price: [null, Validators.required],
     });
 
-  }
-
-  ionViewWillEnter() {
-    this.servicesSub = this.serviceService.getServices()
-      .subscribe(services => {
-        this.services = services;
-      });
+    this.services = this.serviceService.getServices();
   }
 
   get errorControl() {
@@ -120,6 +112,12 @@ export class ServicesPage {
       });
   }
 
+  
+
+  trackBy(index: number, service: Service) {
+    return service.uid;
+  }
+
   async presentAlert(hdr, msg) {
     const alert = await this.alertController.create({
       header: hdr,
@@ -128,10 +126,6 @@ export class ServicesPage {
     });
 
     await alert.present();
-  }
-
-  ionViewWillLeave() {
-    this.servicesSub.unsubscribe();
   }
 
 

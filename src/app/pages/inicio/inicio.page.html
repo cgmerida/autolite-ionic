@@ -1,13 +1,14 @@
-
 <ion-content padding>
-
   <section class="ion-text-center">
     <!-- <ion-icon name="person" class="font"></ion-icon> -->
     <img src="assets/img/logo/logo-full.svg" alt="Logo Full" />
     <h1 class="ion-no-margin bolder">Bienvenido</h1>
-    <h3 class="ion-no-margin lighter">
-      {{user?.firstname ? user?.firstname + ' ' + user?.lastname : user?.displayName | titlecase}}
-    </h3>
+    <div *ngIf="user | async as userData">
+      <h3 class="ion-no-margin lighter">
+        {{userData.firstname ? userData.firstname + ' ' + userData.lastname :
+        userData.displayName | titlecase}}
+      </h3>
+    </div>
   </section>
 
   <ion-grid id="main-grid">
