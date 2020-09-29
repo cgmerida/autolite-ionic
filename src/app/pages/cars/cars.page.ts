@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController, AlertController, IonRouterOutlet } from '@ionic/angular';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 import { Km } from 'src/app/models/app/km';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { StorageService } from 'src/app/services/storage.service';
-import { flatMap, switchMap } from 'rxjs/operators';
+import { flatMap, } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 @Component({
@@ -31,13 +31,19 @@ export class CarsPage implements OnInit {
   async ngOnInit() {
     this.cars = (await this.carService.getCarsByUser()).pipe(
       flatMap(cars => {
-        let kmObs = cars.map(
-          car => this.carService.getCarKm(car.km)
-        );
+        let kmObs: Observable<Km>[] = [];
+        cars.forEach(car => {
+          if (!!car.km) {
+            kmObs.push(this.carService.getCarKm(car.km));
+          }
+        });
 
-        return combineLatest(...kmObs, (...km) => {
-          cars.forEach((car, index) => {
-            car.km = km[index];
+        return combineLatest(...kmObs, (...km: Km[]) => {
+          cars.forEach((car) => {
+            if (!!car.km) {
+              let index = km.findIndex(km => km.car === car.uid);
+              car.km = index !== -1 ? km[index] : null;
+            }
           });
           return cars;
         });

@@ -154,7 +154,7 @@
       </ion-row>
       <ion-row *ngIf="update ? !!car.photo : !!photo">
         <ion-col class="ion-align-items-center">
-          <img [src]="car.photo || photo" />
+          <img [src]="update ? car.photo : photo" />
         </ion-col>
       </ion-row>
       <ion-row [hidden]="!(update ? !!car.photo : !!photo)">
