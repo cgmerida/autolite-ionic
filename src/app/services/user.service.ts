@@ -3,6 +3,7 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { flatMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,11 @@ export class UserService {
     return this.fireAuth.authState
       .pipe(
         flatMap(fireUser => {
-          if (fireUser)
-            return this.db.doc<User>(`users/${fireUser.uid}`).valueChanges();
+          if (fireUser) {
+            return this.userCollection.doc<User>(fireUser.uid).valueChanges();
+          }
+          return of(null);
+
         }),
       );
   }

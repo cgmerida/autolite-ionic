@@ -106,6 +106,7 @@ export class AuthService {
   LogIn(email: string, password: string) {
     return this.fireAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
+        result.user.reload();
         this.ngZone.run(async () => {
           this.redirectAuth();
         });
@@ -159,7 +160,8 @@ export class AuthService {
       })
   }
 
-  private storeUserProvider(user) {
+  private storeUserProvider(user: fireUser) {
+    user.reload();
 
     const userRef: AngularFirestoreDocument<User> = this.fireStore.doc<User>(`users/${user.uid}`);
 
@@ -196,12 +198,12 @@ export class AuthService {
   }
 
   // Sign-out 
-  SignOut() {
+  async SignOut() {
     this.userSub.unsubscribe();
-    return this.fireAuth.signOut().then(() => {
-      this.navController.setDirection('root');
-      this.router.navigate(['login']);
-    })
+    await this.fireAuth.signOut();
+
+    this.navController.setDirection('root');
+    this.router.navigate(['login']);
   }
 
   private async presentAlert(hdr, shdr, msg) {
