@@ -24,8 +24,6 @@ export class TabsPage implements OnDestroy {
       if (user) {
         this.user = user;
       }
-    }, err => {
-      console.log(err);
     });
   }
 

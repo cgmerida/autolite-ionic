@@ -25,6 +25,12 @@
       user?.displayName | titlecase}}
     </h1>
   </div>
+  
+  <div class="ion-text-center">
+    <ion-text color="danger" *ngIf="!user?.tel">
+      Es necesario registrar su número de telefono.
+    </ion-text>
+  </div>
 
   <ion-grid>
     <ion-row class="ion-justify-content-start ion-margin">
@@ -73,11 +79,7 @@
     </ion-list>
     <ion-grid>
       <ion-row class="ion-justify-content-center">
-        <ion-button
-          color="danger"
-          type="button"
-          (click)="update = false;"
-        >
+        <ion-button color="danger" type="button" (click)="update = false;">
           Cancelar
         </ion-button>
         <ion-button
