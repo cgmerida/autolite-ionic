@@ -132,6 +132,9 @@ export class InicioPage implements OnInit, OnDestroy {
   getAvgRating() {
     this.resSub = this.responseService.getResponses()
       .subscribe(orderResp => {
+
+        this.responses = [];
+        
         orderResp.forEach(resp => {
           resp.responses.forEach(r => {
             // Mapear todo el rating

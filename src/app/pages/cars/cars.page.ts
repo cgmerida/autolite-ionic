@@ -4,7 +4,7 @@ import { CarsFormComponent } from './cars-form/cars-form.component';
 import { CarService } from 'src/app/services/app/car.service';
 import { Car } from 'src/app/models/app/car';
 import { Km } from 'src/app/models/app/km';
-import { Observable } from 'rxjs';
+import { Observable, of, zip } from 'rxjs';
 import { StorageService } from 'src/app/services/storage.service';
 import { flatMap, } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
@@ -31,12 +31,16 @@ export class CarsPage implements OnInit {
   async ngOnInit() {
     this.cars = (await this.carService.getCarsByUser()).pipe(
       flatMap(cars => {
+
         let kmObs: Observable<Km>[] = [];
         cars.forEach(car => {
           if (!!car.km) {
             kmObs.push(this.carService.getCarKm(car.km));
           }
         });
+
+        if (kmObs.length == 0)
+          return of(cars);
 
         return combineLatest(...kmObs, (...km: Km[]) => {
           cars.forEach((car) => {
@@ -49,6 +53,7 @@ export class CarsPage implements OnInit {
         });
       })
     );
+
 
   }
 

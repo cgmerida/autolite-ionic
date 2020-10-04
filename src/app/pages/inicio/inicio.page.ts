@@ -35,12 +35,11 @@ export class InicioPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.totalOrders = 0;
     this.loading = true;
-    this.totalExpenses = 0;
-
     this.orderServcice.getCompletedOrdersByUser().then(orders$ => {
       this.orderSub = orders$.subscribe(orders => {
+        this.totalOrders = 0;
+        this.totalExpenses = 0;
 
         orders.forEach(order => {
           this.totalOrders++;

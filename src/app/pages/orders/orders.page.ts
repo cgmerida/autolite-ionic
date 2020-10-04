@@ -15,7 +15,7 @@ export class OrdersPage {
   orderSub: Subscription;
   orders: Order[];
 
-  statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success" };
+  statusColor = { "Nuevo": "dark", "En Progreso": "tertiary", "Completado": "success", "Cancelado": "danger" };
 
   constructor(private orderService: OrderService) {
 
