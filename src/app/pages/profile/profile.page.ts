@@ -38,13 +38,15 @@ export class ProfilePage {
 
 
   onSubmit() {
-    if (((!this.userEdit.firstname && !this.userEdit.lastname) && !this.user.displayName) || !this.userEdit.tel) {
+    if ((
+      (this.userEdit.firstname && !this.userEdit.lastname) || (!this.userEdit.firstname && this.userEdit.lastname) ||
+      (!this.userEdit.firstname && !this.userEdit.lastname! && !this.user.displayName)) || !this.userEdit.tel) {
       return;
     }
     let partialuser: Partial<User> = {
       uid: this.userEdit.uid,
-      firstname: this.userEdit.firstname,
-      lastname: this.userEdit.lastname,
+      firstname: this.userEdit.firstname ? this.userEdit.firstname : null,
+      lastname: this.userEdit.lastname ? this.userEdit.lastname : null,
       tel: this.userEdit.tel,
     }
     this.userService.updateUser(partialuser);

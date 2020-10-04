@@ -80,7 +80,7 @@ export class OrderFormComponent implements OnInit {
             this.dismiss();
           })
           .catch((error) => {
-            this.presentAlert(`Error`, `error: ${error}`, `Problema registrando el vehículo.`);
+            this.presentAlert(`Error`, `${error}`, `Problema registrando la orden.`);
           })
           .finally(() => {
             this.clicked = true;

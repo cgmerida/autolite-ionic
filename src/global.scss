@@ -37,3 +37,11 @@ ion-img.logo-header {
   width: 15vw;
   max-width: 60px;
 }
+
+.alert-checkbox-label {
+  white-space: normal !important;
+}
+
+ion-select::part(text) {
+  white-space: normal !important;
+}

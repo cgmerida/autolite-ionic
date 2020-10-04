@@ -8,6 +8,12 @@
         {{userData.firstname ? userData.firstname + ' ' + userData.lastname :
         userData.displayName | titlecase}}
       </h3>
+
+      <div class="ion-text-center">
+        <ion-text color="danger" *ngIf="!userData.tel">
+          Es necesario registrar su número de telefono.
+        </ion-text>
+      </div>
     </div>
   </section>
 

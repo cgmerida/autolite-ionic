@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { Order } from 'src/app/models/app/order';
 import { User } from 'src/app/models/user';
+import { UserService } from '../user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class OrderService {
   constructor(
     private db: AngularFirestore,
     private authService: AuthService,
+    private userService: UserService,
   ) {
     this.orderCollection = this.db.collection<Order>('orders');
   }
@@ -115,10 +117,14 @@ export class OrderService {
 
 
   async addOrder(order: Order) {
-    let uid = await this.authService.getAuthUserUid();
+    let user = await this.userService.getAuthUser().pipe(take(1)).toPromise();
+
+    if (!user.tel)
+      throw `Debe registrar un número de telefono`;
+
     // order.services
 
-    order.owner = uid;
+    order.owner = user.uid;
     order.createdAt = new Date();
     order.updatedAt = new Date();
     order.status = "Nuevo";
