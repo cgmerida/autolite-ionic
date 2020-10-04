@@ -10,17 +10,15 @@
           <ion-label position="stacked">
             Correo <ion-text color="danger">*</ion-text>
           </ion-label>
-          <ion-input required="true" type="email"></ion-input>
+          <ion-input required="true" type="email" #email></ion-input>
         </ion-item>
       </ion-list>
 
       <p class="ion-text-center">
         Enviaremos un correo para que puedas recuperar tu contraseña.
       </p>
-      
-      <p class="ion-text-center">
-        Si no encuentras el correo busca en SPAM.
-      </p>
+
+      <p class="ion-text-center">Si no encuentras el correo busca en SPAM.</p>
 
       <ion-grid>
         <ion-row>
@@ -29,7 +27,7 @@
             color="light"
             fill="outline"
             size="large"
-            (click)="enviarCorreo()"
+            (click)="enviarCorreo(email.value)"
           >
             Enviar correo
           </ion-button>

@@ -15,8 +15,10 @@ export class ForgotPage {
   ngOnInit() {
   }
 
-  enviarCorreo() {
-    this.authService.PasswordRecover();
-    this.enviado = true;
+  enviarCorreo(email) {
+    if (!!email) {
+      this.authService.PasswordRecover(email);
+      this.enviado = true;
+    }
   }
 }

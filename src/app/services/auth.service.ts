@@ -74,10 +74,9 @@ export class AuthService {
   }
 
   // Recover password
-  async PasswordRecover() {
-    let authUser = await this.getAuthUser();
+  async PasswordRecover(email) {
     try {
-      await this.fireAuth.sendPasswordResetEmail(authUser.email);
+      await this.fireAuth.sendPasswordResetEmail(email);
       this.presentAlert('¡Bien!', null, 'El correo para reiniciar tu contraseña ya fue enviado, revisa tu correo');
     } catch (err) {
       this.presentAlert('Error', 'Problema enviando correo', err);
@@ -119,10 +118,16 @@ export class AuthService {
 
 
   async googleAuthAndroid() {
-    const res = await this.googlePlus.login({
-      'webClientId': '320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com',
-      'offline': true
-    });
+    let res;
+    try {
+      res = await this.googlePlus.login({
+        'scopes': 'profile email',
+        'webClientId': '320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com',
+        'offline': false
+      });
+    } catch (error) {
+      this.presentAlert('Error', 'Problema iniciando sesión', error);
+    }
 
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.GoogleAuthProvider.credential(res.idToken));
@@ -134,11 +139,17 @@ export class AuthService {
   }
 
   async fbAuthAndroid() {
-    const res: FacebookLoginResponse = await this.fb.login(['public_profile', 'email']);
+    let res: FacebookLoginResponse;
+    try {
+      res = await this.fb.login(['public_profile', 'email']);
+    } catch (error) {
+      this.presentAlert('Error', 'Problema iniciando sesión', error);
+    }
 
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.FacebookAuthProvider.credential(res.authResponse.accessToken));
       await this.storeUserProvider(resConfirmed.user);
+      resConfirmed.user.sendEmailVerification();
       this.redirectAuth();
     } catch (err) {
       this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));

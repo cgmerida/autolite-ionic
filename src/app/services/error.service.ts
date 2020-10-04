@@ -35,7 +35,7 @@ export class ErrorService {
     if (this.params[code]) {
       return (this.params[code]);
     } else {
-      return (`¡Ocurrio un error! \n Codigo: ${code}`);
+      return (`¡Ocurrio un error!\n${code}`);
     }
   }
 }
