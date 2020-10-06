@@ -123,10 +123,11 @@ export class AuthService {
       res = await this.googlePlus.login({
         'scopes': 'profile email',
         'webClientId': '320328269998-urcbhefqbpsb05q1t644d3m7a6iptlho.apps.googleusercontent.com',
-        'offline': false
+        'offline': true
       });
     } catch (error) {
-      this.presentAlert('Error', 'Problema iniciando sesión', error);
+      this.presentAlert('Error', 'Error conectando con google', error);
+      return; 
     }
 
     try {
