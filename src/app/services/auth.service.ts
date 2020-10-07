@@ -112,7 +112,7 @@ export class AuthService {
         // this.storeUser(result.user);
       }).catch((err) => {
         this.presentAlert('Error', 'Problema iniciando sesión',
-          this.errors.printErrorByCode(err.code));
+          this.errors.printErrorByCode(err));
       })
   }
 
@@ -127,7 +127,7 @@ export class AuthService {
       });
     } catch (error) {
       this.presentAlert('Error', 'Error conectando con google', error);
-      return; 
+      return;
     }
 
     try {
@@ -135,7 +135,7 @@ export class AuthService {
       await this.storeUserProvider(resConfirmed.user);
       this.redirectAuth();
     } catch (err) {
-      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
+      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err));
     }
   }
 
@@ -144,16 +144,16 @@ export class AuthService {
     try {
       res = await this.fb.login(['public_profile', 'email']);
     } catch (error) {
-      this.presentAlert('Error', 'Problema iniciando sesión', error);
+      this.presentAlert('Error', 'Error conectando con Facebook', error);
+      return;
     }
 
     try {
       const resConfirmed = await this.fireAuth.signInWithCredential(auth.FacebookAuthProvider.credential(res.authResponse.accessToken));
       await this.storeUserProvider(resConfirmed.user);
-      resConfirmed.user.sendEmailVerification();
       this.redirectAuth();
     } catch (err) {
-      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
+      this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err));
     }
   }
 
@@ -168,7 +168,7 @@ export class AuthService {
           this.redirectAuth();
         });
       }).catch((err) => {
-        this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err.code));
+        this.presentAlert('Error', 'Problema iniciando sesión', this.errors.printErrorByCode(err));
       })
   }
 

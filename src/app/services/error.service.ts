@@ -30,12 +30,12 @@ export class ErrorService {
 
   constructor() { }
 
-  printErrorByCode(code: string): string {
-    // code = code.split('/')[1];
-    if (this.params[code]) {
-      return (this.params[code]);
+  printErrorByCode(error): string {
+
+    if (this.params[error.code]) {
+      return (this.params[error.code]);
     } else {
-      return (`¡Ocurrio un error!\n${code}`);
+      return (error.message);
     }
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { switchMap, take } from 'rxjs/operators';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { Car } from 'src/app/models/app/car';
 import { Order } from 'src/app/models/app/order';
 import { User } from 'src/app/models/user';
@@ -36,6 +36,9 @@ export class OrderService {
             order => this.db.doc<Car>(`cars/${order.car}`).valueChanges()
           );
 
+          if (carsObs.length == 0)
+            return of(orders);
+
           return combineLatest(...carsObs, (...cars) => {
             orders.forEach((order, index) => {
               order.car = cars[index];
@@ -49,6 +52,9 @@ export class OrderService {
           let userObs = orders.map(
             order => this.db.doc<User>(`users/${order.owner}`).valueChanges()
           );
+
+          if (userObs.length == 0)
+            return of(orders);
 
           return combineLatest(...userObs, (...users) => {
             orders.forEach((order, index) => {

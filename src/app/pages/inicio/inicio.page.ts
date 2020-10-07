@@ -31,7 +31,7 @@ export class InicioPage implements OnInit, OnDestroy {
     private orderServcice: OrderService,
     private userService: UserService,
   ) {
-    this.user = this.userService.getAuthUser().pipe(take(1));
+    this.user = this.userService.getAuthUser();
   }
 
   ngOnInit() {
